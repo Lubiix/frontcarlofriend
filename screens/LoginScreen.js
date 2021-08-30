@@ -18,7 +18,7 @@ const LoginScreen = (props) => {
     props.navigation.navigate("menu");
   };
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, marginTop: 29 }}>
       <Box
         bg="primary.400"
         p={4}

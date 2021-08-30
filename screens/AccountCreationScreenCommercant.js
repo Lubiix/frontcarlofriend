@@ -10,7 +10,7 @@ const AccountCreationScreenCommercant = (props) => {
   const [centresDinteret, setCentresDinteret] = useState([]);
   const [quartierActivity, setQuartierActivity] = useState("");
   return (
-    <View style={{ flex: 1, alignItems: "center" }}>
+    <View style={{ flex: 1, alignItems: "center", marginTop: 50 }}>
       <Button.Group
         variant="solid"
         isAttached
@@ -21,13 +21,18 @@ const AccountCreationScreenCommercant = (props) => {
         }}
       >
         <Button
+          bg="#62ADEB"
           style={{ color: "#62ADEB" }}
           mr={0}
+          _text={{
+            color: "white",
+          }}
           onPress={() => handleGoParticulier()}
         >
           Particulier
         </Button>
         <Button
+          bg="#62ADEB"
           style={{ color: "#62ADEB" }}
           _text={{
             color: "white",
@@ -109,6 +114,7 @@ const AccountCreationScreenCommercant = (props) => {
         <Select.Item label="Saint-Roman" value="Saint-Roman" />
       </Select>
       <Button
+        bg="#62ADEB"
         style={{ color: "#62ADEB", marginTop: 15 }}
         _text={{
           color: "white",
