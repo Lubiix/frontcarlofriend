@@ -1,5 +1,11 @@
 import React from "react";
 
-function FeedScreen() {}
+function FeedScreen() {
+    return (
+        <View>
+            <Text>Feed Screen</Text>
+        </View>
+    )
+}
 
 export default FeedScreen;
