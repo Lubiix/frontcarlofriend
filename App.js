@@ -15,6 +15,7 @@ import LoginScreen from './screens/LoginScreen';
 import FeedScreen from "./screens/FeedScreen";
 import MenuNav from './components/MenuNav';
 import MapScreen from './screens/MapScreen';
+import MainNav from "./components/MainNav";
 
 const Stack = createStackNavigator();
 
@@ -22,7 +23,7 @@ export default function App() {
   return (
     <NativeBaseProvider>
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{headerShown: false}}>
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen
             name="CreateAccountParticulier"
@@ -36,6 +37,7 @@ export default function App() {
           <Stack.Screen name="menu" component={MenuNav}/>
           <Stack.Screen name="feed" component={FeedScreen}/>
           <Stack.Screen name="map" component={MapScreen}/>
+          <Stack.Screen name="main" component={MainNav}/>
         </Stack.Navigator>
       </NavigationContainer>
     </NativeBaseProvider>

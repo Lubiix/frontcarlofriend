@@ -11,7 +11,8 @@ const HomeScreen = (props) => {
     props.navigation.navigate("Login");
   };
   return (
-    <View>
+    <View style={{ flex:1, alignItems: "center",
+    justifyContent: "center"}}>
       <Text>Home</Text>
       <Button onPress={() => handleCreerUnCompte()}>Créer un compte</Button>
       <Button onPress={() => handleSeConnecter()}>Se Connecter</Button>

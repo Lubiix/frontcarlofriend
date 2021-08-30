@@ -1,8 +1,9 @@
 import React from "react";
+import MessageScreen from "../screens/MessageScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { View, Text, Button} from 'react-native'
-import HomeScreen from "../screens/HomeScreen";
 import { Ionicons } from '@expo/vector-icons'
+import MainNav from "./MainNav";
 
 const Tab = createBottomTabNavigator();
 
@@ -28,7 +29,8 @@ const MenuNav = () => {
           },
         })}
       >
-        <Tab.Screen name="gallery" component={HomeScreen} />
+        <Tab.Screen name="main" component={MainNav} />
+        <Tab.Screen name="messages" component={MessageScreen} />
         
       </Tab.Navigator>
     </View>

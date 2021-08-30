@@ -7,7 +7,7 @@ const AccountCreationScreenParticulier = (props) => {
     props.navigation.navigate("CreateAccountCommercant");
   };
   return (
-    <View>
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Text>Créer un compte Particulier</Text>
       <Button onPress={() => handleGoCommercant()}>go commerçant</Button>
     </View>

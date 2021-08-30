@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 
 const AccountCreationScreenCommercant = () => {
   return (
-    <View>
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Text>Créer un compte commerçant</Text>
     </View>
   );
