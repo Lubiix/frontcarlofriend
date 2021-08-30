@@ -1,5 +1,8 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { View, Text, Button} from 'react-native'
+import HomeScreen from "../screens/HomeScreen";
+import { Ionicons } from '@expo/vector-icons'
 
 const Tab = createBottomTabNavigator();
 
@@ -25,8 +28,8 @@ const MenuNav = () => {
           },
         })}
       >
-        <Tab.Screen name="gallery" component={GalleryScreen} />
-        <Tab.Screen name="snap" component={SnapScreen} />
+        <Tab.Screen name="gallery" component={HomeScreen} />
+        
       </Tab.Navigator>
     </View>
   );

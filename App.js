@@ -3,17 +3,18 @@ import React from "react";
 
 import { NativeBaseProvider, Box } from "native-base";
 
-import { NativeBaseProvider, Box } from 'native-base';
-
 
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import HomeScreen from './screens/HomeScreen';
-import AccountCreationScreen from './screens/AccountCreationScreen';
+import AccountCreationScreenCommercant from './screens/AccountCreationScreenCommercant';
+import AccountCreationScreenParticulier from './screens/AccountCreationScreenParticulier'
 import LoginScreen from './screens/LoginScreen';
+import FeedScreen from "./screens/FeedScreen";
 import MenuNav from './components/MenuNav';
+import MapScreen from './screens/MapScreen';
 
 const Stack = createStackNavigator();
 
@@ -33,6 +34,8 @@ export default function App() {
           />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="menu" component={MenuNav}/>
+          <Stack.Screen name="feed" component={FeedScreen}/>
+          <Stack.Screen name="map" component={MapScreen}/>
         </Stack.Navigator>
       </NavigationContainer>
     </NativeBaseProvider>
