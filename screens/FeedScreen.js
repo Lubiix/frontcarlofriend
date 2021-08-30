@@ -1,10 +1,18 @@
 import React from "react";
 import { View, Text, Button} from 'react-native'
 
-function FeedScreen() {
+function FeedScreen(props) {
+    const handleMap = () => {
+        props.navigation.navigate("map")
+    }
+    const handleFeed =() => {
+        props.navigation.navigate("feed")
+    }
     return (
-        <View>
+        <View style={{flex:1}}>
             <Text>Feed Screen</Text>
+            <Button title="map" onPress={()=> handleMap()}></Button>
+            <Button title="feed" onPress={()=> handleFeed()}></Button>
         </View>
     )
 }
