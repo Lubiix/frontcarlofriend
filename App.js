@@ -3,17 +3,15 @@ import React from "react";
 
 import { NativeBaseProvider, Box } from "native-base";
 
-import { NativeBaseProvider, Box } from 'native-base';
+import { StyleSheet, Text, View } from "react-native";
+import { NavigationContainer, StackActions } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
-
-import { StyleSheet, Text, View } from 'react-native';
-import { NavigationContainer, StackActions } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-
-import HomeScreen from './screens/HomeScreen';
-import AccountCreationScreen from './screens/AccountCreationScreen';
-import LoginScreen from './screens/LoginScreen';
-import MenuNav from './components/MenuNav';
+import HomeScreen from "./screens/HomeScreen";
+import AccountCreationScreenParticulier from "./screens/AccountCreationScreenParticulier";
+import AccountCreationScreenCommercant from "./screens/AccountCreationScreenCommercant";
+import LoginScreen from "./screens/LoginScreen";
+import MenuNav from "./components/MenuNav";
 
 const Stack = createStackNavigator();
 
@@ -32,7 +30,7 @@ export default function App() {
             component={AccountCreationScreenCommercant}
           />
           <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="menu" component={MenuNav}/>
+          <Stack.Screen name="menu" component={MenuNav} />
         </Stack.Navigator>
       </NavigationContainer>
     </NativeBaseProvider>
