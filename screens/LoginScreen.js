@@ -1,6 +1,14 @@
 import React from "react";
-import { View, Text } from "react-native";
-import { Input, Center, NativeBaseProvider, Button } from "native-base";
+import { View } from "react-native";
+import {
+  Input,
+  VStack,
+  Text,
+  Button,
+  Center,
+  Box,
+  NativeBaseProvider,
+} from "native-base";
 
 const LoginScreen = (props) => {
   const [show, setShow] = React.useState(false);
@@ -11,9 +19,25 @@ const LoginScreen = (props) => {
   };
   return (
     <View style={{ flex: 1 }}>
-      <Text>Login</Text>
-      <Input mx={3} placeholder="Email" />
+      <Box
+        bg="primary.400"
+        p={4}
+        _text={{
+          fontSize: "md",
+          fontWeight: "bold",
+          color: "white",
+        }}
+        alignItems="center"
+        mb={3}
+      >
+        Connection
+      </Box>
+      <Input mx={5} my={3} placeholder="Email" />
       <Input
+        w="90%"
+        mx={5}
+        mt={3}
+        mb={6}
         type={show ? "text" : "password"}
         InputRightElement={
           <Button
@@ -26,8 +50,10 @@ const LoginScreen = (props) => {
           </Button>
         }
         placeholder="Password"
-      />{" "}
-      <Button title="Valider" onPress={() => handleLogin()}></Button>
+      />
+      <Button mx={5} onPress={() => handleLogin()}>
+        Valider
+      </Button>
     </View>
   );
 };
