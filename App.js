@@ -1,18 +1,16 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import { StatusBar } from "expo-status-bar";
+import React from "react";
 
+import { NativeBaseProvider, Box } from "native-base";
 
-import { NativeBaseProvider, Box } from 'native-base';
+import { StyleSheet, Text, View } from "react-native";
+import { NavigationContainer, StackActions } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
-
-import { StyleSheet, Text, View } from 'react-native';
-import { NavigationContainer, StackActions } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-
-import HomeScreen from './screens/HomeScreen';
-import AccountCreationScreen from './screens/AccountCreationScreen';
-import LoginScreen from './screens/LoginScreen';
-
+import HomeScreen from "./screens/HomeScreen";
+import AccountCreationScreenParticulier from "./screens/AccountCreationScreenParticulier";
+import AccountCreationScreenCommercant from "./screens/AccountCreationScreenCommercant";
+import LoginScreen from "./screens/LoginScreen";
 
 const Stack = createStackNavigator();
 
@@ -21,21 +19,27 @@ export default function App() {
     <NativeBaseProvider>
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name="Home" component={HomeScreen}/>
-          <Stack.Screen name="CreateAccount" component={AccountCreationScreen}/>
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen
+            name="CreateAccountParticulier"
+            component={AccountCreationScreenParticulier}
+          />
+          <Stack.Screen
+            name="CreateAccountCommercant"
+            component={AccountCreationScreenCommercant}
+          />
           <Stack.Screen name="Login" component={LoginScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </NativeBaseProvider>
-
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

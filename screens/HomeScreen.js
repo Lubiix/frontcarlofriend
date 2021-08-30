@@ -4,11 +4,11 @@ import { Button } from "native-base";
 
 const HomeScreen = (props) => {
   const handleCreerUnCompte = () => {
-    props.navigation.navigate("CreateAccount");
+    props.navigation.navigate("CreateAccountParticulier");
   };
 
   const handleSeConnecter = () => {
-      props.navigation.navigate("Login")
+    props.navigation.navigate("Login");
   };
   return (
     <View>
