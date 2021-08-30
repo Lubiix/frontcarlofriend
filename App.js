@@ -1,20 +1,18 @@
-import { StatusBar } from "expo-status-bar";
 import React from "react";
 
 import { NativeBaseProvider, Box } from "native-base";
 
+import { StyleSheet, Text, View } from "react-native";
+import { NavigationContainer, StackActions } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
-import { StyleSheet, Text, View } from 'react-native';
-import { NavigationContainer, StackActions } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-
-import HomeScreen from './screens/HomeScreen';
-import AccountCreationScreenCommercant from './screens/AccountCreationScreenCommercant';
-import AccountCreationScreenParticulier from './screens/AccountCreationScreenParticulier'
-import LoginScreen from './screens/LoginScreen';
+import HomeScreen from "./screens/HomeScreen";
+import AccountCreationScreenCommercant from "./screens/AccountCreationScreenCommercant";
+import AccountCreationScreenParticulier from "./screens/AccountCreationScreenParticulier";
+import LoginScreen from "./screens/LoginScreen";
 import FeedScreen from "./screens/FeedScreen";
-import MenuNav from './components/MenuNav';
-import MapScreen from './screens/MapScreen';
+import MenuNav from "./components/MenuNav";
+import MapScreen from "./screens/MapScreen";
 import MainNav from "./components/MainNav";
 
 const Stack = createStackNavigator();
@@ -23,7 +21,7 @@ export default function App() {
   return (
     <NativeBaseProvider>
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{headerShown: false}}>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen
             name="CreateAccountParticulier"
@@ -34,10 +32,10 @@ export default function App() {
             component={AccountCreationScreenCommercant}
           />
           <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="menu" component={MenuNav}/>
-          <Stack.Screen name="feed" component={FeedScreen}/>
-          <Stack.Screen name="map" component={MapScreen}/>
-          <Stack.Screen name="main" component={MainNav}/>
+          <Stack.Screen name="menu" component={MenuNav} />
+          <Stack.Screen name="feed" component={FeedScreen} />
+          <Stack.Screen name="map" component={MapScreen} />
+          <Stack.Screen name="main" component={MainNav} />
         </Stack.Navigator>
       </NavigationContainer>
     </NativeBaseProvider>
