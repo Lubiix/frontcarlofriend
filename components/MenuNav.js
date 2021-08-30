@@ -37,18 +37,17 @@ const MenuNav = () => {
               iconName = "mail";
             } else if (route.name === "Profile") {
               iconName = "person";
-            } 
+            }
 
-            return <Ionicons name={iconName} size={30} color={color}/>;
+            return <Ionicons name={iconName} size={30} color={color} />;
           },
         })}
       >
         <Tab.Screen name="Actualités" component={MainNav} />
-        <Tab.Screen name="Recherche" component={SearchScreen}/>
-        <Tab.Screen name="Publier" component={AddPostScreen}/>
+        <Tab.Screen name="Recherche" component={SearchScreen} />
+        <Tab.Screen name="Publier" component={AddPostScreen} />
         <Tab.Screen name="Messages" component={MessageScreen} />
-        <Tab.Screen name="Profile" component={ProfilScreen}/>
-        
+        <Tab.Screen name="Profile" component={ProfilScreen} />
       </Tab.Navigator>
     </View>
   );
