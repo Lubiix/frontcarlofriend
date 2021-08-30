@@ -9,7 +9,7 @@ function FeedScreen(props) {
         props.navigation.navigate("feed")
     }
     return (
-        <View style={{flex:1}}>
+        <View style={{flex:1, justifyContent:"center", alignItems:"center"}}>
             <Text>Feed Screen</Text>
             <Button title="map" onPress={()=> handleMap()}></Button>
             <Button title="feed" onPress={()=> handleFeed()}></Button>
