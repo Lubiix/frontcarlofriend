@@ -1,12 +1,14 @@
 import React from "react";
-import { View, Text, Button} from 'react-native'
+import { Badge, Center, NativeBaseProvider } from "native-base";
 
 function FeedScreen() {
-    return (
-        <View>
-            <Text>Feed Screen</Text>
-        </View>
-    )
+  return (
+    <NativeBaseProvider>
+      <Center flex={1}>
+        <Example />
+      </Center>
+    </NativeBaseProvider>
+  );
 }
 
 export default FeedScreen;
