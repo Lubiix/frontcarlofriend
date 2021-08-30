@@ -32,7 +32,7 @@ export default function App() {
             component={AccountCreationScreenCommercant}
           />
           <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="menu" component={MenuNav} />
+          {/* <Stack.Screen name="menu" component={MenuNav} /> */}
           <Stack.Screen name="feed" component={FeedScreen} />
           <Stack.Screen name="map" component={MapScreen} />
         </Stack.Navigator>

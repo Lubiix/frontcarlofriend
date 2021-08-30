@@ -1,8 +1,8 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { View, Text, Button} from 'react-native'
-import HomeScreen from "../screens/HomeScreen";
-import { Ionicons } from '@expo/vector-icons'
+import { View, Text, Button } from "react-native";
+import FeedScreen from "../screens/FeedScreen";
+import { Ionicons } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();
 
@@ -18,7 +18,7 @@ const MenuNav = () => {
           tabBarIcon: ({ color }) => {
             let iconName;
 
-            if (route.name === "gallery") {
+            if (route.name === "feed") {
               iconName = "images";
             } else if (route.name === "snap") {
               iconName = "camera";
@@ -28,8 +28,7 @@ const MenuNav = () => {
           },
         })}
       >
-        <Tab.Screen name="gallery" component={HomeScreen} />
-        
+        <Tab.Screen name="feed" component={FeedScreen} />
       </Tab.Navigator>
     </View>
   );

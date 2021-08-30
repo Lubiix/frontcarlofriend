@@ -1,13 +1,19 @@
 import React from "react";
-import { Badge, Center, NativeBaseProvider } from "native-base";
+import { View, Text } from "react-native";
 
 function FeedScreen() {
   return (
-    <NativeBaseProvider>
-      <Center flex={1}>
-        <Example />
-      </Center>
-    </NativeBaseProvider>
+    <Box
+      bg="primary.400"
+      p={4}
+      _text={{
+        fontSize: "md",
+        fontWeight: "bold",
+        color: "white",
+      }}
+    >
+      This is a Box
+    </Box>
   );
 }
 
