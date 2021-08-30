@@ -1,6 +1,7 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import { StatusBar } from "expo-status-bar";
+import React from "react";
 
+import { NativeBaseProvider, Box } from "native-base";
 
 import { NativeBaseProvider, Box } from 'native-base';
 
@@ -21,22 +22,28 @@ export default function App() {
     <NativeBaseProvider>
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name="Home" component={HomeScreen}/>
-          <Stack.Screen name="CreateAccount" component={AccountCreationScreen}/>
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen
+            name="CreateAccountParticulier"
+            component={AccountCreationScreenParticulier}
+          />
+          <Stack.Screen
+            name="CreateAccountCommercant"
+            component={AccountCreationScreenCommercant}
+          />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="menu" component={MenuNav}/>
         </Stack.Navigator>
       </NavigationContainer>
     </NativeBaseProvider>
-
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
