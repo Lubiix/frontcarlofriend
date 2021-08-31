@@ -1,8 +1,9 @@
 import React from "react";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { View, Text, Button } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { View, Text, Button} from 'react-native'
+import { Ionicons } from '@expo/vector-icons'
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import MainNav from "./MainNav";
 import SearchScreen from "../screens/SearchScreen";
@@ -14,6 +15,7 @@ const Tab = createBottomTabNavigator();
 
 const MenuNav = () => {
   return (
+    
     <View style={{ flex: 1 }}>
       <Tab.Navigator
         screenOptions={({ route }) => ({
@@ -21,6 +23,7 @@ const MenuNav = () => {
           tabBarinactiveTintColor: "#62ADEB",
           tabBarActiveBackgroundColor: "#FBFAFA",
           tabBarInactiveBackgroundColor: "#FBFAFA",
+          headerShown: false,
           tabBarIcon: ({ color }) => {
             let iconName;
 

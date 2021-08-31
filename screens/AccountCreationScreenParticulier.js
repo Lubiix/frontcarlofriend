@@ -1,16 +1,59 @@
 import React, { useState } from "react";
 import { View, Text } from "react-native";
 import { Button, Input, Select, CheckIcon, Checkbox } from "native-base";
+import { HOST } from "@env";
 
 const AccountCreationScreenParticulier = (props) => {
+  console.log("HOOOOOST", HOST);
   const handleGoCommercant = () => {
     props.navigation.navigate("CreateAccountCommercant");
   };
   const activities = ["restauration", "chaussures"];
   const [centresDinteret, setCentresDinteret] = useState([]);
   const [quartiersFavoris, setQuartiersFavoris] = useState([]);
+  const [prenom, setPrenom] = useState("");
+  const [nom, setNom] = useState("");
+  const [sexe, setSexe] = useState("");
+  const [dateNaissance, setDateNaissance] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isValidatedByBack, setIsValidatedByBack] = useState(false);
+
+  const handleValidateSignup = async () => {
+    const envoiInfosBackendRaw = await fetch(
+      `http://${HOST}:3000/signup-particulier`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nom: nom,
+          prenom: prenom,
+          email: email,
+          password: password,
+          civilite: sexe,
+          dateDeNaissance: dateNaissance,
+          quartiersFavoris: quartiersFavoris,
+          centresDinteret: centresDinteret,
+        }),
+      }
+    );
+    const responseBackendParsed = await envoiInfosBackendRaw.json();
+    if (responseBackendParsed.result) {
+      // AsyncStorage.setItem("token", responseBackendParsed.token)
+      setIsValidatedByBack(true);
+    }
+    console.log("RESPONSE BACKEND PARSED", responseBackendParsed);
+  };
+
+  if (isValidatedByBack) {
+    props.navigation.navigate("feed");
+  }
+
   return (
-    <View style={{ flex: 1, alignItems: "center" }}>
+    <View style={{ flex: 1, alignItems: "center", marginTop: 50 }}>
       <Button.Group
         variant="solid"
         isAttached
@@ -20,10 +63,18 @@ const AccountCreationScreenParticulier = (props) => {
           md: 0,
         }}
       >
-        <Button style={{ color: "#62ADEB" }} mr={0}>
+        <Button
+          style={{ color: "#62ADEB" }}
+          mr={0}
+          bg="#62ADEB"
+          _text={{
+            color: "white",
+          }}
+        >
           Particulier
         </Button>
         <Button
+          bg="#62ADEB"
           style={{ color: "#62ADEB" }}
           _text={{
             color: "white",
@@ -34,8 +85,18 @@ const AccountCreationScreenParticulier = (props) => {
         </Button>
       </Button.Group>
       <View style={{ flexDirection: "row", marginTop: 10 }}>
-        <Input w="40%" mx={3} placeholder="Nom" />
-        <Input w="40%" mx={3} placeholder="Prénom" />
+        <Input
+          w="40%"
+          mx={3}
+          placeholder="Nom"
+          onChangeText={(value) => setNom(value)}
+        />
+        <Input
+          w="40%"
+          mx={3}
+          placeholder="Prénom"
+          onChangeText={(value) => setPrenom(value)}
+        />
       </View>
       <View
         style={{
@@ -44,25 +105,43 @@ const AccountCreationScreenParticulier = (props) => {
           justifyContent: "center",
         }}
       >
-        <Input w="55%" mx={3} placeholder="Date de naissance" />
+        <Input
+          w="55%"
+          mx={3}
+          placeholder="Date de naissance"
+          onChangeText={(value) => setDateNaissance(value)}
+        />
         <Select
           selectedValue={activities}
           minWidth={105}
           accessibilityLabel="Sexe"
           placeholder="Sexe"
-          // onValueChange={(itemValue) => setLanguage(itemValue)}
+          value={sexe}
+          onValueChange={(itemValue) => setSexe(itemValue)}
           _selectedItem={{
             bg: "cyan.600",
             endIcon: <CheckIcon size={4} />,
           }}
         >
-          <Select.Item label="Homme" value="male" />
-          <Select.Item label="Femme" value="ts" />
-          <Select.Item label="Autre" value="ts" />
+          <Select.Item label="Homme" value="Homme" />
+          <Select.Item label="Femme" value="Femme" />
+          <Select.Item label="Autre" value="Autre" />
         </Select>
       </View>
-      <Input w="85%" mx={3} my={2} placeholder="email" />
-      <Input w="85%" mx={3} my={2} placeholder="mot de passe" />
+      <Input
+        w="85%"
+        mx={3}
+        my={2}
+        placeholder="email"
+        onChangeText={(value) => setEmail(value)}
+      />
+      <Input
+        w="85%"
+        mx={3}
+        my={2}
+        placeholder="mot de passe"
+        onChangeText={(value) => setPassword(value)}
+      />
       <Text style={{ marginTop: 15 }}>Séléctionnez vos centres d'intérêt</Text>
       <Checkbox.Group
         my={2}
@@ -132,10 +211,12 @@ const AccountCreationScreenParticulier = (props) => {
         </Checkbox>
       </Checkbox.Group>
       <Button
+        bg="#62ADEB"
         style={{ color: "#62ADEB", marginTop: 15 }}
         _text={{
           color: "white",
         }}
+        onPress={() => handleValidateSignup()}
       >
         Valider
       </Button>
