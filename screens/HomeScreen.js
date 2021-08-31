@@ -6,25 +6,48 @@ import { connect } from "react-redux";
 
 const HomeScreen = (props) => {
   const [isConnected, setIsConnected] = useState(false);
-
   useEffect(() => {
     const handleSetToken = async function () {
       console.log("entré dans la fonction setToken");
       AsyncStorage.getItem("token", function (error, data) {
         if (!error) {
-          console.log("error dans useEffect", error);
-          console.log("data dans useEffect", data);
-          setIsConnected(true);
-          props.onSetToken(data);
+          console.log("error dans useEffect Home", error);
+          console.log("data dans useEffect Home", data);
+          if (data) {
+            setIsConnected(true);
+            props.onSetToken(data);
+          }
         }
       });
     };
     handleSetToken();
   }, []);
 
-  if (isConnected) {
-    props.navigation.navigate("feed");
-  }
+  useEffect(() => {
+    const handleSetToken = async function () {
+      console.log("entré dans la fonction setToken");
+      AsyncStorage.getItem("token", function (error, data) {
+        if (!error) {
+          console.log("error dans useEffect Home", error);
+          console.log("data dans useEffect Home", data);
+          if (data) {
+            setIsConnected(true);
+            props.onSetToken(data);
+            props.navigation.navigate("menu");
+          }
+        }
+      });
+    };
+    handleSetToken();
+  }, [isConnected]);
+
+  // if (isConnected) {
+  //   props.navigation.navigate("menu");
+  // }
+
+  // if (props.token) {
+  //   props.navigation.navigate("menu");
+  // }
 
   const handleCreerUnCompte = () => {
     props.navigation.navigate("CreateAccountParticulier");
@@ -53,4 +76,8 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(null, mapDispatchToProps)(HomeScreen);
+function mapStateToProps(state) {
+  return { token: state.token };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
