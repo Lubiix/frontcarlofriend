@@ -1,46 +1,37 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
-import { NativeBaseProvider, Box } from "native-base";
+import { NativeBaseProvider } from "native-base";
 
-import { StyleSheet, Text, View } from "react-native";
-import { NavigationContainer, StackActions } from "@react-navigation/native";
+import { StyleSheet } from "react-native";
+
+import { HOST } from "@env";
+import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import HomeScreen from "./screens/HomeScreen";
 import AccountCreationScreenCommercant from "./screens/AccountCreationScreenCommercant";
 import AccountCreationScreenParticulier from "./screens/AccountCreationScreenParticulier";
 import LoginScreen from "./screens/LoginScreen";
-import FeedScreen from "./screens/FeedScreen";
 import MenuNav from "./components/MenuNav";
-import MapScreen from "./screens/MapScreen";
-import MainNav from "./components/MainNav";
+import AuthentificatorFlow from "./screens/AuthentificatorFlow";
 import { Provider } from "react-redux";
 import { createStore, combineReducers } from "redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import token from "./reducers/token";
+import { connect } from "react-redux";
 
 const store = createStore(combineReducers({ token }));
 
 const Stack = createStackNavigator();
 
 export default function App() {
+  console.log("Host", HOST);
   return (
     <Provider store={store}>
       <NativeBaseProvider>
         <NavigationContainer>
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen
-              name="CreateAccountParticulier"
-              component={AccountCreationScreenParticulier}
-            />
-            <Stack.Screen
-              name="CreateAccountCommercant"
-              component={AccountCreationScreenCommercant}
-            />
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="menu" component={MenuNav} />
-          </Stack.Navigator>
+          <AuthentificatorFlow />
         </NavigationContainer>
       </NativeBaseProvider>
     </Provider>

@@ -26,44 +26,64 @@ const AccountCreationScreenParticulier = (props) => {
       console.log("entré dans la fonction setToken");
       AsyncStorage.getItem("token", function (error, data) {
         if (!error) {
-          console.log("error dans useEffect", error);
-          console.log("data dans useEffect", data);
-          setIsValidatedByBack(true);
-          props.onSetToken(data);
+          console.log("error dans useEffect Particulier", error);
+          console.log("data dans useEffect Particulier", data);
+          if (data) {
+            setIsValidatedByBack(true);
+            props.onSetToken(data);
+          }
         }
       });
     };
     handleSetToken();
   }, []);
 
+  useEffect(() => {
+    const handleSetToken = async function () {
+      console.log("entré dans la fonction setToken");
+      AsyncStorage.getItem("token", function (error, data) {
+        if (!error) {
+          console.log("error dans useEffect Particulier", error);
+          console.log("data dans useEffect Particulier", data);
+          if (data) {
+            setIsValidatedByBack(true);
+            props.onSetToken(data);
+          }
+        }
+      });
+    };
+    handleSetToken();
+  }, [isValidatedByBack]);
+
   const handleValidateSignup = async () => {
-    const envoiInfosBackendRaw = await fetch(
-      `http://${HOST}:3000/signup-particulier`,
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          nom: nom,
-          prenom: prenom,
-          email: email,
-          password: password,
-          civilite: sexe,
-          dateDeNaissance: dateNaissance,
-          quartiersFavoris: quartiersFavoris,
-          centresDinteret: centresDinteret,
-        }),
-      }
-    );
+    const envoiInfosBackendRaw = await fetch(`${HOST}/signup-particulier`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        nom: nom,
+        prenom: prenom,
+        email: email,
+        password: password,
+        civilite: sexe,
+        dateDeNaissance: dateNaissance,
+        quartiersFavoris: quartiersFavoris,
+        centresDinteret: centresDinteret,
+      }),
+    });
     const responseBackendParsed = await envoiInfosBackendRaw.json();
     if (responseBackendParsed.result) {
-      // AsyncStorage.setItem("token", responseBackendParsed.token)
+      AsyncStorage.setItem("token", responseBackendParsed.token);
       setIsValidatedByBack(true);
     }
     console.log("RESPONSE BACKEND PARSED", responseBackendParsed);
   };
+
+  if (props.token) {
+    props.navigation.navigate("menu");
+  }
 
   if (isValidatedByBack) {
     props.navigation.navigate("menu");
@@ -249,7 +269,11 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
+function mapStateToProps(state) {
+  return { token: state.token };
+}
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(AccountCreationScreenParticulier);
