@@ -12,9 +12,5 @@ web-build/
 # macOS
 .DS_Store
 
-<<<<<<< HEAD
-.env
-=======
 # dotenv environment variables file
 .env
->>>>>>> loginFront
