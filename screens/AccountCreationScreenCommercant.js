@@ -1,14 +1,53 @@
 import React, { useState } from "react";
 import { View, Text } from "react-native";
 import { Button, Input, Select, CheckIcon, Checkbox } from "native-base";
+import { HOST } from "@env";
 
 const AccountCreationScreenCommercant = (props) => {
   const handleGoParticulier = () => {
     props.navigation.navigate("CreateAccountParticulier");
   };
-  const activities = ["restauration", "chaussures"];
-  const [centresDinteret, setCentresDinteret] = useState([]);
+  const [domainesActivity, setDomainesActivity] = useState([]);
   const [quartierActivity, setQuartierActivity] = useState("");
+  const [nomEnseigne, setNomEnseigne] = useState("");
+  const [numeroRCI, setNumeroRCI] = useState("");
+  const [adresse, setAdresse] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isValidatedByBack, setIsValidatedByBack] = useState(false);
+
+  const handleValidateSignup = async () => {
+    const envoiInfosBackendRaw = await fetch(
+      `http://${HOST}:3000/signup-particulier`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nomEnseigne: nomEnseigne,
+          adresse: adresse,
+          email: email,
+          password: password,
+          numRCI: numeroRCI,
+          domainesActivity: domainesActivity,
+          quartierActivity: quartierActivity,
+        }),
+      }
+    );
+    const responseBackendParsed = await envoiInfosBackendRaw.json();
+    if (responseBackendParsed.result) {
+      // AsyncStorage.setItem("token", responseBackendParsed.token)
+      setIsValidatedByBack(true);
+    }
+    console.log("RESPONSE BACKEND PARSED", responseBackendParsed);
+  };
+
+  if (isValidatedByBack) {
+    props.navigation.navigate("feed");
+  }
+
   return (
     <View style={{ flex: 1, alignItems: "center", marginTop: 50 }}>
       <Button.Group
@@ -42,8 +81,18 @@ const AccountCreationScreenCommercant = (props) => {
         </Button>
       </Button.Group>
       <View style={{ flexDirection: "row", marginTop: 10 }}>
-        <Input w="40%" mx={3} placeholder="Nom d'enseigne" />
-        <Input w="40%" mx={3} placeholder="Numéro RCI" />
+        <Input
+          w="40%"
+          mx={3}
+          placeholder="Nom d'enseigne"
+          onChangeText={(value) => setNomEnseigne(value)}
+        />
+        <Input
+          w="40%"
+          mx={3}
+          placeholder="Numéro RCI"
+          onChangeText={(value) => setNumeroRCI(value)}
+        />
       </View>
       <View
         style={{
@@ -52,18 +101,35 @@ const AccountCreationScreenCommercant = (props) => {
           justifyContent: "center",
         }}
       >
-        <Input w="85%" mx={3} placeholder="Adresse" />
+        <Input
+          w="85%"
+          mx={3}
+          placeholder="Adresse"
+          onChangeText={(value) => setAdresse(value)}
+        />
       </View>
-      <Input w="85%" mx={3} my={2} placeholder="email" />
-      <Input w="85%" mx={3} my={2} placeholder="mot de passe" />
+      <Input
+        w="85%"
+        mx={3}
+        my={2}
+        placeholder="email"
+        onChangeText={(value) => setEmail(value)}
+      />
+      <Input
+        w="85%"
+        mx={3}
+        my={2}
+        placeholder="mot de passe"
+        onChangeText={(value) => setPassword(value)}
+      />
 
       <Text style={{ marginTop: 15 }}>
         Séléctionnez vos domaines d'activité
       </Text>
       <Checkbox.Group
         my={2}
-        onChange={setCentresDinteret}
-        value={centresDinteret}
+        onChange={setDomainesActivity}
+        value={domainesActivity}
         accessibilityLabel="choose numbers"
         style={{
           maxWidth: "80%",
@@ -94,7 +160,6 @@ const AccountCreationScreenCommercant = (props) => {
         </Checkbox>
       </Checkbox.Group>
       <Select
-        selectedValue={activities}
         minWidth={315}
         accessibilityLabel="Quartier"
         placeholder="Quartier d'activité"
@@ -119,6 +184,7 @@ const AccountCreationScreenCommercant = (props) => {
         _text={{
           color: "white",
         }}
+        onPress={() => handleValidateSignup()}
       >
         Valider
       </Button>
