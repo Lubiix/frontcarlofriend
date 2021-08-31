@@ -23,36 +23,56 @@ const AccountCreationScreenCommercant = (props) => {
       console.log("entré dans la fonction setToken");
       AsyncStorage.getItem("token", function (error, data) {
         if (!error) {
-          console.log("error dans useEffect", error);
-          console.log("data dans useEffect", data);
-          setIsValidatedByBack(true);
-          props.onSetToken(data);
+          console.log("error dans useEffect Commercant", error);
+          console.log("data dans useEffect Commercant", data);
+          if (data) {
+            setIsValidatedByBack(true);
+            props.onSetToken(data);
+          }
         }
       });
     };
     handleSetToken();
   }, []);
 
+  useEffect(() => {
+    const handleSetToken = async function () {
+      console.log("entré dans la fonction setToken");
+      AsyncStorage.getItem("token", function (error, data) {
+        if (!error) {
+          console.log("error dans useEffect Commercant", error);
+          console.log("data dans useEffect Commercant", data);
+          if (data) {
+            setIsValidatedByBack(true);
+            props.onSetToken(data);
+          }
+        }
+      });
+    };
+    handleSetToken();
+  }, [isValidatedByBack]);
+
+  if (props.token) {
+    props.navigation.navigate("menu");
+  }
+
   const handleValidateSignup = async () => {
-    const envoiInfosBackendRaw = await fetch(
-      `http://${HOST}:3000/signup-commercant`,
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          nomEnseigne: nomEnseigne,
-          adresse: adresse,
-          email: email,
-          password: password,
-          numRCI: numeroRCI,
-          domainesActivity: domainesActivity,
-          quartierActivity: quartierActivity,
-        }),
-      }
-    );
+    const envoiInfosBackendRaw = await fetch(`${HOST}/signup-commercant`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        nomEnseigne: nomEnseigne,
+        adresse: adresse,
+        email: email,
+        password: password,
+        numRCI: numeroRCI,
+        domainesActivity: domainesActivity,
+        quartierActivity: quartierActivity,
+      }),
+    });
     const responseBackendParsed = await envoiInfosBackendRaw.json();
     if (responseBackendParsed.result) {
       AsyncStorage.setItem("token", responseBackendParsed.token);
@@ -62,7 +82,7 @@ const AccountCreationScreenCommercant = (props) => {
   };
 
   if (isValidatedByBack) {
-    props.navigation.navigate("feed");
+    props.navigation.navigate("menu");
   }
 
   return (
@@ -217,7 +237,11 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
+function mapStateToProps(state) {
+  return { token: state.token };
+}
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(AccountCreationScreenCommercant);

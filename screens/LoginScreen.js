@@ -25,6 +25,7 @@ const LoginScreen = (props) => {
   const handleShowPassword = () => setShow(!show);
 
   const handleLogin = async () => {
+    console.log(">>click détécté", HOST);
     console.log(">>click détécté");
     setShowModal(true);
     const dataUser = await fetch(`http://${HOST}:3000/login`, {

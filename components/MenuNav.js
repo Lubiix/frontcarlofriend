@@ -1,8 +1,8 @@
 import React from "react";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { View, Text, Button} from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import { View, Text, Button } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import MainNav from "./MainNav";
@@ -15,7 +15,6 @@ const Tab = createBottomTabNavigator();
 
 const MenuNav = () => {
   return (
-    
     <View style={{ flex: 1 }}>
       <Tab.Navigator
         screenOptions={({ route }) => ({

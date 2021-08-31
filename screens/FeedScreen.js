@@ -1,11 +1,13 @@
-import React from "react";
+import React, { Fragment, useState } from "react";
 import MenuNav from "../components/MenuNav";
-import { View, Text, Button } from "react-native";
+import { View, Text, Button, Dimensions } from "react-native";
 import {
   Entypo,
   MaterialIcons,
   Ionicons,
   MaterialCommunityIcons,
+  AntDesign,
+  FontAwesome5,
 } from "@expo/vector-icons";
 import {
   Box,
@@ -27,66 +29,104 @@ function FeedScreen(props) {
   const handleFeed = () => {
     props.navigation.navigate("feed");
   };
+
+  const [countLikePost, setCountLikePost] = useState(0);
+  console.log("compteur like actif:", countLikePost);
+
+  const handleLike = () => {
+    setCountLikePost(countLikePost + 1);
+  };
   return (
     <View style={{ flex: 1 }}>
-      <View>
-        <HStack justifyContent="space-between">
-          <MaterialIcons name="tune" size={24} color="black" />
-          <Ionicons name="notifications" size={24} color="black" />
-        </HStack>
-      </View>
-      <View style={{ flex: 1 }} alignItems="center">
-        <HStack>
-          <MaterialCommunityIcons
-            type="button"
-            name="form-select"
-            size={40}
-            color=" #62ADEB"
-            title="feed"
-            onPress={() => handleFeed()}
-          />
-          <MaterialCommunityIcons
-            name="map-search-outline"
-            size={40}
-            color="black"
-            title="map"
-            onPress={() => handleMap()}
-          />
-        </HStack>
-      </View>
-      <View style={{ flex: 1 }}>
-        <Box
-          bg="#FFFFFF"
-          p={4}
-          _text={{
-            fontSize: "md",
-            fontWeight: "bold",
-            color: "black",
+      <HStack
+        justifyContent="space-between"
+        name="filternotif"
+        style={{ flex: 0, padding: 10, marginTop: 40 }}
+      >
+        <MaterialIcons name="tune" size={24} color="black" />
+        <Ionicons name="notifications" size={24} color="black" />
+      </HStack>
+      <HStack
+        name="filtermap"
+        style={{
+          backgroundColor: "#FBFAFA",
+          width: "20%",
+          alignSelf: "center",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <MaterialCommunityIcons
+          type="button"
+          name="form-select"
+          size={40}
+          color="black"
+          title="feed"
+          onPress={() => handleFeed()}
+        />
+        <MaterialCommunityIcons
+          name="map-search-outline"
+          size={40}
+          color="black"
+          title="map"
+          onPress={() => handleMap()}
+        />
+      </HStack>
+      <Box
+        bg="#FFFFFF"
+        p={4}
+        style={{ marginTop: 10, alignSelf: "center", width: 350 }}
+      >
+        <HStack
+          style={{
+            space: 3,
+            alignItems: "center",
+            marginBottom: 1,
           }}
-          width="90%"
-          justifyContent="center"
         >
-          <HStack space={3} justifyContent="center">
-            <Avatar
-              size="md"
-              source={{
-                uri: "https://pbs.twimg.com/profile_images/1352844693151731713/HKO7cnlW_400x400.jpg",
-              }}
-            ></Avatar>
-            <Text color="#000000">Prénom Nom</Text>
-            <Entypo name="shop" size={24} color="black" />
-            <Text color="#000000">@Qartier</Text>
-          </HStack>
-          <Text>Le texte de mon post</Text>
+          <Avatar
+            size="md"
+            source={{
+              uri: "https://pbs.twimg.com/profile_images/1352844693151731713/HKO7cnlW_400x400.jpg",
+            }}
+          ></Avatar>
+          <Text style={{ flexShrink: 1 }} color="#000000">
+            Prénom Nom
+            <Entypo name="shop" size={24} color="black" /> @ nom d'enseigne +
+            Qartier
+          </Text>
+        </HStack>
+        <Text>
+          Le texte de mon
+          postzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+        </Text>
+        <Box alignItems="center">
           <Image
             source={{
-              uri: "https://wallpaperaccess.com/full/317501.jpg",
+              uri: "https://upload.wikimedia.org/wikipedia/commons/6/65/Baby.tux-800x800.png",
             }}
             alt="Alternate Text"
             size={"xl"}
+            marginTop={5}
           />
         </Box>
-      </View>
+        <HStack
+          justifyContent="space-between"
+          name="filternotif"
+          style={{ flex: 0, padding: 10, marginTop: 40 }}
+        >
+          <Text>
+            <AntDesign
+              name="like2"
+              size={24}
+              color="black"
+              onPress={() => handleLike()}
+            />
+            {countLikePost}
+          </Text>
+          <FontAwesome5 name="share-square" size={24} color="black" />
+        </HStack>
+      </Box>
     </View>
   );
 }
