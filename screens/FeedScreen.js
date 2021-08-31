@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import MenuNav from "../components/MenuNav";
 import { View, Text, Button } from "react-native";
 import {
@@ -27,6 +27,7 @@ function FeedScreen(props) {
   const handleFeed = () => {
     props.navigation.navigate("feed");
   };
+
   return (
     <View style={{ flex: 1 }}>
       <View>

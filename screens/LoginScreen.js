@@ -53,7 +53,9 @@ const LoginScreen = (props) => {
         alignSelf="center"
         width="100%"
       >
-        <Text fontSize="md">{error}</Text>
+        <Text fontSize="md" textAlign="center">
+          {error}
+        </Text>
       </VStack>
     );
   });
