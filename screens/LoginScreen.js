@@ -26,8 +26,6 @@ const LoginScreen = (props) => {
 
   const handleLogin = async () => {
     console.log(">>click détécté", HOST);
-    console.log(">>click détécté");
-    setShowModal(true);
     const dataUser = await fetch(`${HOST}/login`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -54,9 +52,7 @@ const LoginScreen = (props) => {
         alignSelf="center"
         width="100%"
       >
-        <Text fontSize="md" textAlign="center">
-          {error}
-        </Text>
+        <Text fontSize="md">{error}</Text>
       </VStack>
     );
   });
