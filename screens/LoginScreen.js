@@ -1,8 +1,5 @@
 import React, { Fragment, useState } from "react";
 import { View, SafeAreaView } from "react-native";
-<<<<<<< HEAD
-import { Input, Button, Box, Select } from "native-base";
-=======
 import {
   Input,
   Modal,
@@ -13,7 +10,6 @@ import {
   Text,
   VStack,
 } from "native-base";
->>>>>>> aa4c0f877d783f782bfdea428c4fdbe7ba4c1b64
 import { HOST } from "@env";
 
 const LoginScreen = (props) => {
@@ -29,14 +25,6 @@ const LoginScreen = (props) => {
   const handleShowPassword = () => setShow(!show);
 
   const handleLogin = async () => {
-<<<<<<< HEAD
-    // console.log(">>click détécté");
-    // const dataUser = await fetch(`http://${HOST}:3000/login`, {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    //   body: `email=${loginEmail}&password=${loginPassword}`,
-    // });
-=======
     console.log(">>click détécté");
     setShowModal(true);
     const dataUser = await fetch(`http://${HOST}:3000/login`, {
@@ -44,21 +32,16 @@ const LoginScreen = (props) => {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `email=${loginEmail}&password=${loginPassword}`,
     });
->>>>>>> aa4c0f877d783f782bfdea428c4fdbe7ba4c1b64
 
-    // const body = await dataUser.json();
-    // console.log(">>body", body);
-    // if (body.result == true) {
+    const body = await dataUser.json();
+    console.log(">>body", body);
+    if (body.result == true) {
       props.navigation.navigate("menu");
-<<<<<<< HEAD
-    // }
-=======
       setShowModal(false);
     } else {
       setShowModal(false);
       setListErrorsLogin(body.error);
     }
->>>>>>> aa4c0f877d783f782bfdea428c4fdbe7ba4c1b64
   };
 
   let tabErrorsLogin = listErrorsLogin.map((error, i) => {

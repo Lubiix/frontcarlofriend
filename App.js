@@ -14,7 +14,7 @@ import FeedScreen from "./screens/FeedScreen";
 import MenuNav from "./components/MenuNav";
 import MapScreen from "./screens/MapScreen";
 import MainNav from "./components/MainNav";
-import AddEvent from "./screens/AddEvent";
+import AddEvent from "./screens/AddEventScreen";
 import AddPostScreen from "./screens/AddPostScreen";
 import { Provider } from "react-redux";
 import { createStore, combineReducers } from "redux";
@@ -42,9 +42,6 @@ export default function App() {
             />
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="menu" component={MenuNav} />
-            <Stack.Screen name="feed" component={FeedScreen} />
-            <Stack.Screen name="map" component={MapScreen} />
-            <Stack.Screen name="main" component={MainNav} />
           </Stack.Navigator>
         </NavigationContainer>
       </NativeBaseProvider>
