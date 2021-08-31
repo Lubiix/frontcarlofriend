@@ -19,11 +19,11 @@ const MenuNav = () => {
     <View style={{ flex: 1 }}>
       <Tab.Navigator
         screenOptions={({ route }) => ({
+          headerShown: false,
           tabBarActiveTintColor: "#62ADEB",
           tabBarinactiveTintColor: "#62ADEB",
           tabBarActiveBackgroundColor: "#FBFAFA",
           tabBarInactiveBackgroundColor: "#FBFAFA",
-          headerShown: false,
           tabBarIcon: ({ color }) => {
             let iconName;
 
