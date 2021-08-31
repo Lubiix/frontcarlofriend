@@ -16,33 +16,39 @@ import MapScreen from "./screens/MapScreen";
 import MainNav from "./components/MainNav";
 import AddEvent from "./screens/AddEvent";
 import AddPostScreen from "./screens/AddPostScreen";
+import { Provider } from "react-redux";
+import { createStore, combineReducers } from "redux";
+
+import token from "./reducers/token";
+
+const store = createStore(combineReducers({ token }));
 
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <NativeBaseProvider>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen
-            name="CreateAccountParticulier"
-            component={AccountCreationScreenParticulier}
-          />
-          <Stack.Screen
-            name="CreateAccountCommercant"
-            component={AccountCreationScreenCommercant}
-          />
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="menu" component={MenuNav} />
-          <Stack.Screen name="feed" component={FeedScreen} />
-          <Stack.Screen name="map" component={MapScreen} />
-          <Stack.Screen name="main" component={MainNav} />
-          <Stack.Screen name="event" component={AddEvent}/>
-          <Stack.Screen name="post" component={AddPostScreen}/>
-        </Stack.Navigator>
-      </NavigationContainer>
-    </NativeBaseProvider>
+    <Provider store={store}>
+      <NativeBaseProvider>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen
+              name="CreateAccountParticulier"
+              component={AccountCreationScreenParticulier}
+            />
+            <Stack.Screen
+              name="CreateAccountCommercant"
+              component={AccountCreationScreenCommercant}
+            />
+            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="menu" component={MenuNav} />
+            <Stack.Screen name="feed" component={FeedScreen} />
+            <Stack.Screen name="map" component={MapScreen} />
+            <Stack.Screen name="main" component={MainNav} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </NativeBaseProvider>
+    </Provider>
   );
 }
 
