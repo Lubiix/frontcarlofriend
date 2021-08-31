@@ -23,6 +23,9 @@ const HomeScreen = (props) => {
     handleSetToken();
   }, []);
 
+  if (isConnected) {
+    props.navigation.navigate("menu");
+  }
   useEffect(() => {
     const handleSetToken = async function () {
       console.log("entré dans la fonction setToken");
@@ -41,13 +44,13 @@ const HomeScreen = (props) => {
     handleSetToken();
   }, [isConnected]);
 
-  // if (isConnected) {
-  //   props.navigation.navigate("menu");
-  // }
+  if (isConnected) {
+    props.navigation.navigate("menu");
+  }
 
-  // if (props.token) {
-  //   props.navigation.navigate("menu");
-  // }
+  if (props.token) {
+    props.navigation.navigate("menu");
+  }
 
   const handleCreerUnCompte = () => {
     props.navigation.navigate("CreateAccountParticulier");

@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { View, Select, CheckIcon, Button } from "native-base";
 import { SafeAreaView } from "react-native";
 import {
@@ -9,14 +9,39 @@ import {
   Heading,
   NativeBaseProvider,
 } from "native-base";
+import DatePicker from "react-native-modern-datepicker";
 
-const AddPostScreen = (props) => {
+const AddEventScreen = (props) => {
+  const [startDate, setStartDate] = useState("");
+  console.log("selectedBeginningDate", startDate);
+  const [selectedEndDate, setSelectedEndDate] = useState("");
+  console.log("selectedEndDate", selectedEndDate);
+  const [isDisplayStartDate, setIsDisplayStartDate] = useState(false);
+  console.log("isDisplayStartDate", isDisplayStartDate);
 
-    const handleGoEvent = () => {
-        props.navigation.navigate("event")
-    }
-    
+  const handleGoPost = () => {
+    props.navigation.navigate("post");
+  };
 
+  const handleStartDate = () => {
+    setIsDisplayStartDate(!isDisplayStartDate);
+  };
+
+ const handleDate = (dateStart) => {
+   console.log("dateStart", dateStart)
+   setStartDate(dateStart)
+   setIsDisplayStartDate(!isDisplayStartDate)
+ }
+
+  if (isDisplayStartDate) {
+    return (
+      <DatePicker
+      style={{ marginTop: 200 }}
+      onSelectedChange={(dateStart) => handleDate(dateStart)}
+      // onDateChange={() => setIsDisplayStartDate(false)}
+    />
+    )
+  }
   return (
     <Fragment>
       <SafeAreaView style={{ flex: 0, backgroundColor: "#62ADEB" }} />
@@ -38,6 +63,7 @@ const AddPostScreen = (props) => {
               _text={{
                 color: "white",
               }}
+              onPress={() => handleGoPost()}
             >
               Post
             </Button>
@@ -47,13 +73,12 @@ const AddPostScreen = (props) => {
               _text={{
                 color: "white",
               }}
-              onPress={()=> handleGoEvent()}
             >
               Event
             </Button>
           </Button.Group>
           <Stack space={4} w="80%">
-            <TextArea h={150} placeholder="Text Area Placeholder" />
+            <TextArea h={150} placeholder="Description Event" />
           </Stack>
           <Select
             minWidth={315}
@@ -88,10 +113,20 @@ const AddPostScreen = (props) => {
             <Select.Item label="L'enK" value="Fontvieille" />
             <Select.Item label="Carrefour" value="Condamine" />
           </Select>
+          <Button
+            bg="#62ADEB"
+            style={{ color: "#62ADEB" }}
+            _text={{
+              color: "white",
+            }}
+            onPress={() => handleStartDate()}
+          >
+            Date Début
+          </Button>
         </View>
       </SafeAreaView>
     </Fragment>
   );
 };
 
-export default AddPostScreen;
+export default AddEventScreen;
