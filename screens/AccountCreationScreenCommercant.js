@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text } from "react-native";
 import { Button, Input, Select, CheckIcon, Checkbox } from "native-base";
 import { HOST } from "@env";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { connect } from "react-redux";
 
 const AccountCreationScreenCommercant = (props) => {
   const handleGoParticulier = () => {
@@ -16,9 +18,24 @@ const AccountCreationScreenCommercant = (props) => {
   const [password, setPassword] = useState("");
   const [isValidatedByBack, setIsValidatedByBack] = useState(false);
 
+  useEffect(() => {
+    const handleSetToken = async function () {
+      console.log("entré dans la fonction setToken");
+      AsyncStorage.getItem("token", function (error, data) {
+        if (!error) {
+          console.log("error dans useEffect", error);
+          console.log("data dans useEffect", data);
+          setIsValidatedByBack(true);
+          props.onSetToken(data);
+        }
+      });
+    };
+    handleSetToken();
+  }, []);
+
   const handleValidateSignup = async () => {
     const envoiInfosBackendRaw = await fetch(
-      `http://${HOST}:3000/signup-particulier`,
+      `http://${HOST}:3000/signup-commercant`,
       {
         method: "POST",
         headers: {
@@ -38,7 +55,7 @@ const AccountCreationScreenCommercant = (props) => {
     );
     const responseBackendParsed = await envoiInfosBackendRaw.json();
     if (responseBackendParsed.result) {
-      // AsyncStorage.setItem("token", responseBackendParsed.token)
+      AsyncStorage.setItem("token", responseBackendParsed.token);
       setIsValidatedByBack(true);
     }
     console.log("RESPONSE BACKEND PARSED", responseBackendParsed);
@@ -191,4 +208,16 @@ const AccountCreationScreenCommercant = (props) => {
     </View>
   );
 };
-export default AccountCreationScreenCommercant;
+
+function mapDispatchToProps(dispatch) {
+  return {
+    onSetToken: function (token) {
+      dispatch({ type: "setToken", token: token });
+    },
+  };
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(AccountCreationScreenCommercant);

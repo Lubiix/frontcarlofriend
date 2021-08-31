@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text } from "react-native";
 import { Button, Input, Select, CheckIcon, Checkbox } from "native-base";
 import { HOST } from "@env";
+import { connect } from "react-redux";
 
 const AccountCreationScreenParticulier = (props) => {
   console.log("HOOOOOST", HOST);
@@ -18,6 +19,21 @@ const AccountCreationScreenParticulier = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isValidatedByBack, setIsValidatedByBack] = useState(false);
+
+  useEffect(() => {
+    const handleSetToken = async function () {
+      console.log("entré dans la fonction setToken");
+      AsyncStorage.getItem("token", function (error, data) {
+        if (!error) {
+          console.log("error dans useEffect", error);
+          console.log("data dans useEffect", data);
+          setIsValidatedByBack(true);
+          props.onSetToken(data);
+        }
+      });
+    };
+    handleSetToken();
+  }, []);
 
   const handleValidateSignup = async () => {
     const envoiInfosBackendRaw = await fetch(
@@ -224,4 +240,15 @@ const AccountCreationScreenParticulier = (props) => {
   );
 };
 
-export default AccountCreationScreenParticulier;
+function mapDispatchToProps(dispatch) {
+  return {
+    onSetToken: function (token) {
+      dispatch({ type: "setToken", token: token });
+    },
+  };
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(AccountCreationScreenParticulier);
