@@ -14,7 +14,7 @@ const LoginScreen = (props) => {
 
   const handleLogin = async () => {
     console.log(">>click détécté");
-    const dataUser = await fetch("http://HOST:3000/login", {
+    const dataUser = await fetch(`http://${HOST}:3000/login`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `email=${loginEmail}&password=${loginPassword}`,
