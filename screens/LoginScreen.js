@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from "react";
 import { View, SafeAreaView } from "react-native";
-import { Input, Button, Box } from "native-base";
+import { Input, Button, Box, Select } from "native-base";
 import { HOST } from "@env";
 
 const LoginScreen = (props) => {
@@ -13,18 +13,18 @@ const LoginScreen = (props) => {
   const handleShowPassword = () => setShow(!show);
 
   const handleLogin = async () => {
-    console.log(">>click détécté");
-    const dataUser = await fetch(`http://${HOST}:3000/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `email=${loginEmail}&password=${loginPassword}`,
-    });
+    // console.log(">>click détécté");
+    // const dataUser = await fetch(`http://${HOST}:3000/login`, {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    //   body: `email=${loginEmail}&password=${loginPassword}`,
+    // });
 
-    const body = await dataUser.json();
-    console.log(">>body", body);
-    if (body.result == true) {
+    // const body = await dataUser.json();
+    // console.log(">>body", body);
+    // if (body.result == true) {
       props.navigation.navigate("menu");
-    }
+    // }
   };
 
   return (

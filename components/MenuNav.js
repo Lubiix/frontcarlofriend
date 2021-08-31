@@ -8,6 +8,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import MainNav from "./MainNav";
 import SearchScreen from "../screens/SearchScreen";
 import AddPostScreen from "../screens/AddPostScreen";
+import AddEvent from "../screens/AddEvent";
 import ProfilScreen from "../screens/ProfilScreen";
 import MessageScreen from "../screens/MessageScreen";
 

@@ -10,15 +10,12 @@ import {
   NativeBaseProvider,
 } from "native-base";
 
-const AddPostScreen = (props) => {
-
-    const handleGoEvent = () => {
-        props.navigation.navigate("event")
+const AddEvent = (props) => {
+    const handleGoPost = () => {
+        props.navigation.navigate("post")
     }
-    
-
-  return (
-    <Fragment>
+    return (
+        <Fragment>
       <SafeAreaView style={{ flex: 0, backgroundColor: "#62ADEB" }} />
       <SafeAreaView style={{ flex: 1 }}>
         <View style={{ flex: 1, alignItems: "center", marginTop: 50 }}>
@@ -38,6 +35,7 @@ const AddPostScreen = (props) => {
               _text={{
                 color: "white",
               }}
+              onPress={() => handleGoPost()}
             >
               Post
             </Button>
@@ -47,13 +45,12 @@ const AddPostScreen = (props) => {
               _text={{
                 color: "white",
               }}
-              onPress={()=> handleGoEvent()}
             >
               Event
             </Button>
           </Button.Group>
           <Stack space={4} w="80%">
-            <TextArea h={150} placeholder="Text Area Placeholder" />
+            <TextArea h={150} placeholder="Description Event" />
           </Stack>
           <Select
             minWidth={315}
@@ -91,7 +88,7 @@ const AddPostScreen = (props) => {
         </View>
       </SafeAreaView>
     </Fragment>
-  );
+    );
 };
 
-export default AddPostScreen;
+export default AddEvent;

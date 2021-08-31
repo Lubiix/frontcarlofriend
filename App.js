@@ -14,6 +14,8 @@ import FeedScreen from "./screens/FeedScreen";
 import MenuNav from "./components/MenuNav";
 import MapScreen from "./screens/MapScreen";
 import MainNav from "./components/MainNav";
+import AddEvent from "./screens/AddEvent";
+import AddPostScreen from "./screens/AddPostScreen";
 
 const Stack = createStackNavigator();
 
@@ -36,6 +38,8 @@ export default function App() {
           <Stack.Screen name="feed" component={FeedScreen} />
           <Stack.Screen name="map" component={MapScreen} />
           <Stack.Screen name="main" component={MainNav} />
+          <Stack.Screen name="event" component={AddEvent}/>
+          <Stack.Screen name="post" component={AddPostScreen}/>
         </Stack.Navigator>
       </NavigationContainer>
     </NativeBaseProvider>
