@@ -62,7 +62,7 @@ const AccountCreationScreenCommercant = (props) => {
   };
 
   if (isValidatedByBack) {
-    props.navigation.navigate("feed");
+    props.navigation.navigate("menu");
   }
 
   return (

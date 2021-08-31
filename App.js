@@ -40,9 +40,6 @@ export default function App() {
             />
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="menu" component={MenuNav} />
-            <Stack.Screen name="feed" component={FeedScreen} />
-            <Stack.Screen name="map" component={MapScreen} />
-            <Stack.Screen name="main" component={MainNav} />
           </Stack.Navigator>
         </NavigationContainer>
       </NativeBaseProvider>

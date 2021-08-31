@@ -3,6 +3,7 @@ import { View, Text } from "react-native";
 import { Button, Input, Select, CheckIcon, Checkbox } from "native-base";
 import { HOST } from "@env";
 import { connect } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const AccountCreationScreenParticulier = (props) => {
   console.log("HOOOOOST", HOST);
@@ -65,7 +66,7 @@ const AccountCreationScreenParticulier = (props) => {
   };
 
   if (isValidatedByBack) {
-    props.navigation.navigate("feed");
+    props.navigation.navigate("menu");
   }
 
   return (

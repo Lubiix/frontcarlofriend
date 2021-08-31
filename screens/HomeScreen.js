@@ -23,7 +23,7 @@ const HomeScreen = (props) => {
   }, []);
 
   if (isConnected) {
-    props.navigation.navigate("feed");
+    props.navigation.navigate("menu");
   }
 
   const handleCreerUnCompte = () => {
