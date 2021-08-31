@@ -19,7 +19,7 @@ const AuthentificatorFlow = (props) => {
   useEffect(() => {
     const handleSetToken = async function () {
       console.log("entré dans la fonction setToken APP");
-      //   AsyncStorage.removeItem("token");
+      // AsyncStorage.removeItem("token");
       AsyncStorage.getItem("token", function (error, data) {
         if (!error) {
           console.log("error dans useEffect APP", error);

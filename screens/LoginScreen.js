@@ -28,7 +28,7 @@ const LoginScreen = (props) => {
     console.log(">>click détécté", HOST);
     console.log(">>click détécté");
     setShowModal(true);
-    const dataUser = await fetch(`http://${HOST}:3000/login`, {
+    const dataUser = await fetch(`${HOST}/login`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `email=${loginEmail}&password=${loginPassword}`,
