@@ -53,10 +53,6 @@ const AccountCreationScreenCommercant = (props) => {
     handleSetToken();
   }, [isValidatedByBack]);
 
-  // if (props.token) {
-  //   props.navigation.navigate("menu");
-  // }
-
   const handleValidateSignup = async () => {
     const envoiInfosBackendRaw = await fetch(`${HOST}/signup-commercant`, {
       method: "POST",

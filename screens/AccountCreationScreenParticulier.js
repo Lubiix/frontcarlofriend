@@ -82,10 +82,6 @@ const AccountCreationScreenParticulier = (props) => {
     console.log("RESPONSE BACKEND PARSED", responseBackendParsed);
   };
 
-  if (props.token) {
-    props.navigation.navigate("menu");
-  }
-
   return (
     <View style={{ flex: 1, alignItems: "center", marginTop: 50 }}>
       <Button.Group

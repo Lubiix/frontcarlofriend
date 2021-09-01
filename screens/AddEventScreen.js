@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { View, Select, CheckIcon, Button } from "native-base";
+import { View, Select, CheckIcon, Button, Text } from "native-base";
 import { SafeAreaView } from "react-native";
 import {
   Input,
@@ -9,38 +9,80 @@ import {
   Heading,
   NativeBaseProvider,
 } from "native-base";
-import DatePicker from "react-native-modern-datepicker";
+import DatePicker, {
+  getToday,
+  getFormatedDate,
+} from "react-native-modern-datepicker";
 
 const AddEventScreen = (props) => {
   const [startDate, setStartDate] = useState("");
-  console.log("selectedBeginningDate", startDate);
-  const [selectedEndDate, setSelectedEndDate] = useState("");
-  console.log("selectedEndDate", selectedEndDate);
+  console.log("startDate", startDate);
   const [isDisplayStartDate, setIsDisplayStartDate] = useState(false);
-  console.log("isDisplayStartDate", isDisplayStartDate);
+  // console.log("isDisplayStartDate", isDisplayStartDate);
+  console.log("--------------");
+  const [endDate, setEndDate] = useState("");
+  console.log("endDate", endDate);
+  const [isDisplayEndDate, setIsDisplayEndDate] = useState("");
+  // console.log('isDisplayEndDate', isDisplayEndDate)
 
   const handleGoPost = () => {
     props.navigation.navigate("post");
   };
 
-  const handleStartDate = () => {
+  const handleDisplayStartDate = () => {
     setIsDisplayStartDate(!isDisplayStartDate);
   };
 
- const handleDate = (dateStart) => {
-   console.log("dateStart", dateStart)
-   setStartDate(dateStart)
-   setIsDisplayStartDate(!isDisplayStartDate)
- }
+  const handleStartDate = (dateStart) => {
+    console.log("dateStart", dateStart);
+    setStartDate(dateStart);
+    setIsDisplayStartDate(!isDisplayStartDate);
+  };
 
   if (isDisplayStartDate) {
     return (
       <DatePicker
-      style={{ marginTop: 200 }}
-      onSelectedChange={(dateStart) => handleDate(dateStart)}
-      // onDateChange={() => setIsDisplayStartDate(false)}
-    />
-    )
+        style={{ marginTop: 200 }}
+        onSelectedChange={(dateStart) => handleStartDate(dateStart)}
+        options={{
+          backgroundColor: "#FBFAFA",
+          textHeaderColor: "#62ADEB",
+          textDefaultColor: "#B6B6B6",
+          selectedTextColor: "#fff",
+          mainColor: "#62ADEB",
+          textSecondaryColor: "#B6B6B6",
+          borderColor: "rgba(122, 146, 165, 0.1)",
+        }}
+      ></DatePicker>
+    );
+  }
+
+  const handleDisplayEndDate = () => {
+    setIsDisplayEndDate(!isDisplayEndDate);
+  };
+
+  const handleEndDate = (dateEnd) => {
+    console.log("dateEnd", dateEnd);
+    setEndDate(dateEnd);
+    setIsDisplayEndDate(!isDisplayEndDate);
+  };
+
+  if (isDisplayEndDate) {
+    return (
+      <DatePicker
+        style={{ marginTop: 200 }}
+        onSelectedChange={(dateEnd) => handleEndDate(dateEnd)}
+        options={{
+          backgroundColor: "#FBFAFA",
+          textHeaderColor: "#62ADEB",
+          textDefaultColor: "#B6B6B6",
+          selectedTextColor: "#fff",
+          mainColor: "#62ADEB",
+          textSecondaryColor: "#B6B6B6",
+          borderColor: "rgba(122, 146, 165, 0.1)",
+        }}
+      ></DatePicker>
+    );
   }
   return (
     <Fragment>
@@ -115,14 +157,42 @@ const AddEventScreen = (props) => {
           </Select>
           <Button
             bg="#62ADEB"
-            style={{ color: "#62ADEB" }}
+            style={{ 
+              color: "#62ADEB",
+            margin: 10 }}
+            mr={0}
             _text={{
               color: "white",
             }}
-            onPress={() => handleStartDate()}
+          >
+            Ajouter une photo
+          </Button>
+          <Button
+            bg="#62ADEB"
+            style={{ 
+              color: "#62ADEB",
+              marginBottom: 10 }}
+            _text={{
+              color: "white",
+            }}
+            onPress={() => handleDisplayStartDate()}
           >
             Date Début
           </Button>
+          <Text style={{ marginBottom:10}}>Début de l'évenement: {startDate}</Text>
+          <Button
+            bg="#62ADEB"
+            style={{ 
+              color: "#62ADEB",
+              marginBottom: 10 }}
+            _text={{
+              color: "white",
+            }}
+            onPress={() => handleDisplayEndDate()}
+          >
+            Date Fin
+          </Button>
+          <Text>Fin de l'évenement: {endDate}</Text>
         </View>
       </SafeAreaView>
     </Fragment>
