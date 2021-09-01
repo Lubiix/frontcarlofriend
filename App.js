@@ -19,7 +19,7 @@ export default function App() {
   console.log("Host", HOST);
   return (
     <Provider store={store}>
-      <NativeBaseProvider>
+      <NativeBaseProvider config={{ suppressColorAccessibilityWarning: true }}>
         <NavigationContainer>
           <AuthentificatorFlow />
         </NavigationContainer>

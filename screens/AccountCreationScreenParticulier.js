@@ -19,6 +19,7 @@ const AccountCreationScreenParticulier = (props) => {
   const [dateNaissance, setDateNaissance] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [quartierActivity, setQuartierActivity] = useState("");
   const [isValidatedByBack, setIsValidatedByBack] = useState(false);
 
   useEffect(() => {
@@ -72,6 +73,7 @@ const AccountCreationScreenParticulier = (props) => {
         dateDeNaissance: dateNaissance,
         quartiersFavoris: quartiersFavoris,
         centresDinteret: centresDinteret,
+        quartierActivity: quartierActivity,
       }),
     });
     const responseBackendParsed = await envoiInfosBackendRaw.json();
@@ -240,6 +242,25 @@ const AccountCreationScreenParticulier = (props) => {
           <Text style={{ marginLeft: 5 }}>Saint-Roman</Text>
         </Checkbox>
       </Checkbox.Group>
+      <Select
+        minWidth={315}
+        accessibilityLabel="Quartier"
+        placeholder="D'où venez vous ?"
+        value={quartierActivity}
+        onValueChange={(itemValue) => setQuartierActivity(itemValue)}
+        _selectedItem={{
+          bg: "cyan.600",
+          endIcon: <CheckIcon size={4} />,
+        }}
+      >
+        <Select.Item label="Fontvieille" value="Fontvieille" />
+        <Select.Item label="Condamine" value="Condamine" />
+        <Select.Item label="Le Port" value="Le Port" />
+        <Select.Item label="Larvotto" value="Larvotto" />
+        <Select.Item label="Casino" value="Casino" />
+        <Select.Item label="Jardin Exotique" value="Jardin Exotique" />
+        <Select.Item label="Saint-Roman" value="Saint-Roman" />
+      </Select>
       <Button
         bg="#62ADEB"
         style={{ color: "#62ADEB", marginTop: 15 }}
