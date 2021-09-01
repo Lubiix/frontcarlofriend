@@ -31,6 +31,7 @@ const AccountCreationScreenParticulier = (props) => {
           if (data) {
             setIsValidatedByBack(true);
             props.onSetToken(data);
+            props.navigation.navigate("menu");
           }
         }
       });
@@ -46,8 +47,8 @@ const AccountCreationScreenParticulier = (props) => {
           console.log("error dans useEffect Particulier", error);
           console.log("data dans useEffect Particulier", data);
           if (data) {
-            setIsValidatedByBack(true);
             props.onSetToken(data);
+            props.navigation.navigate("menu");
           }
         }
       });
@@ -76,18 +77,10 @@ const AccountCreationScreenParticulier = (props) => {
     const responseBackendParsed = await envoiInfosBackendRaw.json();
     if (responseBackendParsed.result) {
       AsyncStorage.setItem("token", responseBackendParsed.token);
-      setIsValidatedByBack(true);
+      props.navigation.navigate("menu");
     }
     console.log("RESPONSE BACKEND PARSED", responseBackendParsed);
   };
-
-  if (props.token) {
-    props.navigation.navigate("menu");
-  }
-
-  if (isValidatedByBack) {
-    props.navigation.navigate("menu");
-  }
 
   return (
     <View style={{ flex: 1, alignItems: "center", marginTop: 50 }}>

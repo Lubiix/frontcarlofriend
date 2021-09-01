@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { View, SafeAreaView } from "react-native";
 import {
   Input,
@@ -11,6 +11,8 @@ import {
   VStack,
 } from "native-base";
 import { HOST } from "@env";
+import { connect } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginScreen = (props) => {
   const [show, setShow] = useState(false);
@@ -19,6 +21,40 @@ const LoginScreen = (props) => {
   const [listErrorsLogin, setListErrorsLogin] = useState([]);
 
   const [showModal, setShowModal] = useState(false);
+  const [isValidatedByBack, setIsValidatedByBack] = useState(false);
+
+  useEffect(() => {
+    const handleSetToken = async function () {
+      console.log("entré dans la fonction setToken");
+      AsyncStorage.getItem("token", function (error, data) {
+        if (!error) {
+          console.log("error dans useEffect Particulier", error);
+          console.log("data dans useEffect Particulier", data);
+          if (data) {
+            props.onSetToken(data);
+          }
+        }
+      });
+    };
+    handleSetToken();
+  }, []);
+
+  useEffect(() => {
+    const handleSetToken = async function () {
+      console.log("entré dans la fonction setToken");
+      AsyncStorage.getItem("token", function (error, data) {
+        if (!error) {
+          console.log("error dans useEffect Particulier", error);
+          console.log("data dans useEffect Particulier", data);
+          if (data) {
+            props.onSetToken(data);
+          }
+        }
+      });
+    };
+    handleSetToken();
+  }, [isValidatedByBack]);
+
   console.log(">>loginEmail", loginEmail);
   console.log(">>loginPassword", loginPassword);
 
@@ -35,6 +71,8 @@ const LoginScreen = (props) => {
     const body = await dataUser.json();
     console.log(">>body", body);
     if (body.result == true) {
+      AsyncStorage.setItem("token", body.token);
+      setIsValidatedByBack(true);
       props.navigation.navigate("menu");
       setShowModal(false);
     } else {
@@ -128,4 +166,16 @@ const LoginScreen = (props) => {
   );
 };
 
-export default LoginScreen;
+function mapDispatchToProps(dispatch) {
+  return {
+    onSetToken: function (token) {
+      dispatch({ type: "setToken", token: token });
+    },
+  };
+}
+
+function mapStateToProps(state) {
+  return { token: state.token };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
