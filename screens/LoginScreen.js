@@ -1,15 +1,6 @@
 import React, { Fragment, useState } from "react";
 import { View, SafeAreaView } from "react-native";
-import {
-  Input,
-  Modal,
-  Button,
-  Box,
-  Spinner,
-  HStack,
-  Text,
-  VStack,
-} from "native-base";
+import { Input, Modal, Button, Box, Spinner, Text, VStack } from "native-base";
 import { HOST } from "@env";
 
 const LoginScreen = (props) => {
@@ -117,7 +108,7 @@ const LoginScreen = (props) => {
         >
           Valider
         </Button>
-        <Modal isOpen={showModal} onClose={showModal}>
+        <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
           <Modal.Content maxWidth="400px">
             <Modal.Header alignItems="center">Chargement</Modal.Header>
             <Modal.Body alignItems="center">
