@@ -14,27 +14,6 @@ const HomeScreen = (props) => {
           console.log("error dans useEffect Home", error);
           console.log("data dans useEffect Home", data);
           if (data) {
-            setIsConnected(true);
-            props.onSetToken(data);
-          }
-        }
-      });
-    };
-    handleSetToken();
-  }, []);
-
-  if (isConnected) {
-    props.navigation.navigate("menu");
-  }
-  useEffect(() => {
-    const handleSetToken = async function () {
-      console.log("entré dans la fonction setToken");
-      AsyncStorage.getItem("token", function (error, data) {
-        if (!error) {
-          console.log("error dans useEffect Home", error);
-          console.log("data dans useEffect Home", data);
-          if (data) {
-            setIsConnected(true);
             props.onSetToken(data);
             props.navigation.navigate("menu");
           }
@@ -42,15 +21,11 @@ const HomeScreen = (props) => {
       });
     };
     handleSetToken();
-  }, [isConnected]);
+  }, []);
 
-  if (isConnected) {
-    props.navigation.navigate("menu");
-  }
-
-  if (props.token) {
-    props.navigation.navigate("menu");
-  }
+  // if (props.token) {
+  //   props.navigation.navigate("menu");
+  // }
 
   const handleCreerUnCompte = () => {
     props.navigation.navigate("CreateAccountParticulier");

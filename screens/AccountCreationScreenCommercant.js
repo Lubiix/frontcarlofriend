@@ -28,6 +28,7 @@ const AccountCreationScreenCommercant = (props) => {
           if (data) {
             setIsValidatedByBack(true);
             props.onSetToken(data);
+            props.navigation.navigate("menu");
           }
         }
       });
@@ -43,18 +44,14 @@ const AccountCreationScreenCommercant = (props) => {
           console.log("error dans useEffect Commercant", error);
           console.log("data dans useEffect Commercant", data);
           if (data) {
-            setIsValidatedByBack(true);
             props.onSetToken(data);
+            props.navigation.navigate("menu");
           }
         }
       });
     };
     handleSetToken();
   }, [isValidatedByBack]);
-
-  if (props.token) {
-    props.navigation.navigate("menu");
-  }
 
   const handleValidateSignup = async () => {
     const envoiInfosBackendRaw = await fetch(`${HOST}/signup-commercant`, {
@@ -77,13 +74,10 @@ const AccountCreationScreenCommercant = (props) => {
     if (responseBackendParsed.result) {
       AsyncStorage.setItem("token", responseBackendParsed.token);
       setIsValidatedByBack(true);
+      props.navigation.navigate("menu");
     }
     console.log("RESPONSE BACKEND PARSED", responseBackendParsed);
   };
-
-  if (isValidatedByBack) {
-    props.navigation.navigate("menu");
-  }
 
   return (
     <View style={{ flex: 1, alignItems: "center", marginTop: 50 }}>
