@@ -1,11 +1,18 @@
 import React, { Fragment } from "react";
 import { SafeAreaView } from "react-native";
-import { View, Text, Box } from "native-base";
+import {
+  View,
+  Box,
+  Input,
+  Button,
+  KeyboardAvoidingView,
+  ScrollView,
+} from "native-base";
 
 const ChatScreen = () => {
   return (
-    <Fragment>
-      <SafeAreaView style={{ flex: 0, backgroundColor: "#62ADEB" }} />
+    <View style={{ flex: 1 }}>
+      <SafeAreaView style={{ backgroundColor: "#62ADEB" }} />
       <Box
         p={4}
         _text={{
@@ -19,7 +26,28 @@ const ChatScreen = () => {
       >
         Conversation
       </Box>
-    </Fragment>
+      <ScrollView style={{ flex: 1, marginTop: 50 }}>
+        {/* {listMessageItem} */}
+      </ScrollView>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+        <Input
+          type={"text"}
+          InputRightElement={
+            <Button
+              ml={1}
+              roundedLeft={0}
+              roundedRight="md"
+              // onPress={handleClick}
+            >
+              Envoyer
+            </Button>
+          }
+          placeholder="Message"
+        />
+      </KeyboardAvoidingView>
+    </View>
   );
 };
 
