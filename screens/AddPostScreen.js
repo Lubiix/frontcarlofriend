@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { View, Select, CheckIcon, Button } from "native-base";
 import { SafeAreaView } from "react-native";
 import {
@@ -10,9 +10,23 @@ import {
   NativeBaseProvider,
 } from "native-base";
 
+import { HOST } from "@env";
+
 const AddPostScreen = (props) => {
+  const [content, setContent] = useState("");
+  console.log('content', content)
+
   const handleGoEvent = () => {
     props.navigation.navigate("event");
+  };
+
+  const handleValidateNewPost = async () => {
+    console.log("click detecté");
+    const sendNewPostToBackend = await fetch(`${HOST}/addPost`, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `content=${content}`,
+    });
   };
 
   return (
@@ -51,7 +65,12 @@ const AddPostScreen = (props) => {
             </Button>
           </Button.Group>
           <Stack space={4} w="80%">
-            <TextArea h={150} placeholder="Text Area Placeholder" />
+            <TextArea
+              
+              value={content}
+              h={150}
+              placeholder="Text Area Placeholder"
+            />
           </Stack>
           <Select
             minWidth={315}
@@ -88,15 +107,31 @@ const AddPostScreen = (props) => {
           </Select>
           <Button
             bg="#62ADEB"
-            style={{ 
+            style={{
               color: "#62ADEB",
-              margin: 10 }}
+              margin: 10,
+            }}
             mr={0}
             _text={{
               color: "white",
             }}
           >
             Ajouter une photo
+          </Button>
+
+          <Button
+            bg="#62ADEB"
+            style={{
+              color: "#62ADEB",
+              margin: 10,
+            }}
+            mr={0}
+            _text={{
+              color: "white",
+            }}
+            onPress={() => handleValidateNewPost()}
+          >
+            Poster
           </Button>
         </View>
       </SafeAreaView>
