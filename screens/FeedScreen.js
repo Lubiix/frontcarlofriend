@@ -43,31 +43,35 @@ function FeedScreen(props) {
         name="filternotif"
         style={{ flex: 0, padding: 10, marginTop: 40 }}
       >
-        <MaterialIcons name="tune" size={24} color="black" />
-        <Ionicons name="notifications" size={24} color="black" />
+        <MaterialIcons name="tune" size={24} color="#B6B6B6" />
+        <Ionicons name="notifications" size={24} color="#B6B6B6" />
       </HStack>
       <HStack
         name="filtermap"
         style={{
           backgroundColor: "#FBFAFA",
-          width: "20%",
+          width: "25%",
           alignSelf: "center",
           alignItems: "center",
           justifyContent: "center",
+          borderBottomRightRadius: 20,
+          borderBottomLeftRadius: 20,
+          borderTopRightRadius: 20,
+          borderTopLeftRadius: 20,
         }}
       >
         <MaterialCommunityIcons
           type="button"
           name="form-select"
           size={40}
-          color="black"
+          color="#B6B6B6"
           title="feed"
           onPress={() => handleFeed()}
         />
         <MaterialCommunityIcons
           name="map-search-outline"
           size={40}
-          color="black"
+          color="#B6B6B6"
           title="map"
           onPress={() => handleMap()}
         />
@@ -75,7 +79,15 @@ function FeedScreen(props) {
       <Box
         bg="#FFFFFF"
         p={4}
-        style={{ marginTop: 10, alignSelf: "center", width: 350 }}
+        style={{
+          marginTop: 10,
+          alignSelf: "center",
+          width: 350,
+          borderBottomRightRadius: 20,
+          borderBottomLeftRadius: 20,
+          borderTopRightRadius: 20,
+          borderTopLeftRadius: 20,
+        }}
       >
         <HStack
           style={{
@@ -119,12 +131,75 @@ function FeedScreen(props) {
             <AntDesign
               name="like2"
               size={24}
-              color="black"
+              color="#B6B6B6"
               onPress={() => handleLike()}
             />
             {countLikePost}
           </Text>
-          <FontAwesome5 name="share-square" size={24} color="black" />
+          <FontAwesome5 name="share-square" size={24} color="#B6B6B6" />
+        </HStack>
+      </Box>
+      <Box
+        bg="#FFFFFF"
+        p={4}
+        style={{
+          marginTop: 10,
+          alignSelf: "center",
+          width: 350,
+          borderBottomRightRadius: 20,
+          borderBottomLeftRadius: 20,
+          borderTopRightRadius: 20,
+          borderTopLeftRadius: 20,
+        }}
+      >
+        <HStack
+          style={{
+            space: 3,
+            alignItems: "center",
+            marginBottom: 1,
+          }}
+        >
+          <Avatar
+            size="md"
+            source={{
+              uri: "https://pbs.twimg.com/profile_images/1352844693151731713/HKO7cnlW_400x400.jpg",
+            }}
+          ></Avatar>
+          <Text style={{ flexShrink: 1 }} color="#000000">
+            Prénom Nom
+            <Entypo name="shop" size={24} color="black" /> @ nom d'enseigne +
+            Qartier
+          </Text>
+        </HStack>
+        <Text>
+          Le texte de mon
+          postzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+        </Text>
+        <Box alignItems="center">
+          <Image
+            source={{
+              uri: "https://upload.wikimedia.org/wikipedia/commons/6/65/Baby.tux-800x800.png",
+            }}
+            alt="Alternate Text"
+            size={"xl"}
+            marginTop={5}
+          />
+        </Box>
+        <HStack
+          justifyContent="space-between"
+          name="filternotif"
+          style={{ flex: 0, padding: 10, marginTop: 40 }}
+        >
+          <Text>
+            <AntDesign
+              name="like2"
+              size={24}
+              color="#B6B6B6"
+              onPress={() => handleLike()}
+            />
+            {countLikePost}
+          </Text>
+          <FontAwesome5 name="share-square" size={24} color="#B6B6B6" />
         </HStack>
       </Box>
     </View>
