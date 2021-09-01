@@ -21,6 +21,8 @@ import {
   VStack,
   Image,
   Stack,
+  Modal,
+  Input,
 } from "native-base";
 
 function FeedScreen(props) {
@@ -37,6 +39,42 @@ function FeedScreen(props) {
   const handleLike = () => {
     setCountLikePost(countLikePost + 1);
   };
+
+  const [value, setValue] = useState("");
+  console.log("commentaire récupéré:", value);
+
+  const userComment = (event) => setValue(event.target.value);
+  console.log("userComment:");
+
+  const [showModal, setShowModal] = useState(false);
+
+  const handleComment = () => {
+    console.log("click comment");
+    setShowModal(true);
+  };
+
+  const closeComment = () => {
+    console.log("close comment");
+    setShowModal(false);
+  };
+
+  let commentInput = (
+    <HStack>
+      <Input
+        w="80%"
+        mx={3}
+        placeholder="Ecrire un commentaire ..."
+        _light={{
+          placeholderTextColor: "blueGray.400",
+        }}
+        _dark={{
+          placeholderTextColor: "blueGray.50",
+        }}
+        value={value}
+        onChange={userComment}
+      />
+    </HStack>
+  );
 
   let postList = (
     <VStack>
@@ -88,7 +126,7 @@ function FeedScreen(props) {
         </Box>
         <HStack
           justifyContent="space-between"
-          name="filternotif"
+          name="likecommentshare"
           style={{ flex: 0, padding: 10, marginTop: 40 }}
         >
           <Text>
@@ -100,6 +138,21 @@ function FeedScreen(props) {
             />
             {countLikePost}
           </Text>
+          <Button
+            title="Commentaires"
+            color="#62ADEB"
+            onPress={() => handleComment()}
+          >
+            Commentaires
+          </Button>
+          <Modal isOpen={showModal} onClose={() => closeComment()}>
+            <Modal.Content width="100%">
+              <Modal.CloseButton />
+              <Modal.Header alignItems="center">Commentaires</Modal.Header>
+              <Modal.Body>test</Modal.Body>
+              <Modal.Footer>{commentInput}</Modal.Footer>
+            </Modal.Content>
+          </Modal>
           <FontAwesome5 name="share-square" size={24} color="#B6B6B6" />
         </HStack>
       </Box>
@@ -151,7 +204,7 @@ function FeedScreen(props) {
         </Box>
         <HStack
           justifyContent="space-between"
-          name="filternotif"
+          name="likecommentshare"
           style={{ flex: 0, padding: 10, marginTop: 40 }}
         >
           <Text>
