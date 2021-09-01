@@ -1,6 +1,15 @@
 import React, { Fragment, useState } from "react";
 import { View, SafeAreaView } from "react-native";
-import { Input, Modal, Button, Box, Spinner, Text, VStack } from "native-base";
+import {
+  Input,
+  Modal,
+  Button,
+  Box,
+  Spinner,
+  HStack,
+  Text,
+  VStack,
+} from "native-base";
 import { HOST } from "@env";
 
 const LoginScreen = (props) => {
