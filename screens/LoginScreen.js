@@ -62,7 +62,6 @@ const LoginScreen = (props) => {
 
   const handleLogin = async () => {
     console.log(">>click détécté", HOST);
-    console.log(">>click détécté");
     setShowModal(true);
     const dataUser = await fetch(`${HOST}/login`, {
       method: "POST",
@@ -92,9 +91,7 @@ const LoginScreen = (props) => {
         alignSelf="center"
         width="100%"
       >
-        <Text fontSize="md" textAlign="center">
-          {error}
-        </Text>
+        <Text fontSize="md">{error}</Text>
       </VStack>
     );
   });
@@ -155,7 +152,7 @@ const LoginScreen = (props) => {
         >
           Valider
         </Button>
-        <Modal isOpen={showModal} onClose={showModal}>
+        <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
           <Modal.Content maxWidth="400px">
             <Modal.Header alignItems="center">Chargement</Modal.Header>
             <Modal.Body alignItems="center">
