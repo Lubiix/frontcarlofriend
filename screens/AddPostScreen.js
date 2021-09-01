@@ -11,11 +11,9 @@ import {
 } from "native-base";
 
 const AddPostScreen = (props) => {
-
-    const handleGoEvent = () => {
-        props.navigation.navigate("event")
-    }
-    
+  const handleGoEvent = () => {
+    props.navigation.navigate("event");
+  };
 
   return (
     <Fragment>
@@ -47,7 +45,7 @@ const AddPostScreen = (props) => {
               _text={{
                 color: "white",
               }}
-              onPress={()=> handleGoEvent()}
+              onPress={() => handleGoEvent()}
             >
               Event
             </Button>
@@ -88,6 +86,18 @@ const AddPostScreen = (props) => {
             <Select.Item label="L'enK" value="Fontvieille" />
             <Select.Item label="Carrefour" value="Condamine" />
           </Select>
+          <Button
+            bg="#62ADEB"
+            style={{ 
+              color: "#62ADEB",
+              margin: 10 }}
+            mr={0}
+            _text={{
+              color: "white",
+            }}
+          >
+            Ajouter une photo
+          </Button>
         </View>
       </SafeAreaView>
     </Fragment>
