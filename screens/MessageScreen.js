@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { SafeAreaView } from "react-native";
 import { Text, Box, HStack, VStack, Avatar, Heading } from "native-base";
 
-const MessageScreen = () => {
+const MessageScreen = (props) => {
   return (
     <Fragment>
       <SafeAreaView style={{ flex: 0, backgroundColor: "#62ADEB" }} />
