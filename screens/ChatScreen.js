@@ -7,6 +7,10 @@ import {
   Button,
   KeyboardAvoidingView,
   ScrollView,
+  HStack,
+  VStack,
+  Text,
+  Heading,
 } from "native-base";
 
 const ChatScreen = () => {
@@ -26,8 +30,31 @@ const ChatScreen = () => {
       >
         Conversation
       </Box>
-      <ScrollView style={{ flex: 1, marginTop: 50 }}>
-        {/* {listMessageItem} */}
+      <ScrollView style={{ flex: 1, marginTop: 10 }}>
+        <HStack width="100%" px={4} mb={5} bg="#FBFAFA">
+          <VStack space={2}>
+            <Text>Salut?</Text>
+            <Heading size="xs">Geoffroy </Heading>
+          </VStack>
+        </HStack>
+        <HStack width="100%" px={4} mb={5} bg="#FBFAFA">
+          <VStack space={2}>
+            <Text>Ca va?</Text>
+            <Heading size="xs">Axel</Heading>
+          </VStack>
+        </HStack>
+        <HStack width="100%" px={4} mb={5} bg="#FBFAFA">
+          <VStack space={2}>
+            <Text>OKLM et toi?</Text>
+            <Heading size="xs">Geoffroy</Heading>
+          </VStack>
+        </HStack>
+        <HStack width="100%" px={4} mb={5} bg="#FBFAFA">
+          <VStack space={2}>
+            <Text>Tranquille</Text>
+            <Heading size="xs">Axel</Heading>
+          </VStack>
+        </HStack>
       </ScrollView>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
