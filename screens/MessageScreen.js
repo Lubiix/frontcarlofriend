@@ -1,8 +1,22 @@
 import React, { Fragment } from "react";
 import { SafeAreaView } from "react-native";
-import { Text, Box, HStack, VStack, Avatar, Heading } from "native-base";
+import {
+  Text,
+  Box,
+  HStack,
+  VStack,
+  Avatar,
+  Heading,
+  Button,
+  Link,
+} from "native-base";
 
 const MessageScreen = (props) => {
+  const handleGoChat = () => {
+    console.log(">>click détécté");
+    props.navigation.navigate("chat");
+  };
+
   return (
     <Fragment>
       <SafeAreaView style={{ flex: 0, backgroundColor: "#62ADEB" }} />
@@ -19,20 +33,19 @@ const MessageScreen = (props) => {
       >
         Messagerie
       </Box>
-      <Box>
-        <HStack width="100%" px={4}>
+      <Link onPress={() => handleGoChat()}>
+        <HStack width="100%" px={4} my={4}>
           <HStack space={2} alignItems="center">
             <Avatar color="white" bg={"secondary.700"}>
               GF
             </Avatar>
             <VStack>
               <Heading size="sm">Geoffroy</Heading>
-
               <Text>Waza</Text>
             </VStack>
           </HStack>
         </HStack>
-      </Box>
+      </Link>
     </Fragment>
   );
 };
