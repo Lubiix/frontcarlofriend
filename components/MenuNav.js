@@ -7,9 +7,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import MainNav from "./MainNav";
 import SearchScreen from "../screens/SearchScreen";
+import NavChat from "./NavChat";
 import NavAdd from "./NavAdd";
 import ProfilScreen from "../screens/ProfilScreen";
-import MessageScreen from "../screens/MessageScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -45,7 +45,7 @@ const MenuNav = () => {
         <Tab.Screen name="Actualités" component={MainNav} />
         <Tab.Screen name="Recherche" component={SearchScreen} />
         <Tab.Screen name="Publier" component={NavAdd} />
-        <Tab.Screen name="Messages" component={MessageScreen} />
+        <Tab.Screen name="Messages" component={NavChat} />
         <Tab.Screen name="Profile" component={ProfilScreen} />
       </Tab.Navigator>
     </View>
