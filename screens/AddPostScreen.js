@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from "react";
 import { View, Select, CheckIcon, Button } from "native-base";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView, Keyboard, TouchableWithoutFeedback } from "react-native";
 import {
   Input,
   Stack,
@@ -8,24 +8,33 @@ import {
   Center,
   Heading,
   NativeBaseProvider,
+  KeyboardAvoidingView,
 } from "native-base";
 
 import { HOST } from "@env";
+import { connect } from "react-redux";
 
 const AddPostScreen = (props) => {
   const [content, setContent] = useState("");
-  console.log('content', content)
+  const [quartier, setQuartier] = useState("");
+  // console.log("quartier", quartier);
 
   const handleGoEvent = () => {
     props.navigation.navigate("event");
   };
 
+  const handleInputUser = (message) => {
+    console.log("message", message.nativeEvent.text);
+    setContent(message.nativeEvent.text);
+  };
+
   const handleValidateNewPost = async () => {
-    console.log("click detecté");
+    // console.log("click detecté");
+    setContent("");
     const sendNewPostToBackend = await fetch(`${HOST}/addPost`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `content=${content}`,
+      body: `content=${content}&quartier=${quartier}&token=${props.token}`,
     });
   };
 
@@ -66,7 +75,7 @@ const AddPostScreen = (props) => {
           </Button.Group>
           <Stack space={4} w="80%">
             <TextArea
-              
+              onChange={handleInputUser}
               value={content}
               h={150}
               placeholder="Text Area Placeholder"
@@ -76,8 +85,8 @@ const AddPostScreen = (props) => {
             minWidth={315}
             accessibilityLabel="Quartier"
             placeholder="Quartier"
-            // value={quartierActivity}
-            // onValueChange={(itemValue) => setQuartierActivity(itemValue)}
+            value={quartier}
+            onValueChange={(itemValue) => setQuartier(itemValue)}
             _selectedItem={{
               bg: "cyan.600",
               endIcon: <CheckIcon size={4} />,
@@ -90,20 +99,6 @@ const AddPostScreen = (props) => {
             <Select.Item label="Casino" value="Casino" />
             <Select.Item label="Jardin Exotique" value="Jardin Exotique" />
             <Select.Item label="Saint-Roman" value="Saint-Roman" />
-          </Select>
-          <Select
-            minWidth={315}
-            accessibilityLabel="Commerce"
-            placeholder="Commerce"
-            // value={quartierActivity}
-            // onValueChange={(itemValue) => setQuartierActivity(itemValue)}
-            _selectedItem={{
-              bg: "cyan.600",
-              endIcon: <CheckIcon size={4} />,
-            }}
-          >
-            <Select.Item label="L'enK" value="Fontvieille" />
-            <Select.Item label="Carrefour" value="Condamine" />
           </Select>
           <Button
             bg="#62ADEB"
@@ -139,4 +134,9 @@ const AddPostScreen = (props) => {
   );
 };
 
-export default AddPostScreen;
+function mapStateToProps(state) {
+  console.log("addPost/ state", state);
+  return { token: state.token };
+}
+
+export default connect(mapStateToProps, null)(AddPostScreen);
