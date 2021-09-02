@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import MenuNav from "../components/MenuNav";
-import { View, Text, Button, Dimensions, ScrollView } from "react-native";
+import { View, Text, Button, ScrollView } from "react-native";
 import {
   Entypo,
   MaterialIcons,
@@ -24,6 +24,7 @@ import {
   Modal,
   Input,
 } from "native-base";
+import { HOST } from "@env";
 
 function FeedScreen(props) {
   const handleMap = () => {
@@ -40,11 +41,8 @@ function FeedScreen(props) {
     setCountLikePost(countLikePost + 1);
   };
 
-  const [value, setValue] = useState("");
-  console.log("commentaire récupéré:", value);
-
-  const userComment = (event) => setValue(event.target.value);
-  console.log("userComment:");
+  const [commentValue, setCommentValue] = useState("");
+  console.log("commentaire récupéré:", commentValue);
 
   const [showModal, setShowModal] = useState(false);
 
@@ -58,8 +56,21 @@ function FeedScreen(props) {
     setShowModal(false);
   };
 
+  //ENVOI COMMENTAIRE AU BACK VIA ROUTE /comment
+  const sendComment = async () => {
+    console.log("commentaire envoyé à /comment", HOST, commentValue);
+    const userComment = await fetch(`${HOST}/comment`, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `comment=${commentValue}`,
+    });
+    setCommentValue("");
+  };
+
   let commentInput = (
-    <HStack>
+    <HStack
+      style={{ width: "100%", justifyContent: "center", alignItems: "center" }}
+    >
       <Input
         w="80%"
         mx={3}
@@ -70,8 +81,14 @@ function FeedScreen(props) {
         _dark={{
           placeholderTextColor: "blueGray.50",
         }}
-        value={value}
-        onChange={userComment}
+        value={commentValue}
+        onChangeText={(value) => setCommentValue(value)}
+      />
+      <Ionicons
+        name="send"
+        size={24}
+        color="#62ADEB"
+        onPress={() => sendComment()}
       />
     </HStack>
   );
