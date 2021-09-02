@@ -1,42 +1,50 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState } from "react";
 import { View, Select, CheckIcon, Button, Text } from "native-base";
 import { SafeAreaView } from "react-native";
-import {
-  Input,
-  Stack,
-  TextArea,
-  Center,
-  Heading,
-  NativeBaseProvider,
-} from "native-base";
-import DatePicker, {
-  getToday,
-  getFormatedDate,
-} from "react-native-modern-datepicker";
-import { marginTop } from "styled-system";
+import { Input, Stack, TextArea } from "native-base";
+import DatePicker, { getToday, getFormatedDate } from "react-native-modern-datepicker";
+import { HOST } from "@env";
+import { connect } from "react-redux";
 
 const AddEventScreen = (props) => {
   const [startDate, setStartDate] = useState("");
-  // console.log("startDate", startDate);
   const [isDisplayStartDate, setIsDisplayStartDate] = useState(false);
-  // console.log("isDisplayStartDate", isDisplayStartDate);
-  // console.log("--------------");
   const [endDate, setEndDate] = useState("");
-  // console.log("endDate", endDate);
   const [isDisplayEndDate, setIsDisplayEndDate] = useState("");
   const [content, setContent] = useState("");
   const [eventName, setEventName] = useState("");
+  const [quartier, setQuartier] = useState("");
 
   const handleGoPost = () => {
     props.navigation.navigate("post");
   };
 
+  //On prend l'input du nom de l'évenement
+  const onChangeNameEvent = (value) => {
+    setEventName(value);
+  };
+  //On prend l'input de la description de l'évenement
+  const handleInputUser = (message) => {
+    setContent(message.nativeEvent.text);
+  };
+  // On fetch pour envoyer les données au backend
+  const handleValidateNewEvent = async () => {
+    const sendNewEventToBackend = await fetch(`${HOST}/event`, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `content=${content}&quartier=${quartier}&token=${props.token}&nomEvenement=${eventName}`,
+    });
+    setContent("");
+    setEventName("");
+    props.navigation.navigate("Actualités");
+  };
+
+  //On gére la date de fin/ display calendrier et state
   const handleDisplayStartDate = () => {
     setIsDisplayStartDate(!isDisplayStartDate);
   };
 
   const handleStartDate = (dateStart) => {
-    console.log("dateStart", dateStart);
     setStartDate(dateStart);
     setIsDisplayStartDate(!isDisplayStartDate);
   };
@@ -59,24 +67,14 @@ const AddEventScreen = (props) => {
     );
   }
 
+  //On gére la date de fin/ display calendrier et state
   const handleDisplayEndDate = () => {
     setIsDisplayEndDate(!isDisplayEndDate);
   };
 
   const handleEndDate = (dateEnd) => {
-    console.log("dateEnd", dateEnd);
     setEndDate(dateEnd);
     setIsDisplayEndDate(!isDisplayEndDate);
-  };
-
-  const onChangeNameEvent = (value) => {
-    console.log('value', value)
-    setEventName(value)
-  }
-
-  const handleInputUser = (message) => {
-    console.log("message", message.nativeEvent.text);
-    setContent(message.nativeEvent.text);
   };
 
   if (isDisplayEndDate) {
@@ -131,6 +129,20 @@ const AddEventScreen = (props) => {
               Event
             </Button>
           </Button.Group>
+          <Button
+            bg="#62ADEB"
+            style={{
+              color: "#62ADEB",
+              margin: 10,
+            }}
+            mr={0}
+            _text={{
+              color: "white",
+            }}
+            onPress={() => handleValidateNewEvent()}
+          >
+            Créer l'évenement
+          </Button>
           <Input
             w="80%"
             mx={3}
@@ -153,8 +165,8 @@ const AddEventScreen = (props) => {
             minWidth={315}
             accessibilityLabel="Quartier"
             placeholder="Quartier"
-            // value={quartierActivity}
-            // onValueChange={(itemValue) => setQuartierActivity(itemValue)}
+            value={quartier}
+            onValueChange={(itemValue) => setQuartier(itemValue)}
             _selectedItem={{
               bg: "cyan.600",
               endIcon: <CheckIcon size={4} />,
@@ -231,4 +243,7 @@ const AddEventScreen = (props) => {
   );
 };
 
-export default AddEventScreen;
+function mapStateToProps(state) {
+  return { token: state.token };
+}
+export default connect(mapStateToProps, null)(AddEventScreen);

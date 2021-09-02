@@ -1,15 +1,7 @@
 import React, { Fragment, useState } from "react";
 import { View, Select, CheckIcon, Button } from "native-base";
-import { SafeAreaView, Keyboard, TouchableWithoutFeedback } from "react-native";
-import {
-  Input,
-  Stack,
-  TextArea,
-  Center,
-  Heading,
-  NativeBaseProvider,
-  KeyboardAvoidingView,
-} from "native-base";
+import { SafeAreaView } from "react-native";
+import { Stack, TextArea } from "native-base";
 
 import { HOST } from "@env";
 import { connect } from "react-redux";
@@ -17,7 +9,6 @@ import { connect } from "react-redux";
 const AddPostScreen = (props) => {
   const [content, setContent] = useState("");
   const [quartier, setQuartier] = useState("");
-  // console.log("quartier", quartier);
 
   const handleGoEvent = () => {
     props.navigation.navigate("event");
@@ -29,7 +20,6 @@ const AddPostScreen = (props) => {
   };
 
   const handleValidateNewPost = async () => {
-    // console.log("click detecté");
     props.navigation.navigate("Actualités");
     const sendNewPostToBackend = await fetch(`${HOST}/addPost`, {
       method: "POST",
@@ -136,7 +126,6 @@ const AddPostScreen = (props) => {
 };
 
 function mapStateToProps(state) {
-  console.log("addPost/ state", state);
   return { token: state.token };
 }
 
