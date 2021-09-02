@@ -25,12 +25,12 @@ const AddPostScreen = (props) => {
 
   const handleInputUser = (message) => {
     console.log("message", message.nativeEvent.text);
-    setContent(message.nativeEvent.text)
-    setContent("");
+    setContent(message.nativeEvent.text);
   };
 
   const handleValidateNewPost = async () => {
     // console.log("click detecté");
+    setContent("");
     const sendNewPostToBackend = await fetch(`${HOST}/addPost`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -77,7 +77,6 @@ const AddPostScreen = (props) => {
             <TextArea
               onChange={handleInputUser}
               value={content}
-              onSubmit={Keyboard.dismiss}
               h={150}
               placeholder="Text Area Placeholder"
             />
