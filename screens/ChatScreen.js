@@ -15,23 +15,30 @@ import {
 
 import { HOST } from "@env";
 
+import { connect } from "react-redux";
+
 import socketIOClient from "socket.io-client";
 
 const socket = socketIOClient(`${HOST}`);
 
-const ChatScreen = () => {
+const ChatScreen = (props) => {
   const [currentMessage, setCurrentMessage] = useState();
   const [listMessage, setListMessage] = useState([]);
-  console.log("currentMessage", currentMessage);
+  // console.log(">>currentMessage", currentMessage);
+  // console.log(">>listMessage", listMessage);
 
   useEffect(() => {
-    socket.on("sendMessageFromBack", (message) => {
-      setListMessage([...listMessage, message]);
+    socket.on("sendMessageFromBack", (dataMessage) => {
+      // console.log(">>dataMessage", dataMessage);
+      setListMessage([...listMessage, dataMessage]);
     });
   }, [listMessage]);
 
   const handleSendMessage = () => {
-    socket.emit("sendMessage", { message: currentMessage, pseudo: "GF" });
+    socket.emit("sendMessage", {
+      message: currentMessage,
+      token: props.token,
+    });
     setCurrentMessage("");
   };
 
@@ -40,7 +47,7 @@ const ChatScreen = () => {
       <HStack key={i} width="100%" px={4} mb={5} bg="#FBFAFA">
         <VStack space={2}>
           <Text>{message.message}</Text>
-          <Heading size="xs">{message.pseudo} </Heading>
+          <Heading size="xs">{message.user} </Heading>
         </VStack>
       </HStack>
     );
@@ -92,5 +99,8 @@ const ChatScreen = () => {
     </View>
   );
 };
-
-export default ChatScreen;
+function mapStateToProps(state) {
+  // console.log(">>state", state);
+  return { token: state.token };
+}
+export default connect(mapStateToProps, null)(ChatScreen);
