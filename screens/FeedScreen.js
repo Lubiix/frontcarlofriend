@@ -25,6 +25,7 @@ import {
   Input,
 } from "native-base";
 import { HOST } from "@env";
+import { connect } from "react-redux";
 
 function FeedScreen(props) {
   const handleMap = () => {
@@ -58,11 +59,16 @@ function FeedScreen(props) {
 
   //ENVOI COMMENTAIRE AU BACK VIA ROUTE /comment
   const sendComment = async () => {
-    console.log("commentaire envoyé à /comment", HOST, commentValue);
+    console.log(
+      "commentaire envoyé à /comment",
+      HOST,
+      commentValue,
+      props.token
+    );
     const userComment = await fetch(`${HOST}/comment`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `comment=${commentValue}`,
+      body: `comment=${commentValue}&token=${props.token}`,
     });
     setCommentValue("");
   };
@@ -347,4 +353,9 @@ function FeedScreen(props) {
   );
 }
 
-export default FeedScreen;
+function mapStateToProps(state) {
+  console.log("récup state dans reducer token", state);
+  return { token: state.token };
+}
+
+export default connect(mapStateToProps, null)(FeedScreen);
