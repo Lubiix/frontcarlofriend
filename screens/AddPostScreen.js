@@ -30,13 +30,13 @@ const AddPostScreen = (props) => {
 
   const handleValidateNewPost = async () => {
     // console.log("click detecté");
-    setContent("");
-    props.navigation.navigate("Actualités")
+    props.navigation.navigate("Actualités");
     const sendNewPostToBackend = await fetch(`${HOST}/addPost`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `content=${content}&quartier=${quartier}&token=${props.token}`,
     });
+    setContent("");
   };
 
   return (

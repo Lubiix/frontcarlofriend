@@ -13,17 +13,19 @@ import DatePicker, {
   getToday,
   getFormatedDate,
 } from "react-native-modern-datepicker";
+import { marginTop } from "styled-system";
 
 const AddEventScreen = (props) => {
   const [startDate, setStartDate] = useState("");
-  console.log("startDate", startDate);
+  // console.log("startDate", startDate);
   const [isDisplayStartDate, setIsDisplayStartDate] = useState(false);
   // console.log("isDisplayStartDate", isDisplayStartDate);
-  console.log("--------------");
+  // console.log("--------------");
   const [endDate, setEndDate] = useState("");
-  console.log("endDate", endDate);
+  // console.log("endDate", endDate);
   const [isDisplayEndDate, setIsDisplayEndDate] = useState("");
-  // console.log('isDisplayEndDate', isDisplayEndDate)
+  const [content, setContent] = useState("");
+  const [eventName, setEventName] = useState("");
 
   const handleGoPost = () => {
     props.navigation.navigate("post");
@@ -65,6 +67,16 @@ const AddEventScreen = (props) => {
     console.log("dateEnd", dateEnd);
     setEndDate(dateEnd);
     setIsDisplayEndDate(!isDisplayEndDate);
+  };
+
+  const onChangeNameEvent = (value) => {
+    console.log('value', value)
+    setEventName(value)
+  }
+
+  const handleInputUser = (message) => {
+    console.log("message", message.nativeEvent.text);
+    setContent(message.nativeEvent.text);
   };
 
   if (isDisplayEndDate) {
@@ -119,8 +131,23 @@ const AddEventScreen = (props) => {
               Event
             </Button>
           </Button.Group>
+          <Input
+            w="80%"
+            mx={3}
+            placeholder="Nom de l'évenement"
+            onChangeText={(value) => onChangeNameEvent(value)}
+            style={{
+              marginBottom: 10,
+              marginTop: 10,
+            }}
+          />
           <Stack space={4} w="80%">
-            <TextArea h={150} placeholder="Description Event" />
+            <TextArea
+              onChange={handleInputUser}
+              value={content}
+              h={150}
+              placeholder="Description Event"
+            />
           </Stack>
           <Select
             minWidth={315}
@@ -157,9 +184,10 @@ const AddEventScreen = (props) => {
           </Select>
           <Button
             bg="#62ADEB"
-            style={{ 
+            style={{
               color: "#62ADEB",
-            margin: 10 }}
+              margin: 10,
+            }}
             mr={0}
             _text={{
               color: "white",
@@ -169,9 +197,10 @@ const AddEventScreen = (props) => {
           </Button>
           <Button
             bg="#62ADEB"
-            style={{ 
+            style={{
               color: "#62ADEB",
-              marginBottom: 10 }}
+              marginBottom: 10,
+            }}
             _text={{
               color: "white",
             }}
@@ -179,12 +208,15 @@ const AddEventScreen = (props) => {
           >
             Date Début
           </Button>
-          <Text style={{ marginBottom:10}}>Début de l'évenement: {startDate}</Text>
+          <Text style={{ marginBottom: 10 }}>
+            Début de l'évenement: {startDate}
+          </Text>
           <Button
             bg="#62ADEB"
-            style={{ 
+            style={{
               color: "#62ADEB",
-              marginBottom: 10 }}
+              marginBottom: 10,
+            }}
             _text={{
               color: "white",
             }}
