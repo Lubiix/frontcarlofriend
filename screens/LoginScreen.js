@@ -74,7 +74,6 @@ const LoginScreen = (props) => {
     if (body.result == true) {
       AsyncStorage.setItem("token", body.token);
       setIsValidatedByBack(true);
-      // props.navigation.navigate("menu");
       setShowModal(false);
     } else {
       setShowModal(false);

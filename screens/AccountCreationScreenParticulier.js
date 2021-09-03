@@ -44,7 +44,6 @@ const AccountCreationScreenParticulier = (props) => {
     if (responseBackendParsed.result) {
       AsyncStorage.setItem("token", responseBackendParsed.token);
       props.onSetToken(responseBackendParsed.token);
-      props.navigation.navigate("menu");
     }
     console.log("RESPONSE BACKEND PARSED", responseBackendParsed);
   };
