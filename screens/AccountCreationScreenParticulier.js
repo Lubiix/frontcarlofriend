@@ -20,42 +20,6 @@ const AccountCreationScreenParticulier = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [quartierActivity, setQuartierActivity] = useState("");
-  const [isValidatedByBack, setIsValidatedByBack] = useState(false);
-
-  useEffect(() => {
-    const handleSetToken = async function () {
-      console.log("entré dans la fonction setToken");
-      AsyncStorage.getItem("token", function (error, data) {
-        if (!error) {
-          console.log("error dans useEffect Particulier", error);
-          console.log("data dans useEffect Particulier", data);
-          if (data) {
-            setIsValidatedByBack(true);
-            props.onSetToken(data);
-            props.navigation.navigate("menu");
-          }
-        }
-      });
-    };
-    handleSetToken();
-  }, []);
-
-  useEffect(() => {
-    const handleSetToken = async function () {
-      console.log("entré dans la fonction setToken");
-      AsyncStorage.getItem("token", function (error, data) {
-        if (!error) {
-          console.log("error dans useEffect Particulier", error);
-          console.log("data dans useEffect Particulier", data);
-          if (data) {
-            props.onSetToken(data);
-            props.navigation.navigate("menu");
-          }
-        }
-      });
-    };
-    handleSetToken();
-  }, [isValidatedByBack]);
 
   const handleValidateSignup = async () => {
     const envoiInfosBackendRaw = await fetch(`${HOST}/signup-particulier`, {
@@ -79,6 +43,7 @@ const AccountCreationScreenParticulier = (props) => {
     const responseBackendParsed = await envoiInfosBackendRaw.json();
     if (responseBackendParsed.result) {
       AsyncStorage.setItem("token", responseBackendParsed.token);
+      props.onSetToken(responseBackendParsed.token);
       props.navigation.navigate("menu");
     }
     console.log("RESPONSE BACKEND PARSED", responseBackendParsed);

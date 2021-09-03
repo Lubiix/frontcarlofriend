@@ -16,42 +16,6 @@ const AccountCreationScreenCommercant = (props) => {
   const [adresse, setAdresse] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isValidatedByBack, setIsValidatedByBack] = useState(false);
-
-  useEffect(() => {
-    const handleSetToken = async function () {
-      console.log("entré dans la fonction setToken");
-      AsyncStorage.getItem("token", function (error, data) {
-        if (!error) {
-          console.log("error dans useEffect Commercant", error);
-          console.log("data dans useEffect Commercant", data);
-          if (data) {
-            setIsValidatedByBack(true);
-            props.onSetToken(data);
-            props.navigation.navigate("menu");
-          }
-        }
-      });
-    };
-    handleSetToken();
-  }, []);
-
-  useEffect(() => {
-    const handleSetToken = async function () {
-      console.log("entré dans la fonction setToken");
-      AsyncStorage.getItem("token", function (error, data) {
-        if (!error) {
-          console.log("error dans useEffect Commercant", error);
-          console.log("data dans useEffect Commercant", data);
-          if (data) {
-            props.onSetToken(data);
-            props.navigation.navigate("menu");
-          }
-        }
-      });
-    };
-    handleSetToken();
-  }, [isValidatedByBack]);
 
   const handleValidateSignup = async () => {
     const envoiInfosBackendRaw = await fetch(`${HOST}/signup-commercant`, {
@@ -73,8 +37,7 @@ const AccountCreationScreenCommercant = (props) => {
     const responseBackendParsed = await envoiInfosBackendRaw.json();
     if (responseBackendParsed.result) {
       AsyncStorage.setItem("token", responseBackendParsed.token);
-      setIsValidatedByBack(true);
-      props.navigation.navigate("menu");
+      props.onSetToken(responseBackendParsed.token);
     }
     console.log("RESPONSE BACKEND PARSED", responseBackendParsed);
   };

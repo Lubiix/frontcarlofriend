@@ -16,6 +16,8 @@ const Stack = createStackNavigator();
 const AuthentificatorFlow = (props) => {
   const [isSignedIn, setIsSignedIn] = useState(false);
 
+  console.log(isSignedIn);
+
   useEffect(() => {
     const handleSetToken = async function () {
       console.log("entré dans la fonction setToken APP");
@@ -27,11 +29,35 @@ const AuthentificatorFlow = (props) => {
           if (data) {
             setIsSignedIn(true);
           }
+          if (!data) {
+            setIsSignedIn(false);
+          }
         }
       });
     };
     handleSetToken();
   }, []);
+
+  useEffect(() => {
+    const handleSetToken = async function () {
+      console.log("entré dans le useEffect de modification");
+      // AsyncStorage.removeItem("token");
+      AsyncStorage.getItem("token", function (error, data) {
+        if (!error) {
+          console.log("error dans useEffect modification", error);
+          console.log("data dans useEffect modification", data);
+          if (data) {
+            setIsSignedIn(true);
+          }
+          if (!data) {
+            console.log("entrée dans le is signed in false");
+            setIsSignedIn(false);
+          }
+        }
+      });
+    };
+    handleSetToken();
+  }, [props.token]);
 
   console.log("auth flow token", props.token);
 
@@ -56,7 +82,6 @@ const AuthentificatorFlow = (props) => {
             component={AccountCreationScreenCommercant}
           />
           <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="menu" component={MenuNav} />
         </>
       )}
     </Stack.Navigator>
