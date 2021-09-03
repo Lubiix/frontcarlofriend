@@ -39,6 +39,8 @@ function FeedScreen(props) {
   const [countLikePost, setCountLikePost] = useState(0);
   console.log("compteur like actif:", countLikePost);
 
+  const [feedList, setFeedList] = useState([]);
+  console.log("feedlist:", feedList);
   const handleLike = () => {
     setCountLikePost(countLikePost + 1);
   };
@@ -74,6 +76,18 @@ function FeedScreen(props) {
     setCommentValue("");
   };
 
+  //APPEL /feed POUR AFFICHER LES POSTS DANS LE FEED
+  useEffect(() => {
+    const requestFeed = async () => {
+      const rawUserFeed = await fetch(`${HOST}/feed`);
+      console.log("réponse route feed:", rawUserFeed);
+      const userFeedParsed = await rawUserFeed.json();
+      const allPostData = userFeedParsed.posts;
+      setFeedList(allPostData);
+    };
+    requestFeed();
+  }, []);
+
   let commentInput = (
     <HStack
       style={{ width: "100%", justifyContent: "center", alignItems: "center" }}
@@ -100,214 +114,87 @@ function FeedScreen(props) {
     </HStack>
   );
 
-  let postList = (
-    <VStack>
-      <Box
-        bg="#FFFFFF"
-        p={4}
-        style={{
-          marginTop: 10,
-          alignSelf: "center",
-          width: 350,
-          borderBottomRightRadius: 20,
-          borderBottomLeftRadius: 20,
-          borderTopRightRadius: 20,
-          borderTopLeftRadius: 20,
-        }}
-      >
-        <HStack
+  let postList = feedList.map((post, index) => {
+    return (
+      <VStack key={index}>
+        <Box
+          bg="#FFFFFF"
+          p={4}
           style={{
-            space: 3,
-            alignItems: "center",
-            marginBottom: 1,
+            marginTop: 10,
+            alignSelf: "center",
+            width: 350,
+            borderBottomRightRadius: 20,
+            borderBottomLeftRadius: 20,
+            borderTopRightRadius: 20,
+            borderTopLeftRadius: 20,
           }}
         >
-          <Avatar
-            size="md"
-            source={{
-              uri: "https://pbs.twimg.com/profile_images/1352844693151731713/HKO7cnlW_400x400.jpg",
+          <HStack
+            style={{
+              space: 3,
+              alignItems: "center",
+              marginBottom: 1,
             }}
-          ></Avatar>
-          <Text style={{ flexShrink: 1 }} color="#000000">
-            Prénom Nom
-            <Entypo name="shop" size={24} color="black" /> @ nom d'enseigne +
-            Qartier
-          </Text>
-        </HStack>
-        <Text>
-          Le texte de mon
-          postzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
-        </Text>
-        <Box alignItems="center">
-          <Image
-            source={{
-              uri: "https://upload.wikimedia.org/wikipedia/commons/6/65/Baby.tux-800x800.png",
-            }}
-            alt="Alternate Text"
-            size={"xl"}
-            marginTop={5}
-          />
-        </Box>
-        <HStack
-          justifyContent="space-between"
-          name="likecommentshare"
-          style={{ flex: 0, padding: 10, marginTop: 40 }}
-        >
-          <Text>
-            <AntDesign
-              name="like2"
-              size={24}
-              color="#B6B6B6"
-              onPress={() => handleLike()}
-            />
-            {countLikePost}
-          </Text>
-          <Button
-            title="Commentaires"
-            color="#62ADEB"
-            onPress={() => handleComment()}
           >
-            Commentaires
-          </Button>
-          <Modal isOpen={showModal} onClose={() => closeComment()}>
-            <Modal.Content width="100%">
-              <Modal.CloseButton />
-              <Modal.Header alignItems="center">Commentaires</Modal.Header>
-              <Modal.Body>test</Modal.Body>
-              <Modal.Footer>{commentInput}</Modal.Footer>
-            </Modal.Content>
-          </Modal>
-          <FontAwesome5 name="share-square" size={24} color="#B6B6B6" />
-        </HStack>
-      </Box>
-      <Box
-        bg="#FFFFFF"
-        p={4}
-        style={{
-          marginTop: 10,
-          alignSelf: "center",
-          width: 350,
-          borderBottomRightRadius: 20,
-          borderBottomLeftRadius: 20,
-          borderTopRightRadius: 20,
-          borderTopLeftRadius: 20,
-        }}
-      >
-        <HStack
-          style={{
-            space: 3,
-            alignItems: "center",
-            marginBottom: 1,
-          }}
-        >
-          <Avatar
-            size="md"
-            source={{
-              uri: "https://pbs.twimg.com/profile_images/1352844693151731713/HKO7cnlW_400x400.jpg",
-            }}
-          ></Avatar>
-          <Text style={{ flexShrink: 1 }} color="#000000">
-            Prénom Nom
-            <Entypo name="shop" size={24} color="black" /> @ nom d'enseigne +
-            Qartier
-          </Text>
-        </HStack>
-        <Text>
-          Le texte de mon
-          postzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
-        </Text>
-        <Box alignItems="center">
-          <Image
-            source={{
-              uri: "https://upload.wikimedia.org/wikipedia/commons/6/65/Baby.tux-800x800.png",
-            }}
-            alt="Alternate Text"
-            size={"xl"}
-            marginTop={5}
-          />
-        </Box>
-        <HStack
-          justifyContent="space-between"
-          name="likecommentshare"
-          style={{ flex: 0, padding: 10, marginTop: 40 }}
-        >
-          <Text>
-            <AntDesign
-              name="like2"
-              size={24}
-              color="#B6B6B6"
-              onPress={() => handleLike()}
+            <Avatar
+              size="md"
+              source={{
+                uri: "https://pbs.twimg.com/profile_images/1352844693151731713/HKO7cnlW_400x400.jpg",
+              }}
+            ></Avatar>
+            <Text style={{ flexShrink: 1 }} color="#000000">
+              {post.createur.prenom} {post.createur.nom}
+              <Entypo name="shop" size={24} color="black" /> @ nom d'enseigne +
+              {post.quartier.name}
+            </Text>
+          </HStack>
+          <Text>{post.content}</Text>
+          <Box alignItems="center">
+            <Image
+              source={{
+                uri: "https://upload.wikimedia.org/wikipedia/commons/6/65/Baby.tux-800x800.png",
+              }}
+              alt="Alternate Text"
+              size={"xl"}
+              marginTop={5}
             />
-            {countLikePost}
-          </Text>
-          <FontAwesome5 name="share-square" size={24} color="#B6B6B6" />
-        </HStack>
-      </Box>
-      <Box
-        bg="#FFFFFF"
-        p={4}
-        style={{
-          marginTop: 10,
-          alignSelf: "center",
-          width: 350,
-          borderBottomRightRadius: 20,
-          borderBottomLeftRadius: 20,
-          borderTopRightRadius: 20,
-          borderTopLeftRadius: 20,
-        }}
-      >
-        <HStack
-          style={{
-            space: 3,
-            alignItems: "center",
-            marginBottom: 1,
-          }}
-        >
-          <Avatar
-            size="md"
-            source={{
-              uri: "https://pbs.twimg.com/profile_images/1352844693151731713/HKO7cnlW_400x400.jpg",
-            }}
-          ></Avatar>
-          <Text style={{ flexShrink: 1 }} color="#000000">
-            Prénom Nom
-            <Entypo name="shop" size={24} color="black" /> @ nom d'enseigne +
-            Qartier
-          </Text>
-        </HStack>
-        <Text>
-          Le texte de mon
-          postzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
-        </Text>
-        <Box alignItems="center">
-          <Image
-            source={{
-              uri: "https://upload.wikimedia.org/wikipedia/commons/6/65/Baby.tux-800x800.png",
-            }}
-            alt="Alternate Text"
-            size={"xl"}
-            marginTop={5}
-          />
+          </Box>
+          <HStack
+            justifyContent="space-between"
+            name="likecommentshare"
+            style={{ flex: 0, padding: 10, marginTop: 40 }}
+          >
+            <Text>
+              <AntDesign
+                name="like2"
+                size={24}
+                color="#B6B6B6"
+                onPress={() => handleLike()}
+              />
+              {countLikePost}
+            </Text>
+            <Button
+              title="Commentaires"
+              color="#62ADEB"
+              onPress={() => handleComment()}
+            >
+              Commentaires
+            </Button>
+            <Modal isOpen={showModal} onClose={() => closeComment()}>
+              <Modal.Content width="100%">
+                <Modal.CloseButton />
+                <Modal.Header alignItems="center">Commentaires</Modal.Header>
+                <Modal.Body>test</Modal.Body>
+                <Modal.Footer>{commentInput}</Modal.Footer>
+              </Modal.Content>
+            </Modal>
+            <FontAwesome5 name="share-square" size={24} color="#B6B6B6" />
+          </HStack>
         </Box>
-        <HStack
-          justifyContent="space-between"
-          name="filternotif"
-          style={{ flex: 0, padding: 10, marginTop: 40 }}
-        >
-          <Text>
-            <AntDesign
-              name="like2"
-              size={24}
-              color="#B6B6B6"
-              onPress={() => handleLike()}
-            />
-            {countLikePost}
-          </Text>
-          <FontAwesome5 name="share-square" size={24} color="#B6B6B6" />
-        </HStack>
-      </Box>
-    </VStack>
-  );
+      </VStack>
+    );
+  });
 
   return (
     <View style={{ flex: 1 }}>
