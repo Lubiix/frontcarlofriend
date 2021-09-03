@@ -29,7 +29,7 @@ const ChatScreen = (props) => {
 
   useEffect(() => {
     socket.on("sendMessageFromBack", (dataMessage) => {
-      // console.log(">>dataMessage", dataMessage);
+      console.log(">>dataMessage", dataMessage);
       setListMessage([...listMessage, dataMessage]);
     });
   }, [listMessage]);
@@ -44,12 +44,16 @@ const ChatScreen = (props) => {
 
   const listMessageItem = listMessage.map((message, i) => {
     return (
-      <HStack key={i} width="100%" px={4} mb={5} bg="#FBFAFA">
-        <VStack space={2}>
-          <Text>{message.message}</Text>
+      <VStack key={i} space={2} width="100%" px={4} mb={5} bg="#FBFAFA">
+        <Text>{message.message}</Text>
+        <HStack justifyContent="space-between">
           <Heading size="xs">{message.user} </Heading>
-        </VStack>
-      </HStack>
+          <Text>
+            {message.dateDay}-{message.dateMonth} {message.dateHours}:
+            {message.dateMinutes}
+          </Text>
+        </HStack>
+      </VStack>
     );
   });
 
