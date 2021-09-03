@@ -7,6 +7,7 @@ import { HOST } from "@env";
 import { connect } from "react-redux";
 
 const AddPostScreen = (props) => {
+  console.log("HOOOOOOST", HOST);
   const [content, setContent] = useState("");
   const [quartier, setQuartier] = useState("");
 

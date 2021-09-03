@@ -15,6 +15,8 @@ import { connect } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginScreen = (props) => {
+  console.log("HOOOOOST", HOST);
+
   const [show, setShow] = useState(false);
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");

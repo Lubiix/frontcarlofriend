@@ -36,10 +36,26 @@ const HomeScreen = (props) => {
   };
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Button w="80%" my={1} onPress={() => handleCreerUnCompte()}>
+      <Button
+        bg="#62ADEB"
+        w="80%"
+        my={1}
+        onPress={() => handleCreerUnCompte()}
+        _text={{
+          color: "white",
+        }}
+      >
         Créer un compte
       </Button>
-      <Button w="80%" my={4} onPress={() => handleSeConnecter()}>
+      <Button
+        bg="#62ADEB"
+        w="80%"
+        my={4}
+        onPress={() => handleSeConnecter()}
+        _text={{
+          color: "white",
+        }}
+      >
         Se Connecter
       </Button>
     </View>

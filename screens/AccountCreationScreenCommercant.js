@@ -16,6 +16,8 @@ const AccountCreationScreenCommercant = (props) => {
   const [adresse, setAdresse] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [show, setShow] = useState(false);
+  const handleShowPassword = () => setShow(!show);
 
   const handleValidateSignup = async () => {
     const envoiInfosBackendRaw = await fetch(`${HOST}/signup-commercant`, {
@@ -110,11 +112,26 @@ const AccountCreationScreenCommercant = (props) => {
         onChangeText={(value) => setEmail(value)}
       />
       <Input
-        w="85%"
-        mx={3}
-        my={2}
-        placeholder="mot de passe"
+        w="90%"
+        mx={5}
+        mt={3}
+        mb={6}
+        type={show ? "text" : "password"}
+        InputRightElement={
+          <Button
+            ml={1}
+            roundedLeft={0}
+            roundedRight="md"
+            onPress={handleShowPassword}
+            _text={{ color: "white" }}
+            bg="#62ADEB"
+          >
+            {show ? "Hide" : "Show"}
+          </Button>
+        }
+        placeholder="Password"
         onChangeText={(value) => setPassword(value)}
+        value={password}
       />
 
       <Text style={{ marginTop: 15 }}>
@@ -132,25 +149,31 @@ const AccountCreationScreenCommercant = (props) => {
         }}
       >
         <Checkbox value="one" mx={1} my={1}>
-          <Text style={{ marginLeft: 5 }}>One</Text>
+          <Text style={{ marginLeft: 5 }}>Restauration</Text>
         </Checkbox>
         <Checkbox value="two" mx={1} my={1}>
-          <Text style={{ marginLeft: 5 }}>Two</Text>
+          <Text style={{ marginLeft: 5 }}>Prêt à porter</Text>
         </Checkbox>
         <Checkbox value="three" mx={1} my={1}>
-          <Text style={{ marginLeft: 5 }}>Three</Text>
+          <Text style={{ marginLeft: 5 }}>Fleuriste</Text>
         </Checkbox>
         <Checkbox value="four" mx={1} my={1}>
-          <Text style={{ marginLeft: 5 }}>Four</Text>
+          <Text style={{ marginLeft: 5 }}>Provisions</Text>
         </Checkbox>
         <Checkbox value="five" mx={1} my={1}>
-          <Text style={{ marginLeft: 5 }}>Five</Text>
+          <Text style={{ marginLeft: 5 }}>Concessionnaire de véhicules</Text>
         </Checkbox>
         <Checkbox value="six" mx={1} my={1}>
-          <Text style={{ marginLeft: 5 }}>Six</Text>
+          <Text style={{ marginLeft: 5 }}>Électroménager</Text>
         </Checkbox>
         <Checkbox value="seven" mx={1} my={1}>
-          <Text style={{ marginLeft: 5 }}>Seven</Text>
+          <Text style={{ marginLeft: 5 }}>Opticien</Text>
+        </Checkbox>
+        <Checkbox value="seven" mx={1} my={1}>
+          <Text style={{ marginLeft: 5 }}>Joaillerie</Text>
+        </Checkbox>
+        <Checkbox value="seven" mx={1} my={1}>
+          <Text style={{ marginLeft: 5 }}>Papeterie</Text>
         </Checkbox>
       </Checkbox.Group>
       <Select

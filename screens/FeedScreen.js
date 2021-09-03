@@ -27,8 +27,18 @@ import {
 import { HOST } from "@env";
 import { connect } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import IconBadge from "react-native-icon-badge";
 
 function FeedScreen(props) {
+  console.log("HOOOOOOST", HOST);
+  console.log("post list", postList);
+
+  const handleNavigEvent = function () {
+    console.log("click");
+    setShowModalNotif(false);
+    props.navigation.navigate("Event");
+  };
+
   const handleMap = () => {
     props.navigation.navigate("map");
   };
@@ -49,6 +59,7 @@ function FeedScreen(props) {
   console.log("commentaire récupéré:", commentValue);
 
   const [showModal, setShowModal] = useState(false);
+  const [showModalNotif, setShowModalNotif] = useState(false);
 
   const handleComment = () => {
     console.log("click comment");
@@ -58,6 +69,10 @@ function FeedScreen(props) {
   const closeComment = () => {
     console.log("close comment");
     setShowModal(false);
+  };
+  const closeNotif = () => {
+    console.log("close comment");
+    setShowModalNotif(false);
   };
 
   //ENVOI COMMENTAIRE AU BACK VIA ROUTE /comment
@@ -204,7 +219,42 @@ function FeedScreen(props) {
         style={{ flex: 0, padding: 10, marginTop: 40 }}
       >
         <MaterialIcons name="tune" size={24} color="#B6B6B6" />
-        <Ionicons name="notifications" size={24} color="#B6B6B6" />
+        <IconBadge
+          onPress={() => setShowModalNotif(true)}
+          MainElement={
+            <Ionicons
+              onPress={() => setShowModalNotif(true)}
+              name="notifications"
+              size={24}
+              color="#B6B6B6"
+            />
+          }
+          BadgeElement={
+            <Text
+              onPress={() => setShowModalNotif(true)}
+              style={{ color: "#FFFFFF" }}
+            >
+              1
+            </Text>
+          }
+          IconBadgeStyle={{ width: 30, height: 30, backgroundColor: "red" }}
+        />
+        <Modal isOpen={showModalNotif} onClose={() => closeNotif()}>
+          <Modal.Content width="100%">
+            <Modal.CloseButton />
+            <Modal.Header alignItems="center">Notification</Modal.Header>
+            <Modal.Body onPress={() => handleNavigEvent()}>
+              Événement Stars and Bars
+              <Button
+                title="Go to Event"
+                color="#62ADEB"
+                onPress={() => handleNavigEvent()}
+              >
+                Commentaires
+              </Button>
+            </Modal.Body>
+          </Modal.Content>
+        </Modal>
       </HStack>
       <HStack
         name="filtermap"
