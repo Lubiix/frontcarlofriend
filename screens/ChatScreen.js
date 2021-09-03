@@ -35,11 +35,13 @@ const ChatScreen = (props) => {
   }, [listMessage]);
 
   const handleSendMessage = () => {
-    socket.emit("sendMessage", {
-      message: currentMessage,
-      token: props.token,
-    });
-    setCurrentMessage("");
+    if (currentMessage.length > 0) {
+      socket.emit("sendMessage", {
+        message: currentMessage,
+        token: props.token,
+      });
+      setCurrentMessage("");
+    }
   };
 
   const listMessageItem = listMessage.map((message, i) => {
