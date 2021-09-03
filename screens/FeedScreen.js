@@ -33,6 +33,8 @@ function FeedScreen(props) {
   console.log("HOOOOOOST", HOST);
   console.log("post list", postList);
 
+  console.log("feedlist", feedList);
+
   const handleNavigEvent = function () {
     console.log("click");
     setShowModalNotif(false);
@@ -93,7 +95,9 @@ function FeedScreen(props) {
 
   //APPEL /feed POUR AFFICHER LES POSTS DANS LE FEED
   useEffect(() => {
+    console.log("enter useeffect");
     const requestFeed = async () => {
+      console.log("enter fetch request feed");
       const rawUserFeed = await fetch(`${HOST}/feed`);
       console.log("réponse route feed:", rawUserFeed);
       const userFeedParsed = await rawUserFeed.json();
