@@ -32,14 +32,14 @@ const AddEventScreen = (props) => {
     const sendNewEventToBackend = await fetch(`${HOST}/event`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `content=${content}&quartier=${quartier}&token=${props.token}&nomEvenement=${eventName}`,
+      body: `content=${content}&quartier=${quartier}&token=${props.token}&nomEvenement=${eventName}&dateDebut=${startDate}&dateFin=${endDate}`,
     });
     setContent("");
     setEventName("");
     props.navigation.navigate("Actualités");
   };
 
-  //On gére la date de fin/ display calendrier et state
+  //On gére la date de fin/ display calendrier et le state
   const handleDisplayStartDate = () => {
     setIsDisplayStartDate(!isDisplayStartDate);
   };
@@ -67,7 +67,7 @@ const AddEventScreen = (props) => {
     );
   }
 
-  //On gére la date de fin/ display calendrier et state
+  //On gére la date de fin/ display calendrier et le state
   const handleDisplayEndDate = () => {
     setIsDisplayEndDate(!isDisplayEndDate);
   };

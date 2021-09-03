@@ -15,7 +15,7 @@ const AddPostScreen = (props) => {
   };
 
   const handleInputUser = (message) => {
-    console.log("message", message.nativeEvent.text);
+    // console.log("message", message.nativeEvent.text);
     setContent(message.nativeEvent.text);
   };
 
