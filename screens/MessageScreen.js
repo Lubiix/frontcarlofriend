@@ -1,15 +1,6 @@
 import React, { Fragment } from "react";
 import { SafeAreaView } from "react-native";
-import {
-  Text,
-  Box,
-  HStack,
-  VStack,
-  Avatar,
-  Heading,
-  Button,
-  Link,
-} from "native-base";
+import { Box, HStack, Avatar, Heading, Link } from "native-base";
 
 const MessageScreen = (props) => {
   const handleGoChat = () => {

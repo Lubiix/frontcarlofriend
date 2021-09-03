@@ -49,8 +49,7 @@ const ChatScreen = (props) => {
         <HStack justifyContent="space-between">
           <Heading size="xs">{message.user} </Heading>
           <Text>
-            {message.dateDay}-{message.dateMonth} {message.dateHours}:
-            {message.dateMinutes}
+            {message.dateWeek} - {message.dateHours}:{message.dateMinutes}
           </Text>
         </HStack>
       </VStack>
