@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text } from "react-native";
+import { ScrollView, View, Text } from "react-native";
 import { Button, Input, Select, CheckIcon, Checkbox } from "native-base";
 import { HOST } from "@env";
 import { connect } from "react-redux";
@@ -50,7 +50,7 @@ const AccountCreationScreenParticulier = (props) => {
   };
 
   return (
-    <View style={{ flex: 1, alignItems: "center", marginTop: 50 }}>
+    <ScrollView style={{ flex: 1, alignItems: "center", marginTop: 50 }}>
       <Button.Group
         variant="solid"
         isAttached
@@ -236,7 +236,7 @@ const AccountCreationScreenParticulier = (props) => {
       >
         Valider
       </Button>
-    </View>
+    </ScrollView>
   );
 };
 
