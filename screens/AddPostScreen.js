@@ -1,7 +1,8 @@
-import React, { Fragment, useState } from "react";
-import { View, Select, CheckIcon, Button } from "native-base";
+import React, { Fragment, useState, useEffect } from "react";
+import { ScrollView, Select, CheckIcon, Button } from "native-base";
 import { SafeAreaView } from "react-native";
-import { Stack, TextArea } from "native-base";
+import { Stack, TextArea, Image } from "native-base";
+import * as ImagePicker from "expo-image-picker";
 
 import { HOST } from "@env";
 import { connect } from "react-redux";
@@ -10,6 +11,34 @@ const AddPostScreen = (props) => {
   console.log("HOOOOOOST", HOST);
   const [content, setContent] = useState("");
   const [quartier, setQuartier] = useState("");
+  const [image, setImage] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== "web") {
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== "granted") {
+          alert("Sorry, we need camera roll permissions to make this work!");
+        }
+      }
+    })();
+  }, []);
+
+  const addPhoto = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log("RESULT", result);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
 
   const handleGoEvent = () => {
     props.navigation.navigate("event");
@@ -21,11 +50,50 @@ const AddPostScreen = (props) => {
   };
 
   const handleValidateNewPost = async () => {
+    console.log("PHOTO URI", image);
     props.navigation.navigate("Actualités");
+    if (image.length) {
+      var data = new FormData();
+      await data.append("photo", {
+        uri: image,
+        type: "image/jpeg",
+        name: "photo.jpg",
+      });
+
+      console.log("DATA", data);
+
+      const responseBackendPhoto = await fetch(`${HOST}/upload`, {
+        method: "post",
+        body: data,
+      });
+      const responseParsed = await responseBackendPhoto.json();
+      console.log("RESPONSE PARSED", responseParsed);
+      const sendNewPostToBackend = await fetch(`${HOST}/addPost`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          content: content,
+          quartier: quartier,
+          token: props.token,
+          photoAdded: responseParsed.secure_url,
+        }),
+      });
+      return;
+    }
     const sendNewPostToBackend = await fetch(`${HOST}/addPost`, {
       method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `content=${content}&quartier=${quartier}&token=${props.token}`,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        content: content,
+        quartier: quartier,
+        token: props.token,
+      }),
     });
     setContent("");
   };
@@ -34,7 +102,10 @@ const AddPostScreen = (props) => {
     <Fragment>
       <SafeAreaView style={{ flex: 0, backgroundColor: "#62ADEB" }} />
       <SafeAreaView style={{ flex: 1 }}>
-        <View style={{ flex: 1, alignItems: "center", marginTop: 50 }}>
+        <ScrollView
+          style={{ flex: 1, marginTop: 50 }}
+          contentContainerStyle={{ alignItems: "center" }}
+        >
           <Button.Group
             variant="solid"
             isAttached
@@ -102,9 +173,19 @@ const AddPostScreen = (props) => {
             _text={{
               color: "white",
             }}
+            onPress={() => addPhoto()}
           >
             Ajouter une photo
           </Button>
+          {image ? (
+            <Image
+              source={{
+                uri: image,
+              }}
+              alt="Alternate Text"
+              size={"xs"}
+            />
+          ) : null}
 
           <Button
             bg="#62ADEB"
@@ -120,7 +201,7 @@ const AddPostScreen = (props) => {
           >
             Poster
           </Button>
-        </View>
+        </ScrollView>
       </SafeAreaView>
     </Fragment>
   );
