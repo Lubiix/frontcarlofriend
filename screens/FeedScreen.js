@@ -35,21 +35,6 @@ function FeedScreen(props) {
   const handleFeed = () => {
     props.navigation.navigate("feed");
   };
-
-  const [countLikePost, setCountLikePost] = useState(0);
-  console.log("compteur like actif:", countLikePost);
-
-  const [feedList, setFeedList] = useState([]);
-  console.log("feedlist:", feedList);
-  const handleLike = () => {
-    setCountLikePost(countLikePost + 1);
-  };
-
-  const [commentValue, setCommentValue] = useState("");
-  console.log("commentaire récupéré:", commentValue);
-
-  const [showModal, setShowModal] = useState(false);
-
   const handleComment = () => {
     console.log("click comment");
     setShowModal(true);
@@ -59,6 +44,22 @@ function FeedScreen(props) {
     console.log("close comment");
     setShowModal(false);
   };
+  const handleLike = () => {
+    setCountLikePost(countLikePost + 1);
+  };
+  const [countLikePost, setCountLikePost] = useState(0);
+  console.log("compteur like actif:", countLikePost);
+
+  const [feedList, setFeedList] = useState([]);
+  console.log("feedlist:", feedList);
+
+  const [commentValue, setCommentValue] = useState("");
+  console.log("commentaire récupéré:", commentValue);
+
+  const [postId, setPostId] = useState("");
+  console.log("postId:", postId);
+
+  const [showModal, setShowModal] = useState(false);
 
   //ENVOI COMMENTAIRE AU BACK VIA ROUTE /comment
   const sendComment = async () => {
@@ -177,7 +178,7 @@ function FeedScreen(props) {
             <Button
               title="Commentaires"
               color="#62ADEB"
-              onPress={() => handleComment()}
+              onPress={(() => handleComment(), setPostId(post._id))}
             >
               Commentaires
             </Button>
