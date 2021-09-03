@@ -26,6 +26,7 @@ import {
 } from "native-base";
 import { HOST } from "@env";
 import { connect } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function FeedScreen(props) {
   const handleMap = () => {

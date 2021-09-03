@@ -1,7 +1,25 @@
 import React, { Fragment, useState } from "react";
-import { View, Button, Input, Icon, Select, CheckIcon } from "native-base";
-import { Ionicons } from "@expo/vector-icons";
-import { SafeAreaView } from "react-native";
+import {
+  Box,
+  Avatar,
+  HStack,
+  Image,
+  Input,
+  Icon,
+  Button,
+  Select,
+  CheckIcon,
+  VStack,
+} from "native-base";
+import {
+  Entypo,
+  MaterialIcons,
+  Ionicons,
+  MaterialCommunityIcons,
+  AntDesign,
+  FontAwesome5,
+} from "@expo/vector-icons";
+import { SafeAreaView, View, Text, ScrollView } from "react-native";
 import { HOST } from "@env";
 
 const SearchScreen = () => {
@@ -9,6 +27,8 @@ const SearchScreen = () => {
   const [typeUtilisateurSearch, setTypeUtilisateurSearch] = useState("");
   const [search, setSearch] = useState("");
   const [tableauSearch, setTableauSearch] = useState([]);
+
+  console.log("SEARCHSCREEN TABLEAU SEARCH", tableauSearch);
 
   const handleSearch = async () => {
     console.log("click détecté search");
@@ -32,7 +52,50 @@ const SearchScreen = () => {
     );
     const responseBackendParsed = await envoiResearchBackendRaw.json();
     console.log("reponse backend search", responseBackendParsed);
+    setTableauSearch(responseBackendParsed.userTableau);
   };
+
+  const affichageRecherche = tableauSearch.map((user, i) => {
+    return (
+      <Box
+        key={i}
+        bg="#FFFFFF"
+        p={4}
+        style={{
+          marginTop: 10,
+          alignSelf: "center",
+          width: 350,
+          borderBottomRightRadius: 20,
+          borderBottomLeftRadius: 20,
+          borderTopRightRadius: 20,
+          borderTopLeftRadius: 20,
+        }}
+      >
+        <HStack
+          style={{
+            space: 3,
+            alignItems: "center",
+            marginBottom: 1,
+          }}
+        >
+          <Avatar
+            size="md"
+            source={{
+              uri: "https://pbs.twimg.com/profile_images/1352844693151731713/HKO7cnlW_400x400.jpg",
+            }}
+          ></Avatar>
+          <Text
+            style={{ flexShrink: 1, marginLeft: 5, fontWeight: "bold" }}
+            color="#000000"
+          >
+            {user.prenom} {user.nom}
+          </Text>
+        </HStack>
+        <Text style={{ marginLeft: 53 }}>{user.description}</Text>
+      </Box>
+    );
+  });
+
   return (
     <Fragment>
       <SafeAreaView style={{ flex: 0, backgroundColor: "#62ADEB" }} />
@@ -113,6 +176,7 @@ const SearchScreen = () => {
           <Select.Item label="Commerçant" value="Commercant" />
         </Select>
       </View>
+      <ScrollView>{affichageRecherche}</ScrollView>
     </Fragment>
   );
 };

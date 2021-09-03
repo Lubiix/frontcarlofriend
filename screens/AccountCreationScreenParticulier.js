@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text } from "react-native";
+import { ScrollView, View, Text } from "react-native";
 import { Button, Input, Select, CheckIcon, Checkbox } from "native-base";
 import { HOST } from "@env";
 import { connect } from "react-redux";
@@ -20,42 +20,6 @@ const AccountCreationScreenParticulier = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [quartierActivity, setQuartierActivity] = useState("");
-  const [isValidatedByBack, setIsValidatedByBack] = useState(false);
-
-  useEffect(() => {
-    const handleSetToken = async function () {
-      console.log("entré dans la fonction setToken");
-      AsyncStorage.getItem("token", function (error, data) {
-        if (!error) {
-          console.log("error dans useEffect Particulier", error);
-          console.log("data dans useEffect Particulier", data);
-          if (data) {
-            setIsValidatedByBack(true);
-            props.onSetToken(data);
-            props.navigation.navigate("menu");
-          }
-        }
-      });
-    };
-    handleSetToken();
-  }, []);
-
-  useEffect(() => {
-    const handleSetToken = async function () {
-      console.log("entré dans la fonction setToken");
-      AsyncStorage.getItem("token", function (error, data) {
-        if (!error) {
-          console.log("error dans useEffect Particulier", error);
-          console.log("data dans useEffect Particulier", data);
-          if (data) {
-            props.onSetToken(data);
-            props.navigation.navigate("menu");
-          }
-        }
-      });
-    };
-    handleSetToken();
-  }, [isValidatedByBack]);
 
   const handleValidateSignup = async () => {
     const envoiInfosBackendRaw = await fetch(`${HOST}/signup-particulier`, {
@@ -79,13 +43,13 @@ const AccountCreationScreenParticulier = (props) => {
     const responseBackendParsed = await envoiInfosBackendRaw.json();
     if (responseBackendParsed.result) {
       AsyncStorage.setItem("token", responseBackendParsed.token);
-      props.navigation.navigate("menu");
+      props.onSetToken(responseBackendParsed.token);
     }
     console.log("RESPONSE BACKEND PARSED", responseBackendParsed);
   };
 
   return (
-    <View style={{ flex: 1, alignItems: "center", marginTop: 50 }}>
+    <ScrollView style={{ flex: 1, alignItems: "center", marginTop: 50 }}>
       <Button.Group
         variant="solid"
         isAttached
@@ -271,7 +235,7 @@ const AccountCreationScreenParticulier = (props) => {
       >
         Valider
       </Button>
-    </View>
+    </ScrollView>
   );
 };
 
