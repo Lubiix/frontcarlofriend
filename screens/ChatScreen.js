@@ -35,11 +35,13 @@ const ChatScreen = (props) => {
   }, [listMessage]);
 
   const handleSendMessage = () => {
-    socket.emit("sendMessage", {
-      message: currentMessage,
-      token: props.token,
-    });
-    setCurrentMessage("");
+    if (currentMessage.length > 0) {
+      socket.emit("sendMessage", {
+        message: currentMessage,
+        token: props.token,
+      });
+      setCurrentMessage("");
+    }
   };
 
   const listMessageItem = listMessage.map((message, i) => {
@@ -49,8 +51,7 @@ const ChatScreen = (props) => {
         <HStack justifyContent="space-between">
           <Heading size="xs">{message.user} </Heading>
           <Text>
-            {message.dateDay}-{message.dateMonth} {message.dateHours}:
-            {message.dateMinutes}
+            {message.dateWeek} - {message.dateHours}:{message.dateMinutes}
           </Text>
         </HStack>
       </VStack>

@@ -23,6 +23,7 @@ import { SafeAreaView, View, Text, ScrollView } from "react-native";
 import { HOST } from "@env";
 
 const SearchScreen = () => {
+  console.log("HOOOOOOST", HOST);
   const [quartierSearch, setQuartierSearch] = useState("");
   const [typeUtilisateurSearch, setTypeUtilisateurSearch] = useState("");
   const [search, setSearch] = useState("");

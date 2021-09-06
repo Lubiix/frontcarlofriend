@@ -1,10 +1,21 @@
-import React, { Fragment, useState } from "react";
-import { View, Select, CheckIcon, Button, Text } from "native-base";
+import React, { Fragment, useState, useEffect } from "react";
+import {
+  ScrollView,
+  Select,
+  CheckIcon,
+  Button,
+  Text,
+  Image,
+} from "native-base";
 import { SafeAreaView } from "react-native";
 import { Input, Stack, TextArea } from "native-base";
-import DatePicker, { getToday, getFormatedDate } from "react-native-modern-datepicker";
+import DatePicker, {
+  getToday,
+  getFormatedDate,
+} from "react-native-modern-datepicker";
 import { HOST } from "@env";
 import { connect } from "react-redux";
+import * as ImagePicker from "expo-image-picker";
 
 const AddEventScreen = (props) => {
   const [startDate, setStartDate] = useState("");
@@ -14,6 +25,33 @@ const AddEventScreen = (props) => {
   const [content, setContent] = useState("");
   const [eventName, setEventName] = useState("");
   const [quartier, setQuartier] = useState("");
+  const [image, setImage] = useState(null);
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== "web") {
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== "granted") {
+          alert("Sorry, we need camera roll permissions to make this work!");
+        }
+      }
+    })();
+  }, []);
+
+  const addPhoto = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log("RESULT", result);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
 
   const handleGoPost = () => {
     props.navigation.navigate("post");
@@ -29,11 +67,28 @@ const AddEventScreen = (props) => {
   };
   // On fetch pour envoyer les données au backend
   const handleValidateNewEvent = async () => {
-    const sendNewEventToBackend = await fetch(`${HOST}/event`, {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `content=${content}&quartier=${quartier}&token=${props.token}&nomEvenement=${eventName}&dateDebut=${startDate}&dateFin=${endDate}`,
-    });
+    if (image.length) {
+      var data = new FormData();
+      await data.append("photo", {
+        uri: image,
+        type: "image/jpeg",
+        name: "photo.jpg",
+      });
+
+      console.log("DATA", data);
+
+      const responseBackendPhoto = await fetch(`${HOST}/upload`, {
+        method: "post",
+        body: data,
+      });
+      const responseParsed = await responseBackendPhoto.json();
+      const sendNewEventToBackend = await fetch(`${HOST}/event`, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `content=${content}&quartier=${quartier}&token=${props.token}&nomEvenement=${eventName}&dateDebut=${startDate}&dateFin=${endDate}&image=${responseParsed.secure_url}`,
+      });
+      return;
+    }
     setContent("");
     setEventName("");
     props.navigation.navigate("Actualités");
@@ -98,7 +153,10 @@ const AddEventScreen = (props) => {
     <Fragment>
       <SafeAreaView style={{ flex: 0, backgroundColor: "#62ADEB" }} />
       <SafeAreaView style={{ flex: 1 }}>
-        <View style={{ flex: 1, alignItems: "center", marginTop: 50 }}>
+        <ScrollView
+          style={{ flex: 1, marginTop: 50 }}
+          contentContainerStyle={{ alignItems: "center" }}
+        >
           <Button.Group
             variant="solid"
             isAttached
@@ -204,9 +262,19 @@ const AddEventScreen = (props) => {
             _text={{
               color: "white",
             }}
+            onPress={() => addPhoto()}
           >
             Ajouter une photo
           </Button>
+          {image ? (
+            <Image
+              source={{
+                uri: image,
+              }}
+              alt="Alternate Text"
+              size={"xs"}
+            />
+          ) : null}
           <Button
             bg="#62ADEB"
             style={{
@@ -237,7 +305,7 @@ const AddEventScreen = (props) => {
             Date Fin
           </Button>
           <Text>Fin de l'évenement: {endDate}</Text>
-        </View>
+        </ScrollView>
       </SafeAreaView>
     </Fragment>
   );

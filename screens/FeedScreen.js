@@ -1,5 +1,4 @@
 import React, { Fragment, useState, useEffect } from "react";
-import MenuNav from "../components/MenuNav";
 import { View, Text, Button, ScrollView } from "react-native";
 import {
   Entypo,
@@ -27,35 +26,42 @@ import {
 import { HOST } from "@env";
 import { connect } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import IconBadge from "react-native-icon-badge";
 
 function FeedScreen(props) {
+  console.log("HOOOOOOST", HOST);
+  const handleNavigEvent = function () {
+    console.log("click");
+    setShowModalNotif(false);
+    props.navigation.navigate("Event");
+  };
+
   const handleMap = () => {
     props.navigation.navigate("map");
   };
   const handleFeed = () => {
     props.navigation.navigate("feed");
   };
-  const handleComment = () => {
+  const handleComment = (idPost) => {
     console.log("click comment");
     setShowModal(true);
+    setPostId(idPost);
   };
 
   const closeComment = () => {
-    console.log("close comment");
     setShowModal(false);
   };
   const handleLike = () => {
     setCountLikePost(countLikePost + 1);
   };
+
   const [countLikePost, setCountLikePost] = useState(0);
   console.log("compteur like actif:", countLikePost);
 
   const [feedList, setFeedList] = useState([]);
-  console.log("feedlist:", feedList);
 
   const [commentValue, setCommentValue] = useState("");
   console.log("commentaire récupéré:", commentValue);
-
   const [postId, setPostId] = useState("");
   console.log("postId:", postId);
 
@@ -67,22 +73,25 @@ function FeedScreen(props) {
       "commentaire envoyé à /comment",
       HOST,
       commentValue,
-      props.token
+      props.token,
+      postId
     );
     const userComment = await fetch(`${HOST}/comment`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `comment=${commentValue}&token=${props.token}`,
+      body: `comment=${commentValue}&token=${props.token}&postId=${postId}`,
     });
     setCommentValue("");
   };
 
   //APPEL /feed POUR AFFICHER LES POSTS DANS LE FEED
   useEffect(() => {
+    console.log("enter useeffect feed");
     const requestFeed = async () => {
+      console.log("enter fetch request feed");
       const rawUserFeed = await fetch(`${HOST}/feed`);
-      console.log("réponse route feed:", rawUserFeed);
       const userFeedParsed = await rawUserFeed.json();
+      console.log("réception /feed parsé:", userFeedParsed);
       const allPostData = userFeedParsed.posts;
       setFeedList(allPostData);
     };
@@ -154,7 +163,9 @@ function FeedScreen(props) {
           <Box alignItems="center">
             <Image
               source={{
-                uri: "https://upload.wikimedia.org/wikipedia/commons/6/65/Baby.tux-800x800.png",
+                uri: post.image
+                  ? post.image
+                  : "https://www.wallpapersun.com/wp-content/uploads/2021/05/Hasbulla-Wallpaper-13.jpg",
               }}
               alt="Alternate Text"
               size={"xl"}
@@ -178,7 +189,7 @@ function FeedScreen(props) {
             <Button
               title="Commentaires"
               color="#62ADEB"
-              onPress={(() => handleComment(), setPostId(post._id))}
+              onPress={() => handleComment(post._id)}
             >
               Commentaires
             </Button>
