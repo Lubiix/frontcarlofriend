@@ -15,6 +15,9 @@ import {
   Modal,
   Input,
   Button,
+  AspectRatio,
+  Heading,
+  Icon,
 } from "native-base";
 import {
   Entypo,
@@ -29,10 +32,10 @@ import { connect } from "react-redux";
 import { HOST } from "@env";
 
 const ProfilScreen = (props) => {
-  const [userPost, setUserPost] = useState([])
-  console.log('State userPost', userPost)
-  const [user, setUser] = useState({})
-  console.log('user', user)
+  const [userPost, setUserPost] = useState([]);
+  console.log("State userPost", userPost);
+  const [user, setUser] = useState({});
+  console.log("user", user);
   const [countLikePost, setCountLikePost] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [showModalNotif, setShowModalNotif] = useState(false);
@@ -43,23 +46,23 @@ const ProfilScreen = (props) => {
     // props.navigation.navigate("Home");
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     const fetchUserPost = async () => {
-      const rawUserPost = await fetch(`${HOST}/feed-profil`,{
-        method: 'POST', 
-        headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-        body:`token=${props.token}`
-      })
-      const userPost = await rawUserPost.json()
+      const rawUserPost = await fetch(`${HOST}/feed-profil`, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `token=${props.token}`,
+      });
+      const userPost = await rawUserPost.json();
       // console.log('userPost',userPost)
-      setUserPost(userPost.userPosts)
-      setUser(userPost.user)
-      
-    }
-    fetchUserPost()
-  }, [])
-  
+      setUserPost(userPost.userPosts);
+      setUser(userPost.user);
+    };
+    fetchUserPost();
+  }, []);
+
   let postList = userPost.map((post, index) => {
+    console.log("postList", postList);
     return (
       <VStack key={index}>
         <Box
@@ -89,7 +92,7 @@ const ProfilScreen = (props) => {
               }}
             ></Avatar>
             <Text style={{ flexShrink: 1 }} color="#000000">
-              {user.prenom} {user.nom} 
+              {user.prenom} {user.nom}
               <Entypo name="shop" size={24} color="black" /> @ nom d'enseigne +
               {post.quartier.name}
             </Text>
@@ -98,7 +101,9 @@ const ProfilScreen = (props) => {
           <Box alignItems="center">
             <Image
               source={{
-                uri: "https://upload.wikimedia.org/wikipedia/commons/6/65/Baby.tux-800x800.png",
+                uri: post.image
+                  ? post.image
+                  : "https://www.wallpapersun.com/wp-content/uploads/2021/05/Hasbulla-Wallpaper-13.jpg",
               }}
               alt="Alternate Text"
               size={"xl"}
@@ -139,18 +144,62 @@ const ProfilScreen = (props) => {
         </Box>
       </VStack>
     );
-   });
+  });
 
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Avatar
-      marginTop="40px"
-        size="md"
-        source={{
-          uri: "https://pbs.twimg.com/profile_images/1352844693151731713/HKO7cnlW_400x400.jpg",
-        }}
-      ></Avatar>
-      <HStack>
+    <Box>
+      <AspectRatio ratio={16 / 9}>
+        <Image
+          roundedTop="lg"
+          source={{
+            uri: "https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg",
+          }}
+          alt="image"
+        />
+      </AspectRatio>
+      <Box
+        marginTop="-60px"
+        position="relative"
+        style={{ alignItems: "center" }}
+      >
+        <Avatar
+          zIndex={2}
+          size="2xl"
+          source={{
+            uri: "https://pbs.twimg.com/profile_images/1352844693151731713/HKO7cnlW_400x400.jpg",
+          }}
+        ></Avatar>
+      </Box>
+      <HStack marginTop="-100px" marginLeft="25px" width="50%">
+        <Button
+          position="relative"
+          bg="#62ADEB"
+          width="20%"
+          my={2}
+          height="100%"
+          width="40%"
+          size="xs"
+          _text={{ color: "white" }}
+        >
+          Quartier Favoris
+        </Button>
+      </HStack>
+      <HStack marginTop="-45px" marginLeft="290px" width="50%">
+        <Button
+          position="relative"
+          bg="#62ADEB"
+          width="20%"
+          my={2}
+          height="100%"
+          width="40%"
+          size="xs"
+          _text={{ color: "white" }}
+        >
+          Media
+        </Button>
+      </HStack>
+
+      <HStack style={{ justifyContent: "center" }} marginTop="60px">
         <Button
           onPress={() => handleDeconnexion()}
           bg="#62ADEB"
@@ -164,8 +213,22 @@ const ProfilScreen = (props) => {
           Déconnexion
         </Button>
       </HStack>
+      
+      <HStack style={{ justifyContent: "center" }} marginTop="3">
+        <Button
+          bg="#62ADEB"
+          width="20%"
+          my={2}
+          height="100%"
+          width="40%"
+          size="xs"
+          _text={{ color: "white" }}
+        >
+          Edit
+        </Button>
+      </HStack>
       <ScrollView style={{ marginTop: 10 }}>{postList}</ScrollView>
-    </View>
+    </Box>
   );
 };
 
