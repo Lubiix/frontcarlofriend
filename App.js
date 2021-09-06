@@ -12,8 +12,9 @@ import { Provider } from "react-redux";
 import { createStore, combineReducers } from "redux";
 
 import token from "./reducers/token";
+import filter from "./reducers/filter";
 
-const store = createStore(combineReducers({ token }));
+const store = createStore(combineReducers({ token, filter }));
 
 export default function App() {
   console.log("Host", HOST);

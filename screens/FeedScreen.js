@@ -1,5 +1,4 @@
 import React, { Fragment, useState, useEffect } from "react";
-import MenuNav from "../components/MenuNav";
 import { View, Text, Button, ScrollView } from "react-native";
 import {
   Entypo,
@@ -31,9 +30,10 @@ import IconBadge from "react-native-icon-badge";
 
 function FeedScreen(props) {
   console.log("HOOOOOOST", HOST);
-  console.log("post list", postList);
+  console.log("FILTER REGARDE BIEN", props.filter);
+  // console.log("post list", postList);
 
-  console.log("feedlist", feedList);
+  // console.log("feedlist", feedList);
 
   const handleNavigEvent = function () {
     console.log("click");
@@ -49,16 +49,16 @@ function FeedScreen(props) {
   };
 
   const [countLikePost, setCountLikePost] = useState(0);
-  console.log("compteur like actif:", countLikePost);
+  // console.log("compteur like actif:", countLikePost);
 
   const [feedList, setFeedList] = useState([]);
-  console.log("feedlist:", feedList);
+  // console.log("feedlist:", feedList);
   const handleLike = () => {
     setCountLikePost(countLikePost + 1);
   };
 
   const [commentValue, setCommentValue] = useState("");
-  console.log("commentaire récupéré:", commentValue);
+  // console.log("commentaire récupéré:", commentValue);
 
   const [showModal, setShowModal] = useState(false);
   const [showModalNotif, setShowModalNotif] = useState(false);
@@ -224,7 +224,12 @@ function FeedScreen(props) {
         name="filternotif"
         style={{ flex: 0, padding: 10, marginTop: 40 }}
       >
-        <MaterialIcons name="tune" size={24} color="#B6B6B6" />
+        <MaterialIcons
+          name="tune"
+          size={24}
+          color="#B6B6B6"
+          onPress={() => props.navigation.navigate("Filter")}
+        />
         <Ionicons name="notifications" size={24} color="#B6B6B6" />
       </HStack>
       <HStack
@@ -264,7 +269,7 @@ function FeedScreen(props) {
 
 function mapStateToProps(state) {
   console.log("récup state dans reducer token", state);
-  return { token: state.token };
+  return { token: state.token, filter: state.filter };
 }
 
 export default connect(mapStateToProps, null)(FeedScreen);
