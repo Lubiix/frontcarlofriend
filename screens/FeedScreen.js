@@ -230,7 +230,12 @@ function FeedScreen(props) {
           color="#B6B6B6"
           onPress={() => props.navigation.navigate("Filter")}
         />
-        <Ionicons name="notifications" size={24} color="#B6B6B6" />
+        <Ionicons
+          name="notifications"
+          size={24}
+          color="#B6B6B6"
+          onPress={() => props.navigation.navigate("Event")}
+        />
       </HStack>
       <HStack
         name="filtermap"
