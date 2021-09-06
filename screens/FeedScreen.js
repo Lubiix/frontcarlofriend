@@ -1,5 +1,4 @@
 import React, { Fragment, useState, useEffect } from "react";
-import MenuNav from "../components/MenuNav";
 import { View, Text, Button, ScrollView } from "react-native";
 import {
   Entypo,
@@ -30,8 +29,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import IconBadge from "react-native-icon-badge";
 
 function FeedScreen(props) {
-  console.log("HOOOOOOST", HOST);
-  console.log("post list", postList);
+  // console.log("HOOOOOOST", HOST);
+  // console.log("post list", postList);
 
   console.log("feedlist", feedList);
 
@@ -49,42 +48,42 @@ function FeedScreen(props) {
   };
 
   const [countLikePost, setCountLikePost] = useState(0);
-  console.log("compteur like actif:", countLikePost);
+  // console.log("compteur like actif:", countLikePost);
 
   const [feedList, setFeedList] = useState([]);
-  console.log("feedlist:", feedList);
+  // console.log("feedlist:", feedList);
   const handleLike = () => {
     setCountLikePost(countLikePost + 1);
   };
 
   const [commentValue, setCommentValue] = useState("");
-  console.log("commentaire récupéré:", commentValue);
+  // console.log("commentaire récupéré:", commentValue);
 
   const [showModal, setShowModal] = useState(false);
   const [showModalNotif, setShowModalNotif] = useState(false);
 
   const handleComment = () => {
-    console.log("click comment");
+    // console.log("click comment");
     setShowModal(true);
   };
 
   const closeComment = () => {
-    console.log("close comment");
+    // console.log("close comment");
     setShowModal(false);
   };
   const closeNotif = () => {
-    console.log("close comment");
+    // console.log("close comment");
     setShowModalNotif(false);
   };
 
   //ENVOI COMMENTAIRE AU BACK VIA ROUTE /comment
   const sendComment = async () => {
-    console.log(
-      "commentaire envoyé à /comment",
-      HOST,
-      commentValue,
-      props.token
-    );
+    // console.log(
+    //   "commentaire envoyé à /comment",
+    //   HOST,
+    //   commentValue,
+    //   props.token
+    // );
     const userComment = await fetch(`${HOST}/comment`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -95,7 +94,7 @@ function FeedScreen(props) {
 
   //APPEL /feed POUR AFFICHER LES POSTS DANS LE FEED
   useEffect(() => {
-    console.log("enter useeffect");
+    // console.log("enter useeffect");
     const requestFeed = async () => {
       console.log("enter fetch request feed");
       const rawUserFeed = await fetch(`${HOST}/feed`);

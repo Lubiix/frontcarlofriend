@@ -26,8 +26,13 @@ import {
 } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { connect } from "react-redux";
+import { HOST } from "@env";
 
 const ProfilScreen = (props) => {
+  const [userPost, setUserPost] = useState([])
+  console.log('State userPost', userPost)
+  const [user, setUser] = useState({})
+  console.log('user', user)
   const [countLikePost, setCountLikePost] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [showModalNotif, setShowModalNotif] = useState(false);
@@ -38,7 +43,23 @@ const ProfilScreen = (props) => {
     // props.navigation.navigate("Home");
   };
 
-  /*let postList = feedList.map((post, index) => {
+  useEffect(()=>{
+    const fetchUserPost = async () => {
+      const rawUserPost = await fetch(`${HOST}/feed-profil`,{
+        method: 'POST', 
+        headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+        body:`token=${props.token}`
+      })
+      const userPost = await rawUserPost.json()
+      // console.log('userPost',userPost)
+      setUserPost(userPost.userPosts)
+      setUser(userPost.user)
+      
+    }
+    fetchUserPost()
+  }, [])
+  
+  let postList = userPost.map((post, index) => {
     return (
       <VStack key={index}>
         <Box
@@ -68,7 +89,7 @@ const ProfilScreen = (props) => {
               }}
             ></Avatar>
             <Text style={{ flexShrink: 1 }} color="#000000">
-              {post.createur.prenom} {post.createur.nom}
+              {user.prenom} {user.nom} 
               <Entypo name="shop" size={24} color="black" /> @ nom d'enseigne +
               {post.quartier.name}
             </Text>
@@ -110,7 +131,7 @@ const ProfilScreen = (props) => {
                 <Modal.CloseButton />
                 <Modal.Header alignItems="center">Commentaires</Modal.Header>
                 <Modal.Body>test</Modal.Body>
-                <Modal.Footer>{commentInput}</Modal.Footer>
+                <Modal.Footer></Modal.Footer>
               </Modal.Content>
             </Modal>
             <FontAwesome5 name="share-square" size={24} color="#B6B6B6" />
@@ -118,7 +139,7 @@ const ProfilScreen = (props) => {
         </Box>
       </VStack>
     );
-  });*/
+   });
 
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -143,10 +164,15 @@ const ProfilScreen = (props) => {
           Déconnexion
         </Button>
       </HStack>
-      <ScrollView style={{ marginTop: 10 }}>{}</ScrollView>
+      <ScrollView style={{ marginTop: 10 }}>{postList}</ScrollView>
     </View>
   );
 };
+
+function mapStateToProps(state) {
+  console.log("récup state dans reducer token", state);
+  return { token: state.token };
+}
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -156,4 +182,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(null, mapDispatchToProps)(ProfilScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfilScreen);
