@@ -91,6 +91,7 @@ const LoginScreen = (props) => {
         alignItems="center"
         alignSelf="center"
         width="100%"
+        key={i}
       >
         <Text fontSize="md">{error}</Text>
       </VStack>

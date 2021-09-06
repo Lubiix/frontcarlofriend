@@ -25,7 +25,23 @@ const ChatScreen = (props) => {
   const [currentMessage, setCurrentMessage] = useState();
   const [listMessage, setListMessage] = useState([]);
   // console.log(">>currentMessage", currentMessage);
-  // console.log(">>listMessage", listMessage);
+  console.log(">>listMessage", listMessage);
+
+  useEffect(() => {
+    const requestMessages = async () => {
+      console.log(">>HOST", HOST);
+      const rawMessages = await fetch(`${HOST}/chat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `token=${props.token}`,
+      });
+      console.log("rawMessages", rawMessages);
+      const messages = await rawMessages.json();
+      console.log("messages", messages);
+      setListMessage([...listMessage, messages.messages]);
+    };
+    requestMessages();
+  }, []);
 
   useEffect(() => {
     socket.on("sendMessageFromBack", (dataMessage) => {

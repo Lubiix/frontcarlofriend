@@ -1,5 +1,4 @@
 import React, { Fragment, useState, useEffect } from "react";
-import MenuNav from "../components/MenuNav";
 import { View, Text, Button, ScrollView } from "react-native";
 import {
   Entypo,
