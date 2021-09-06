@@ -24,8 +24,11 @@ const socket = socketIOClient(`${HOST}`);
 const ChatScreen = (props) => {
   const [currentMessage, setCurrentMessage] = useState();
   const [listMessage, setListMessage] = useState([]);
+  const [listMessageChargement, setListMessageChargement] = useState([]);
   // console.log(">>currentMessage", currentMessage);
-  console.log(">>listMessage", listMessage);
+  // console.log(">>listMessage", listMessage);
+  // console.log(">>listMessageChargement", listMessageChargement);
+  const { token } = route.params;
 
   useEffect(() => {
     const requestMessages = async () => {
@@ -33,12 +36,12 @@ const ChatScreen = (props) => {
       const rawMessages = await fetch(`${HOST}/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `token=${props.token}`,
+        body: `token=${token}`,
       });
       console.log("rawMessages", rawMessages);
       const messages = await rawMessages.json();
       console.log("messages", messages);
-      setListMessage([...listMessage, messages.messages]);
+      setListMessageChargement(messages.messages);
     };
     requestMessages();
   }, []);
@@ -59,6 +62,20 @@ const ChatScreen = (props) => {
       setCurrentMessage("");
     }
   };
+
+  const listMessageChargementItem = listMessageChargement.map((message, i) => {
+    return (
+      <VStack key={i} space={2} width="100%" px={4} mb={5} bg="#FBFAFA">
+        <Text>{message.message}</Text>
+        <HStack justifyContent="space-between">
+          <Heading size="xs">{message.user} </Heading>
+          <Text>
+            {message.dateWeek} - {message.dateHours}:{message.dateMinutes}
+          </Text>
+        </HStack>
+      </VStack>
+    );
+  });
 
   const listMessageItem = listMessage.map((message, i) => {
     return (
@@ -92,6 +109,7 @@ const ChatScreen = (props) => {
       </Box>
 
       <ScrollView style={{ flex: 1, marginTop: 10 }}>
+        {listMessageChargementItem}
         {listMessageItem}
       </ScrollView>
 
