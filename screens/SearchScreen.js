@@ -28,6 +28,7 @@ const SearchScreen = () => {
   const [typeUtilisateurSearch, setTypeUtilisateurSearch] = useState("");
   const [search, setSearch] = useState("");
   const [tableauSearch, setTableauSearch] = useState([]);
+  console.log("aie");
 
   console.log("SEARCHSCREEN TABLEAU SEARCH", tableauSearch);
 

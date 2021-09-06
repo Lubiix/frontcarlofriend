@@ -56,7 +56,7 @@ function FeedScreen(props) {
   };
 
   const [countLikePost, setCountLikePost] = useState(0);
-  console.log("compteur like actif:", countLikePost);
+  // console.log("compteur like actif:", countLikePost);
 
   const [feedList, setFeedList] = useState([]);
 
@@ -64,6 +64,13 @@ function FeedScreen(props) {
   console.log("commentaire récupéré:", commentValue);
   const [postId, setPostId] = useState("");
   console.log("postId:", postId);
+  // console.log("feedlist:", feedList);
+  const handleLike = () => {
+    setCountLikePost(countLikePost + 1);
+  };
+
+  const [commentValue, setCommentValue] = useState("");
+  // console.log("commentaire récupéré:", commentValue);
 
   const [showModal, setShowModal] = useState(false);
 
@@ -215,8 +222,18 @@ function FeedScreen(props) {
         name="filternotif"
         style={{ flex: 0, padding: 10, marginTop: 40 }}
       >
-        <MaterialIcons name="tune" size={24} color="#B6B6B6" />
-        <Ionicons name="notifications" size={24} color="#B6B6B6" />
+        <MaterialIcons
+          name="tune"
+          size={24}
+          color="#B6B6B6"
+          onPress={() => props.navigation.navigate("Filter")}
+        />
+        <Ionicons
+          name="notifications"
+          size={24}
+          color="#B6B6B6"
+          onPress={() => props.navigation.navigate("Event")}
+        />
       </HStack>
       <HStack
         name="filtermap"
@@ -255,7 +272,7 @@ function FeedScreen(props) {
 
 function mapStateToProps(state) {
   console.log("récup state dans reducer token", state);
-  return { token: state.token };
+  return { token: state.token, filter: state.filter };
 }
 
 export default connect(mapStateToProps, null)(FeedScreen);
