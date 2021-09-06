@@ -29,11 +29,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import IconBadge from "react-native-icon-badge";
 
 function FeedScreen(props) {
-  // console.log("HOOOOOOST", HOST);
-  // console.log("post list", postList);
-
-  console.log("feedlist", feedList);
-
+  console.log("HOOOOOOST", HOST);
   const handleNavigEvent = function () {
     console.log("click");
     setShowModalNotif(false);
@@ -46,60 +42,56 @@ function FeedScreen(props) {
   const handleFeed = () => {
     props.navigation.navigate("feed");
   };
+  const handleComment = (idPost) => {
+    console.log("click comment");
+    setShowModal(true);
+    setPostId(idPost);
+  };
+
+  const closeComment = () => {
+    setShowModal(false);
+  };
+  const handleLike = () => {
+    setCountLikePost(countLikePost + 1);
+  };
 
   const [countLikePost, setCountLikePost] = useState(0);
   // console.log("compteur like actif:", countLikePost);
 
   const [feedList, setFeedList] = useState([]);
-  // console.log("feedlist:", feedList);
-  const handleLike = () => {
-    setCountLikePost(countLikePost + 1);
-  };
 
   const [commentValue, setCommentValue] = useState("");
-  // console.log("commentaire récupéré:", commentValue);
-
+  console.log("commentaire récupéré:", commentValue);
+  const [postId, setPostId] = useState("");
+  console.log("postId:", postId);
+  // console.log("feedlist:", feedList);
   const [showModal, setShowModal] = useState(false);
-  const [showModalNotif, setShowModalNotif] = useState(false);
-
-  const handleComment = () => {
-    // console.log("click comment");
-    setShowModal(true);
-  };
-
-  const closeComment = () => {
-    // console.log("close comment");
-    setShowModal(false);
-  };
-  const closeNotif = () => {
-    // console.log("close comment");
-    setShowModalNotif(false);
-  };
 
   //ENVOI COMMENTAIRE AU BACK VIA ROUTE /comment
   const sendComment = async () => {
-    // console.log(
-    //   "commentaire envoyé à /comment",
-    //   HOST,
-    //   commentValue,
-    //   props.token
-    // );
+    console.log(
+      "commentaire envoyé à /comment",
+      HOST,
+      commentValue,
+      props.token,
+      postId
+    );
     const userComment = await fetch(`${HOST}/comment`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `comment=${commentValue}&token=${props.token}`,
+      body: `comment=${commentValue}&token=${props.token}&postId=${postId}`,
     });
     setCommentValue("");
   };
 
   //APPEL /feed POUR AFFICHER LES POSTS DANS LE FEED
   useEffect(() => {
-    // console.log("enter useeffect");
+    console.log("enter useeffect feed");
     const requestFeed = async () => {
       console.log("enter fetch request feed");
       const rawUserFeed = await fetch(`${HOST}/feed`);
-      console.log("réponse route feed:", rawUserFeed);
       const userFeedParsed = await rawUserFeed.json();
+      console.log("réception /feed parsé:", userFeedParsed);
       const allPostData = userFeedParsed.posts;
       setFeedList(allPostData);
     };
@@ -197,7 +189,7 @@ function FeedScreen(props) {
             <Button
               title="Commentaires"
               color="#62ADEB"
-              onPress={() => handleComment()}
+              onPress={() => handleComment(post._id)}
             >
               Commentaires
             </Button>
@@ -223,8 +215,18 @@ function FeedScreen(props) {
         name="filternotif"
         style={{ flex: 0, padding: 10, marginTop: 40 }}
       >
-        <MaterialIcons name="tune" size={24} color="#B6B6B6" />
-        <Ionicons name="notifications" size={24} color="#B6B6B6" />
+        <MaterialIcons
+          name="tune"
+          size={24}
+          color="#B6B6B6"
+          onPress={() => props.navigation.navigate("Filter")}
+        />
+        <Ionicons
+          name="notifications"
+          size={24}
+          color="#B6B6B6"
+          onPress={() => props.navigation.navigate("Event")}
+        />
       </HStack>
       <HStack
         name="filtermap"
@@ -263,7 +265,7 @@ function FeedScreen(props) {
 
 function mapStateToProps(state) {
   console.log("récup state dans reducer token", state);
-  return { token: state.token };
+  return { token: state.token, filter: state.filter };
 }
 
 export default connect(mapStateToProps, null)(FeedScreen);
