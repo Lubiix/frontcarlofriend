@@ -65,13 +65,6 @@ function FeedScreen(props) {
   const [postId, setPostId] = useState("");
   console.log("postId:", postId);
   // console.log("feedlist:", feedList);
-  const handleLike = () => {
-    setCountLikePost(countLikePost + 1);
-  };
-
-  const [commentValue, setCommentValue] = useState("");
-  // console.log("commentaire récupéré:", commentValue);
-
   const [showModal, setShowModal] = useState(false);
 
   //ENVOI COMMENTAIRE AU BACK VIA ROUTE /comment
