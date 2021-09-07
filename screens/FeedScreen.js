@@ -60,11 +60,17 @@ function FeedScreen(props) {
 
   const [feedList, setFeedList] = useState([]);
 
+  const [commentList, setCommentList] = useState([]);
+  console.log("commentList", commentList);
+
   const [commentValue, setCommentValue] = useState("");
   console.log("commentaire récupéré:", commentValue);
+
   const [postId, setPostId] = useState("");
+
   console.log("postId:", postId);
   // console.log("feedlist:", feedList);
+
   const [showModal, setShowModal] = useState(false);
 
   //ENVOI COMMENTAIRE AU BACK VIA ROUTE /comment
@@ -91,9 +97,12 @@ function FeedScreen(props) {
       console.log("enter fetch request feed");
       const rawUserFeed = await fetch(`${HOST}/feed`);
       const userFeedParsed = await rawUserFeed.json();
-      console.log("réception /feed parsé:", userFeedParsed);
+      // console.log("réception /feed parsé:", userFeedParsed);
       const allPostData = userFeedParsed.posts;
+      const allCommentData = userFeedParsed.comments;
+      // console.log("tous les commentaires:", allCommentData);
       setFeedList(allPostData);
+      setCommentList(allCommentData);
     };
     requestFeed();
   }, []);
@@ -123,6 +132,37 @@ function FeedScreen(props) {
       />
     </HStack>
   );
+
+  let comments = commentList.map((comment, index) => {
+    if (postId == comment.post._id) {
+      return (
+        <HStack
+          key={index}
+          style={{
+            space: 3,
+            alignItems: "center",
+            marginBottom: 2,
+          }}
+        >
+          <Avatar
+            mr={2}
+            size="md"
+            source={{
+              uri: "https://manofmany.com/wp-content/uploads/2021/06/Hasbulla-Magomedov-2.jpg",
+            }}
+          ></Avatar>
+          <Stack>
+            <Text style={{ flexShrink: 1 }} color="#000000" bold={true}>
+              {comment.createur.nom} {comment.createur.prenom}
+            </Text>
+            <Text style={{ flexShrink: 1 }} my={2} color="#000000">
+              {comment.content}
+            </Text>
+          </Stack>
+        </HStack>
+      );
+    }
+  });
 
   let postList = feedList.map((post, index) => {
     return (
@@ -197,7 +237,7 @@ function FeedScreen(props) {
               <Modal.Content width="100%">
                 <Modal.CloseButton />
                 <Modal.Header alignItems="center">Commentaires</Modal.Header>
-                <Modal.Body>test</Modal.Body>
+                <Modal.Body>{comments}</Modal.Body>
                 <Modal.Footer>{commentInput}</Modal.Footer>
               </Modal.Content>
             </Modal>
