@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native";
 import {
   Button,
@@ -16,15 +16,36 @@ import {
 } from "native-base";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { HOST } from "@env";
+import { connect } from "react-redux";
 
 const MessageScreen = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [search, setSearch] = useState("");
   const [usersSearch, setUsersSearch] = useState([]);
+  const [listConversation, setListConversation] = useState([]);
+  // console.log(">>listConversation", listConversation);
   // console.log(">>usersSearch", usersSearch);
 
-  const handleGoChat = () => {
-    props.navigation.navigate("chat");
+  useEffect(() => {
+    const requestConversation = async () => {
+      const rawConversation = await fetch(`${HOST}/recherche-conversation`, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `token=${props.token}`,
+      });
+      const conversation = await rawConversation.json();
+      console.log(">>conversation", conversation);
+      setListConversation(conversation.messages);
+    };
+    requestConversation();
+  }, []);
+
+  const handleGoChat = (userToken) => {
+    // console.log(">>userToken", userToken);
+    props.navigation.navigate("chat"),
+      {
+        token: userToken,
+      };
   };
 
   const handleSearch = async () => {
@@ -49,10 +70,28 @@ const MessageScreen = (props) => {
     setUsersSearch([]);
   };
 
+  const listConversationItem = listConversation.map((message, i) => {
+    const userToken = message.token;
+    // console.log(">>userToken", userToken);
+
+    return (
+      <Link key={i} onPress={() => handleGoChat(userToken)}>
+        <HStack width="100%" px={4} my={4}>
+          <HStack space={2} alignItems="center">
+            <Avatar color="white" bg={"secondary.700"}>
+              GF
+            </Avatar>
+            <Heading size="sm">{message.user}</Heading>
+          </HStack>
+        </HStack>
+      </Link>
+    );
+  });
+
   const affichageRecherche = usersSearch.map((user, i) => {
-    console.log(">>user.token", user);
+    // console.log(">>user.token", user);
     const userToken = user.token;
-    console.log(">>userToken", userToken);
+    // console.log(">>userToken", userToken);
     return (
       <Link key={i} onPress={() => handleModal(userToken)}>
         <HStack width="100%" px={4} my={4}>
@@ -83,16 +122,7 @@ const MessageScreen = (props) => {
       >
         Messagerie
       </Box>
-      <Link onPress={() => handleGoChat()}>
-        <HStack width="100%" px={4} my={4}>
-          <HStack space={2} alignItems="center">
-            <Avatar color="white" bg={"secondary.700"}>
-              GF
-            </Avatar>
-            <Heading size="sm">Geoffroy</Heading>
-          </HStack>
-        </HStack>
-      </Link>
+      {listConversationItem}
       <Stack justifyContent="flex-end" alignItems="flex-end">
         <Button
           bg="#62ADEB"
@@ -151,5 +181,7 @@ const MessageScreen = (props) => {
     </View>
   );
 };
-
-export default MessageScreen;
+function mapStateToProps(state) {
+  return { token: state.token };
+}
+export default connect(mapStateToProps, null)(MessageScreen);
