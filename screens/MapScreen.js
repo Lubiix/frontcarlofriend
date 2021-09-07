@@ -22,7 +22,7 @@ function MapScreen(props) {
       const rawResponseBackend = await fetch(`${HOST}/mapping`);
       const localisationCommercants = await rawResponseBackend.json();
       console.log("LOCALISATION COMMERCANTS", localisationCommercants);
-      setTableauLocalisations(localisationCommercants);
+      setTableauLocalisations(localisationCommercants.tableauLocCommercants);
     };
     getCommercantsLocalisations();
   }, []);
@@ -91,7 +91,7 @@ function MapScreen(props) {
             longitude: 7.4115085,
           }}
         />
-        {tableauLocalisations.tableauLocCommercants.map((commercant, index) => {
+        {tableauLocalisations.map((commercant, index) => {
           return (
             <Marker
               coordinate={{
