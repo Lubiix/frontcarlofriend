@@ -38,7 +38,6 @@ const ProfilScreen = (props) => {
   console.log("user", user);
   const [countLikePost, setCountLikePost] = useState(0);
   const [showModal, setShowModal] = useState(false);
-  const [showModalNotif, setShowModalNotif] = useState(false);
 
   useEffect(() => {
     const fetchUserPost = async () => {
@@ -55,11 +54,6 @@ const ProfilScreen = (props) => {
     fetchUserPost();
   }, []);
 
-  const handleDeconnexion = async () => {
-    await AsyncStorage.removeItem("token");
-    props.onDeleteToken();
-    // props.navigation.navigate("Home");
-  };
 
   const handleGoEdit = () => {
     props.navigation.navigate("edit")
@@ -203,23 +197,8 @@ const ProfilScreen = (props) => {
           Media
         </Button>
       </HStack>
-
-      <HStack style={{ justifyContent: "center" }} marginTop="60px">
-        <Button
-          onPress={() => handleDeconnexion()}
-          bg="#62ADEB"
-          width="20%"
-          my={2}
-          height="100%"
-          width="40%"
-          size="xs"
-          _text={{ color: "white" }}
-        >
-          Déconnexion
-        </Button>
-      </HStack>
       
-      <HStack style={{ justifyContent: "center" }} marginTop="3">
+      <HStack style={{ justifyContent: "center", marginBottom:10, marginTop:60 }} marginTop="3">
         <Button
           onPress={()=>handleGoEdit()}
           bg="#62ADEB"
@@ -243,12 +222,6 @@ function mapStateToProps(state) {
   return { token: state.token };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    onDeleteToken: function () {
-      dispatch({ type: "deleteToken" });
-    },
-  };
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProfilScreen);
+
+export default connect(mapStateToProps, null)(ProfilScreen);
