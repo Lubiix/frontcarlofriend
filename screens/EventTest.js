@@ -17,7 +17,6 @@ import {
 
 const Event = () => {
   const [showModal, setShowModal] = useState(false);
-
   const handleComment = () => {
     console.log("click comment");
     setShowModal(true);

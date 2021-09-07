@@ -1,7 +1,7 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { View, SafeAreaView, Text, Button } from "react-native";
-import MapView, {Marker} from "react-native-maps";
-import { HStack } from 'native-base'
+import MapView, { Marker } from "react-native-maps";
+import { HStack } from "native-base";
 import {
   Entypo,
   MaterialIcons,
@@ -10,9 +10,23 @@ import {
   AntDesign,
   FontAwesome5,
 } from "@expo/vector-icons";
-
+import { HOST } from "@env";
 
 function MapScreen(props) {
+  const [tableauLocalisations, setTableauLocalisations] = useState([]);
+
+  console.log("tableauLocalisations", tableauLocalisations);
+
+  useEffect(() => {
+    const getCommercantsLocalisations = async () => {
+      const rawResponseBackend = await fetch(`${HOST}/mapping`);
+      const localisationCommercants = await rawResponseBackend.json();
+      console.log("LOCALISATION COMMERCANTS", localisationCommercants);
+      setTableauLocalisations(localisationCommercants);
+    };
+    getCommercantsLocalisations();
+  }, []);
+
   const handleMap = () => {
     props.navigation.navigate("map");
   };
@@ -20,9 +34,8 @@ function MapScreen(props) {
     props.navigation.navigate("feed");
   };
   return (
-  
-     <View style={{ flex: 1 }}>
-    <HStack
+    <View style={{ flex: 1 }}>
+      <HStack
         justifyContent="space-between"
         name="filternotif"
         style={{ flex: 0, padding: 10, marginTop: 40 }}
@@ -70,19 +83,31 @@ function MapScreen(props) {
         }}
       >
         <Marker
-          
           pinColor="red"
           title="La Capsule"
           description="On code !"
           coordinate={{
             latitude: 43.7278585,
-            longitude: 7.4115085
+            longitude: 7.4115085,
           }}
         />
+        {tableauLocalisations.tableauLocCommercants.map((commercant, index) => {
+          return (
+            <Marker
+              coordinate={{
+                latitude: commercant.latitude,
+                longitude: commercant.longitude,
+              }}
+              key={index}
+              opacity={0.5}
+              title={commercant.nomEnseigne}
+              description={commercant.description}
+              pinColor="#0037ff"
+            />
+          );
+        })}
       </MapView>
-     </View> 
-   
-   
+    </View>
   );
 }
 
