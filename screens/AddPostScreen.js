@@ -50,9 +50,10 @@ const AddPostScreen = (props) => {
   };
 
   const handleValidateNewPost = async () => {
+    console.log('click validate detecté')
     console.log("PHOTO URI", image);
     props.navigation.navigate("Actualités");
-    if (image.length) {
+    if (image.length ) {
       var data = new FormData();
       await data.append("photo", {
         uri: image,
@@ -91,7 +92,6 @@ const AddPostScreen = (props) => {
       },
       body: JSON.stringify({
         content: content,
-        quartier: quartier,
         token: props.token,
       }),
     });

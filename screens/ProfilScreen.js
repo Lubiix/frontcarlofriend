@@ -40,12 +40,6 @@ const ProfilScreen = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [showModalNotif, setShowModalNotif] = useState(false);
 
-  const handleDeconnexion = async () => {
-    await AsyncStorage.removeItem("token");
-    props.onDeleteToken();
-    // props.navigation.navigate("Home");
-  };
-
   useEffect(() => {
     const fetchUserPost = async () => {
       const rawUserPost = await fetch(`${HOST}/feed-profil`, {
@@ -60,6 +54,16 @@ const ProfilScreen = (props) => {
     };
     fetchUserPost();
   }, []);
+
+  const handleDeconnexion = async () => {
+    await AsyncStorage.removeItem("token");
+    props.onDeleteToken();
+    // props.navigation.navigate("Home");
+  };
+
+  const handleGoEdit = () => {
+    props.navigation.navigate("edit")
+  }
 
   let postList = userPost.map((post, index) => {
     console.log("postList", postList);
@@ -216,6 +220,7 @@ const ProfilScreen = (props) => {
       
       <HStack style={{ justifyContent: "center" }} marginTop="3">
         <Button
+          onPress={()=>handleGoEdit()}
           bg="#62ADEB"
           width="20%"
           my={2}

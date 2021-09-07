@@ -10,6 +10,7 @@ import SearchScreen from "../screens/SearchScreen";
 import NavChat from "./NavChat";
 import NavAdd from "./NavAdd";
 import ProfilScreen from "../screens/ProfilScreen";
+import NavProfil from "./NavProfil";
 
 const Tab = createBottomTabNavigator();
 
@@ -46,7 +47,7 @@ const MenuNav = () => {
         <Tab.Screen name="Recherche" component={SearchScreen} />
         <Tab.Screen name="Publier" component={NavAdd} />
         <Tab.Screen name="Messages" component={NavChat} />
-        <Tab.Screen name="Profile" component={ProfilScreen} />
+        <Tab.Screen name="Profile" component={NavProfil} />
       </Tab.Navigator>
     </View>
   );
