@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ScrollView, SafeAreaView } from "react-native";
 import {
   VStack,
@@ -7,25 +7,52 @@ import {
   Image,
   Text,
   NativeBaseProvider,
-  AspectRatio,
-  Center,
+  Button,
+  Icon,
   Box,
   Stack,
   Heading,
   List,
 } from "native-base";
+import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
+import { connect } from "react-redux";
+import { HOST } from "@env";
 
 const Event = () => {
   const [showModal, setShowModal] = useState(false);
-  const handleComment = () => {
-    console.log("click comment");
-    setShowModal(true);
+  // const { idEvent } = route.params;
+  const [hasParticipated, setHasParticipated] = useState(false);
+  const [informationEvent, setInformationEvent] = useState(null);
+  useEffect(() => {
+    const loadEvent = async () => {
+      const rawUserPost = await fetch(`${HOST}/load-event`, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `idEvent=${idEvent}`,
+      });
+      const userPost = await rawUserPost.json();
+      setInformationEvent(userPost.event);
+    };
+    loadEvent();
+  }, []);
+
+  const handleParticipate = async () => {
+    // const rawUserPost = await fetch(`${HOST}/participate-event`, {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    //   body: `token=${props.token}&idEvent=${idEvent}`,
+    // });
+    // const userPost = await rawUserPost.json();
+    setHasParticipated(true);
   };
 
   const closeComment = () => {
     console.log("close comment");
     setShowModal(false);
   };
+
+  const icon = <Icon as={Ionicons} name="checkmark" size={4} />;
+
   return (
     <ScrollView
       style={{ flex: 1 }}
@@ -46,15 +73,33 @@ const Event = () => {
           roundedTop="md"
         />
         <Stack space={4} p={[4, 4, 8]}>
-          <Text color="gray.400">Vendredi 10 Septembre de 18h30 à 19h30</Text>
+          <Text color="gray.400">
+            de {informationEvent.dateDebut} à {informationEvent.dateFin}
+          </Text>
+          <Text color="gray.400">
+            {informationEvent.particants.length} participent
+          </Text>
           <Heading size={["md", "lg", "md"]} noOfLines={2}>
-            DEMO DAY LA CAPSULE NOUS RENDEZ PAS DINGOS
+            {informationEvent.nomEvenement}
           </Heading>
           <Text lineHeight={[5, 5, 7]} noOfLines={[4, 4, 2]} color="gray.700">
-            Présentation de l'application CarloFriends par la meilleure équipe
-            de développement de France
+            {informationEvent.content}
           </Text>
         </Stack>
+        <Button
+          onPress={() => handleParticipate()}
+          bg="#62ADEB"
+          width="20%"
+          mx={4}
+          my={0}
+          height="5%"
+          size="xs"
+          _text={{ color: "white" }}
+          variant={hasParticipated ? "outline" : "solid"}
+          endIcon={hasParticipated ? icon : null}
+        >
+          {hasParticipated ? "Participe" : "Participer"}
+        </Button>
         <List mt={2} my={2}>
           <List.Item>
             <Box
@@ -218,4 +263,8 @@ const Event = () => {
   );
 };
 
-export default Event;
+function mapStateToProps(state) {
+  return { token: state.token };
+}
+
+export default connect(mapStateToProps, null)(Event);
