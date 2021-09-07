@@ -60,8 +60,11 @@ function FeedScreen(props) {
 
   const [feedList, setFeedList] = useState([]);
 
+  const [eventList, setEventList] = useState([]);
+  console.log("eventList:", eventList);
+
   const [commentList, setCommentList] = useState([]);
-  console.log("commentList", commentList);
+  // console.log("commentList", commentList);
 
   const [commentValue, setCommentValue] = useState("");
   console.log("commentaire récupéré:", commentValue);
@@ -100,8 +103,10 @@ function FeedScreen(props) {
       // console.log("réception /feed parsé:", userFeedParsed);
       const allPostData = userFeedParsed.posts;
       const allCommentData = userFeedParsed.comments;
-      // console.log("tous les commentaires:", allCommentData);
+      const allEventData = userFeedParsed.events;
+      console.log("tous les évènements :", allEventData);
       setFeedList(allPostData);
+      setEventList(allEventData);
       setCommentList(allCommentData);
     };
     requestFeed();
@@ -163,8 +168,26 @@ function FeedScreen(props) {
       );
     }
   });
-
-  let postList = feedList.map((post, index) => {
+  let events = eventList.map((event, index) => {
+    const date = event.date;
+    const newDate = new Date(date);
+    let dateHours = newDate.getHours();
+    if (dateHours < 10) {
+      dateHours = `0${dateHours}`;
+    }
+    let dateMinutes = newDate.getMinutes();
+    if (dateMinutes < 10) {
+      dateMinutes = `0${dateMinutes}`;
+    }
+    const dateWeek = newDate.toLocaleDateString();
+    const dateEvent = (
+      <VStack>
+        <Text>{dateWeek}</Text>
+        <Text>
+          {dateHours}:{dateMinutes}
+        </Text>
+      </VStack>
+    );
     return (
       <VStack key={index}>
         <Box
@@ -184,20 +207,149 @@ function FeedScreen(props) {
             style={{
               space: 3,
               alignItems: "center",
-              marginBottom: 1,
+              marginBottom: 3,
+              justifyContent: "space-evenly",
+              alignItems: "center",
             }}
           >
             <Avatar
-              size="md"
+              size="lg"
               source={{
                 uri: "https://pbs.twimg.com/profile_images/1352844693151731713/HKO7cnlW_400x400.jpg",
               }}
             ></Avatar>
-            <Text style={{ flexShrink: 1 }} color="#000000">
-              {post.createur.prenom} {post.createur.nom}
-              <Entypo name="shop" size={24} color="black" /> @ nom d'enseigne +
-              {post.quartier.name}
+            <VStack>
+              <Text
+                style={{ flexShrink: 1, justifyContent: "center" }}
+                color="#000000"
+              >
+                {event.createur.prenom} {event.createur.nom}
+              </Text>
+              <Text>@ </Text>
+              <Text>{event.quartier.name}</Text>
+            </VStack>
+            {dateEvent}
+          </HStack>
+          <Text>{event.content}</Text>
+          <Box alignItems="center">
+            <Image
+              source={{
+                uri: event.image
+                  ? event.image
+                  : "https://www.wallpapersun.com/wp-content/uploads/2021/05/Hasbulla-Wallpaper-13.jpg",
+              }}
+              alt="Alternate Text"
+              size={"xl"}
+              marginTop={5}
+            />
+          </Box>
+          <HStack
+            justifyContent="space-between"
+            name="likecommentshare"
+            style={{ flex: 0, padding: 10, marginTop: 40 }}
+          >
+            <Text>
+              <AntDesign
+                name="like2"
+                size={24}
+                color="#B6B6B6"
+                onPress={() => handleLike()}
+              />
+              {countLikePost}
             </Text>
+            <Button
+              title="Commentaires"
+              color="#62ADEB"
+              onPress={() => handleComment(event._id)}
+            >
+              Commentaires
+            </Button>
+            <Button
+              title="Aller à l'évènement"
+              color="#62ADEB"
+              onPress={() =>
+                props.navigation.navigate("Event", { idEvent: event._id })
+              }
+            >
+              Allez à l'évènement
+            </Button>
+            <Modal isOpen={showModal} onClose={() => closeComment()}>
+              <Modal.Content width="100%">
+                <Modal.CloseButton />
+                <Modal.Header alignItems="center">Commentaires</Modal.Header>
+                <Modal.Body>
+                  <ScrollView>{comments}</ScrollView>
+                </Modal.Body>
+                <Modal.Footer>{commentInput}</Modal.Footer>
+              </Modal.Content>
+            </Modal>
+            <FontAwesome5 name="share-square" size={24} color="#B6B6B6" />
+          </HStack>
+        </Box>
+      </VStack>
+    );
+  });
+  let postList = feedList.map((post, index) => {
+    const date = post.date;
+    const newDate = new Date(date);
+    let dateHours = newDate.getHours();
+    if (dateHours < 10) {
+      dateHours = `0${dateHours}`;
+    }
+    let dateMinutes = newDate.getMinutes();
+    if (dateMinutes < 10) {
+      dateMinutes = `0${dateMinutes}`;
+    }
+    const dateWeek = newDate.toLocaleDateString();
+    const datePost = (
+      <VStack>
+        <Text>{dateWeek}</Text>
+        <Text>
+          {dateHours}:{dateMinutes}
+        </Text>
+      </VStack>
+    );
+    return (
+      <VStack key={index}>
+        <Box
+          bg="#FFFFFF"
+          p={4}
+          style={{
+            marginTop: 10,
+            alignSelf: "center",
+            width: 350,
+            borderBottomRightRadius: 20,
+            borderBottomLeftRadius: 20,
+            borderTopRightRadius: 20,
+            borderTopLeftRadius: 20,
+          }}
+        >
+          <HStack
+            style={{
+              space: 3,
+              alignItems: "center",
+              marginBottom: 3,
+              justifyContent: "space-evenly",
+              alignItems: "center",
+            }}
+          >
+            <Avatar
+              size="lg"
+              source={{
+                uri: "https://pbs.twimg.com/profile_images/1352844693151731713/HKO7cnlW_400x400.jpg",
+              }}
+            ></Avatar>
+            <VStack>
+              <Text
+                style={{ flexShrink: 1, justifyContent: "center" }}
+                color="#000000"
+              >
+                {post.createur.prenom} {post.createur.nom}
+              </Text>
+              <Text>@ </Text>
+              <Text>{post.quartier.name}</Text>
+            </VStack>
+            {datePost}
           </HStack>
           <Text>{post.content}</Text>
           <Box alignItems="center">
@@ -237,7 +389,9 @@ function FeedScreen(props) {
               <Modal.Content width="100%">
                 <Modal.CloseButton />
                 <Modal.Header alignItems="center">Commentaires</Modal.Header>
-                <Modal.Body>{comments}</Modal.Body>
+                <Modal.Body>
+                  <ScrollView>{comments}</ScrollView>
+                </Modal.Body>
                 <Modal.Footer>{commentInput}</Modal.Footer>
               </Modal.Content>
             </Modal>
@@ -298,7 +452,10 @@ function FeedScreen(props) {
           onPress={() => handleMap()}
         />
       </HStack>
-      <ScrollView style={{ marginTop: 10 }}>{postList}</ScrollView>
+      <ScrollView style={{ marginTop: 10 }}>
+        {postList}
+        {events}
+      </ScrollView>
     </View>
   );
 }

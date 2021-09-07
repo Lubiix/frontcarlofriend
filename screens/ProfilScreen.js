@@ -66,7 +66,7 @@ const ProfilScreen = (props) => {
   }
 
   let postList = userPost.map((post, index) => {
-    console.log("postList", postList);
+    // console.log("postList", postList);
     return (
       <VStack key={index}>
         <Box
@@ -151,6 +151,7 @@ const ProfilScreen = (props) => {
   });
 
   return (
+    <ScrollView>
     <Box>
       <AspectRatio ratio={16 / 9}>
         <Image
@@ -232,13 +233,13 @@ const ProfilScreen = (props) => {
           Edit
         </Button>
       </HStack>
-      <ScrollView style={{ marginTop: 10 }}>{postList}</ScrollView>
+      {postList}
     </Box>
+    </ScrollView>
   );
 };
 
 function mapStateToProps(state) {
-  console.log("récup state dans reducer token", state);
   return { token: state.token };
 }
 
