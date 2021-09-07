@@ -19,15 +19,23 @@ import {
   AntDesign,
   FontAwesome5,
 } from "@expo/vector-icons";
-import { SafeAreaView, View, Text, ScrollView } from "react-native";
+import {
+  SafeAreaView,
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
+import { connect } from "react-redux";
 import { HOST } from "@env";
 
-const SearchScreen = () => {
+const SearchScreen = (props) => {
   console.log("HOOOOOOST", HOST);
   const [quartierSearch, setQuartierSearch] = useState("");
   const [typeUtilisateurSearch, setTypeUtilisateurSearch] = useState("");
   const [search, setSearch] = useState("");
   const [tableauSearch, setTableauSearch] = useState([]);
+  const [resultTableauVide, setResultTableauVide] = useState("");
   console.log("aie");
 
   console.log("SEARCHSCREEN TABLEAU SEARCH", tableauSearch);
@@ -55,46 +63,69 @@ const SearchScreen = () => {
     const responseBackendParsed = await envoiResearchBackendRaw.json();
     console.log("reponse backend search", responseBackendParsed);
     setTableauSearch(responseBackendParsed.userTableau);
+    if (responseBackendParsed.userTableau.length === 0) {
+      setResultTableauVide("Aucun utilisateur trouvé");
+    } else {
+      setResultTableauVide("");
+    }
+  };
+
+  const handlePressProfile = (idUser) => {
+    console.log("ID DE LA RECHERCHE", idUser);
+    props.onIdProfileSearch(idUser);
+    props.navigation.navigate("profileSearched");
   };
 
   const affichageRecherche = tableauSearch.map((user, i) => {
     return (
-      <Box
-        key={i}
-        bg="#FFFFFF"
-        p={4}
-        style={{
-          marginTop: 10,
-          alignSelf: "center",
-          width: 350,
-          borderBottomRightRadius: 20,
-          borderBottomLeftRadius: 20,
-          borderTopRightRadius: 20,
-          borderTopLeftRadius: 20,
-        }}
+      <TouchableOpacity
+        key={user.idUser}
+        onPress={() => handlePressProfile(user.idUser)}
       >
-        <HStack
+        <Box
+          bg="#FFFFFF"
+          p={4}
           style={{
-            space: 3,
-            alignItems: "center",
-            marginBottom: 1,
+            marginTop: 10,
+            alignSelf: "center",
+            width: 350,
+            borderBottomRightRadius: 20,
+            borderBottomLeftRadius: 20,
+            borderTopRightRadius: 20,
+            borderTopLeftRadius: 20,
           }}
         >
-          <Avatar
-            size="md"
-            source={{
-              uri: "https://pbs.twimg.com/profile_images/1352844693151731713/HKO7cnlW_400x400.jpg",
+          <HStack
+            onPress={() => handlePressProfile(user.idUser)}
+            style={{
+              space: 3,
+              alignItems: "center",
+              marginBottom: 1,
             }}
-          ></Avatar>
-          <Text
-            style={{ flexShrink: 1, marginLeft: 5, fontWeight: "bold" }}
-            color="#000000"
           >
-            {user.prenom} {user.nom}
+            <Avatar
+              onPress={() => handlePressProfile(user.idUser)}
+              size="md"
+              source={{
+                uri: "https://pbs.twimg.com/profile_images/1352844693151731713/HKO7cnlW_400x400.jpg",
+              }}
+            ></Avatar>
+            <Text
+              onPress={() => handlePressProfile(user.idUser)}
+              style={{ flexShrink: 1, marginLeft: 5, fontWeight: "bold" }}
+              color="#000000"
+            >
+              {user.prenom} {user.nom}
+            </Text>
+          </HStack>
+          <Text
+            onPress={() => handlePressProfile(user.idUser)}
+            style={{ marginLeft: 53 }}
+          >
+            {user.description}
           </Text>
-        </HStack>
-        <Text style={{ marginLeft: 53 }}>{user.description}</Text>
-      </Box>
+        </Box>
+      </TouchableOpacity>
     );
   });
 
@@ -178,9 +209,20 @@ const SearchScreen = () => {
           <Select.Item label="Commerçant" value="Commercant" />
         </Select>
       </View>
-      <ScrollView>{affichageRecherche}</ScrollView>
+      <ScrollView>
+        <Text>{resultTableauVide}</Text>
+        {affichageRecherche}
+      </ScrollView>
     </Fragment>
   );
 };
 
-export default SearchScreen;
+function mapDispatchToProps(dispatch) {
+  return {
+    onIdProfileSearch: function (idUser) {
+      dispatch({ type: "addID", idUser: idUser });
+    },
+  };
+}
+
+export default connect(null, mapDispatchToProps)(SearchScreen);
