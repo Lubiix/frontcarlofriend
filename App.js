@@ -13,8 +13,9 @@ import { createStore, combineReducers } from "redux";
 
 import token from "./reducers/token";
 import filter from "./reducers/filter";
+import idUser from "./reducers/idUserSearch";
 
-const store = createStore(combineReducers({ token, filter }));
+const store = createStore(combineReducers({ token, filter, idUser }));
 
 export default function App() {
   console.log("Host", HOST);

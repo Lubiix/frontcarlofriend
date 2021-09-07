@@ -31,7 +31,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { connect } from "react-redux";
 import { HOST } from "@env";
 
-const ProfilScreen = (props) => {
+const ProfilSearchScreen = (props) => {
   const [userPost, setUserPost] = useState([]);
   console.log("State userPost", userPost);
   const [user, setUser] = useState({});
@@ -42,10 +42,10 @@ const ProfilScreen = (props) => {
 
   useEffect(() => {
     const fetchUserPost = async () => {
-      const rawUserPost = await fetch(`${HOST}/feed-profil`, {
+      const rawUserPost = await fetch(`${HOST}/feed-profil-search`, {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `token=${props.token}`,
+        body: `idUser=${props.idUser}`,
       });
       const userPost = await rawUserPost.json();
       // console.log('userPost',userPost)
@@ -55,18 +55,12 @@ const ProfilScreen = (props) => {
     fetchUserPost();
   }, []);
 
-  const handleDeconnexion = async () => {
-    await AsyncStorage.removeItem("token");
-    props.onDeleteToken();
-    // props.navigation.navigate("Home");
+  const handleGoEdit = () => {
+    props.navigation.navigate("edit");
   };
 
-  const handleGoEdit = () => {
-    props.navigation.navigate("edit")
-  }
-
   let postList = userPost.map((post, index) => {
-    // console.log("postList", postList);
+    console.log("postList", postList);
     return (
       <VStack key={index}>
         <Box
@@ -151,104 +145,82 @@ const ProfilScreen = (props) => {
   });
 
   return (
-    <ScrollView>
-    <Box>
-      <AspectRatio ratio={16 / 9}>
-        <Image
-          roundedTop="lg"
-          source={{
-            uri: "https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg",
-          }}
-          alt="image"
-        />
-      </AspectRatio>
-      <Box
-        marginTop="-60px"
-        position="relative"
-        style={{ alignItems: "center" }}
-      >
-        <Avatar
-          zIndex={2}
-          size="2xl"
-          source={{
-            uri: "https://pbs.twimg.com/profile_images/1352844693151731713/HKO7cnlW_400x400.jpg",
-          }}
-        ></Avatar>
-      </Box>
-      <HStack marginTop="-100px" marginLeft="25px" width="50%">
-        <Button
+    <ScrollView style={{ marginTop: 10 }}>
+      <Box>
+        <AspectRatio ratio={16 / 9}>
+          <Image
+            roundedTop="lg"
+            source={{
+              uri: "https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg",
+            }}
+            alt="image"
+          />
+        </AspectRatio>
+        <Box
+          marginTop="-60px"
           position="relative"
-          bg="#62ADEB"
-          width="20%"
-          my={2}
-          height="100%"
-          width="40%"
-          size="xs"
-          _text={{ color: "white" }}
+          style={{ alignItems: "center" }}
         >
-          Quartier Favoris
-        </Button>
-      </HStack>
-      <HStack marginTop="-45px" marginLeft="290px" width="50%">
-        <Button
-          position="relative"
-          bg="#62ADEB"
-          width="20%"
-          my={2}
-          height="100%"
-          width="40%"
-          size="xs"
-          _text={{ color: "white" }}
-        >
-          Media
-        </Button>
-      </HStack>
+          <Avatar
+            zIndex={2}
+            size="2xl"
+            source={{
+              uri: "https://pbs.twimg.com/profile_images/1352844693151731713/HKO7cnlW_400x400.jpg",
+            }}
+          ></Avatar>
+        </Box>
+        <HStack marginTop="-100px" marginLeft="25px" width="50%">
+          <Button
+            position="relative"
+            bg="#62ADEB"
+            width="20%"
+            my={2}
+            height="100%"
+            width="40%"
+            size="xs"
+            _text={{ color: "white" }}
+          >
+            Quartier Favoris
+          </Button>
+        </HStack>
+        <HStack marginTop="-45px" marginLeft="290px" width="50%">
+          <Button
+            position="relative"
+            bg="#62ADEB"
+            width="20%"
+            my={2}
+            height="100%"
+            width="40%"
+            size="xs"
+            _text={{ color: "white" }}
+          >
+            Media
+          </Button>
+        </HStack>
 
-      <HStack style={{ justifyContent: "center" }} marginTop="60px">
-        <Button
-          onPress={() => handleDeconnexion()}
-          bg="#62ADEB"
-          width="20%"
-          my={2}
-          height="100%"
-          width="40%"
-          size="xs"
-          _text={{ color: "white" }}
-        >
-          Déconnexion
-        </Button>
-      </HStack>
-      
-      <HStack style={{ justifyContent: "center" }} marginTop="3">
-        <Button
-          onPress={()=>handleGoEdit()}
-          bg="#62ADEB"
-          width="20%"
-          my={2}
-          height="100%"
-          width="40%"
-          size="xs"
-          _text={{ color: "white" }}
-        >
-          Edit
-        </Button>
-      </HStack>
-      {postList}
-    </Box>
+        <HStack style={{ justifyContent: "center" }} marginTop="3">
+          <Button
+            onPress={() => handleGoEdit()}
+            bg="#62ADEB"
+            width="20%"
+            my={2}
+            height="100%"
+            width="40%"
+            size="xs"
+            _text={{ color: "white" }}
+          >
+            Edit
+          </Button>
+        </HStack>
+        {postList}
+      </Box>
     </ScrollView>
   );
 };
 
 function mapStateToProps(state) {
-  return { token: state.token };
+  console.log("récup state dans reducer token", state);
+  return { idUser: state.idUser };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    onDeleteToken: function () {
-      dispatch({ type: "deleteToken" });
-    },
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProfilScreen);
+export default connect(mapStateToProps, null)(ProfilSearchScreen);
