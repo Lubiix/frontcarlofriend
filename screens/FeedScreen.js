@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { View, Text, Button, ScrollView } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import {
   Entypo,
   MaterialIcons,
@@ -22,6 +22,7 @@ import {
   Stack,
   Modal,
   Input,
+  Button,
 } from "native-base";
 import { HOST } from "@env";
 import { connect } from "react-redux";
@@ -245,8 +246,9 @@ function FeedScreen(props) {
           </Box>
           <HStack
             justifyContent="space-between"
+            alignItems="flex-end"
             name="likecommentshare"
-            style={{ flex: 0, padding: 10, marginTop: 40 }}
+            style={{ adding: 10, marginTop: 40 }}
           >
             <Text>
               <AntDesign
@@ -257,22 +259,25 @@ function FeedScreen(props) {
               />
               {countLikePost}
             </Text>
-            <Button
-              title="Commentaires"
-              color="#62ADEB"
-              onPress={() => handleComment(event._id)}
-            >
-              Commentaires
-            </Button>
-            <Button
-              title="Aller à l'évènement"
-              color="#62ADEB"
-              onPress={() =>
-                props.navigation.navigate("Event", { idEvent: event._id })
-              }
-            >
-              Allez à l'évènement
-            </Button>
+            <VStack>
+              <Button
+                title="Commentaires"
+                bg="#62ADEB"
+                my={2}
+                onPress={() => handleComment(event._id)}
+              >
+                Commentaires
+              </Button>
+              <Button
+                title="Aller à l'évènement"
+                bg="#62ADEB"
+                onPress={() =>
+                  props.navigation.navigate("Event", { idEvent: event._id })
+                }
+              >
+                Allez à l'évènement
+              </Button>
+            </VStack>
             <Modal isOpen={showModal} onClose={() => closeComment()}>
               <Modal.Content width="100%">
                 <Modal.CloseButton />
@@ -380,7 +385,7 @@ function FeedScreen(props) {
             </Text>
             <Button
               title="Commentaires"
-              color="#62ADEB"
+              bg="#62ADEB"
               onPress={() => handleComment(post._id)}
             >
               Commentaires

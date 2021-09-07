@@ -31,7 +31,7 @@ const ChatScreen = (props) => {
   // console.log(">>route.params", props.route.params);
 
   const { token } = props.route.params;
-  // console.log(">>token", token);
+  console.log(">>token", token);
 
   useEffect(() => {
     const requestMessages = async () => {
