@@ -27,8 +27,11 @@ const ChatScreen = (props) => {
   const [listMessageChargement, setListMessageChargement] = useState([]);
   // console.log(">>currentMessage", currentMessage);
   // console.log(">>listMessage", listMessage);
-  // console.log(">>listMessageChargement", listMessageChargement);
-  const { token } = route.params;
+  console.log(">>listMessageChargement", listMessageChargement);
+  // console.log(">>route.params", props.route.params);
+
+  const { token } = props.route.params;
+  // console.log(">>token", token);
 
   useEffect(() => {
     const requestMessages = async () => {
@@ -36,12 +39,12 @@ const ChatScreen = (props) => {
       const rawMessages = await fetch(`${HOST}/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: `token=${token}`,
+        body: `tokenemetteur=${props.token}&tokenrecepteur=${token}`,
       });
       console.log("rawMessages", rawMessages);
       const messages = await rawMessages.json();
-      // console.log("messages", messages);
-      setListMessage([...listMessage, messages.messages]);
+      console.log("messages", messages);
+      setListMessageChargement(messages.messages);
     };
     requestMessages();
   }, []);
@@ -57,7 +60,8 @@ const ChatScreen = (props) => {
     if (currentMessage.length > 0) {
       socket.emit("sendMessage", {
         message: currentMessage,
-        token: props.token,
+        tokenEmetteur: props.token,
+        tokenRecepteur: token,
       });
       setCurrentMessage("");
     }

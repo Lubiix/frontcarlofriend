@@ -40,7 +40,7 @@ const MessageScreen = (props) => {
     setUsersSearch(userSearch.userData);
   };
 
-  const handleModal = () => {
+  const handleModal = (userToken) => {
     props.navigation.navigate("chat", {
       token: userToken,
     });
@@ -50,10 +50,11 @@ const MessageScreen = (props) => {
   };
 
   const affichageRecherche = usersSearch.map((user, i) => {
-    // console.log(">>user.token", user.token);
+    console.log(">>user.token", user);
     const userToken = user.token;
+    console.log(">>userToken", userToken);
     return (
-      <Link key={i} onPress={() => handleModal()}>
+      <Link key={i} onPress={() => handleModal(userToken)}>
         <HStack width="100%" px={4} my={4}>
           <HStack space={2} alignItems="center">
             <Avatar color="white" bg={"secondary.700"}>
