@@ -18,31 +18,44 @@ import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { connect } from "react-redux";
 import { HOST } from "@env";
 
-const Event = () => {
+const Event = (props) => {
   const [showModal, setShowModal] = useState(false);
-  // const { idEvent } = route.params;
+  const { idEvent } = props.route.params;
   const [hasParticipated, setHasParticipated] = useState(false);
-  const [informationEvent, setInformationEvent] = useState(null);
+  const [informationEvent, setInformationEvent] = useState({
+    content: "",
+    particants: [],
+  });
+  const [commentairesEvent, setCommentairesEvent] = useState([]);
+
+  console.log("route.params", props.route.params);
   useEffect(() => {
     const loadEvent = async () => {
-      const rawUserPost = await fetch(`${HOST}/load-event`, {
+      const rawEvent = await fetch(`${HOST}/load-event`, {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: `idEvent=${idEvent}`,
       });
-      const userPost = await rawUserPost.json();
-      setInformationEvent(userPost.event);
+      const eventParsed = await rawEvent.json();
+      setInformationEvent(eventParsed.event);
+      const rawCommentairesEvent = await fetch(`${HOST}/commentaires-event`, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `idEvent=${idEvent}`,
+      });
+      const commentairesParsed = await rawCommentairesEvent.json();
+      setCommentairesEvent(commentairesParsed.commentList);
     };
     loadEvent();
   }, []);
 
   const handleParticipate = async () => {
-    // const rawUserPost = await fetch(`${HOST}/participate-event`, {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    //   body: `token=${props.token}&idEvent=${idEvent}`,
-    // });
-    // const userPost = await rawUserPost.json();
+    const rawUserPost = await fetch(`${HOST}/participate-event`, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `token=${props.token}&idEvent=${idEvent}`,
+    });
+    const userPost = await rawUserPost.json();
     setHasParticipated(true);
   };
 
@@ -53,6 +66,52 @@ const Event = () => {
 
   const icon = <Icon as={Ionicons} name="checkmark" size={4} />;
 
+  let comments = commentairesEvent.map((comment, index) => {
+    if (postId == comment.post._id) {
+      return (
+        <List.Item>
+          <Box
+            bg="#FFFFFF"
+            p={4}
+            style={{
+              marginTop: 2,
+              alignSelf: "center",
+              width: 350,
+              borderBottomRightRadius: 20,
+              borderBottomLeftRadius: 20,
+              borderTopRightRadius: 20,
+              borderTopLeftRadius: 20,
+            }}
+          >
+            <HStack
+              style={{
+                space: 3,
+                alignItems: "center",
+                marginBottom: 0,
+              }}
+            >
+              <Avatar
+                mr={2}
+                size="md"
+                source={{
+                  uri: "https://manofmany.com/wp-content/uploads/2021/06/Hasbulla-Magomedov-2.jpg",
+                }}
+              ></Avatar>
+              <Stack>
+                <Text style={{ flexShrink: 1 }} color="#000000" bold={true}>
+                  Piras Axel
+                </Text>
+                <Text style={{ flexShrink: 1 }} my={2} color="#000000">
+                  Ambiance Scandale
+                </Text>
+              </Stack>
+            </HStack>
+          </Box>
+        </List.Item>
+      );
+    }
+  });
+
   return (
     <ScrollView
       style={{ flex: 1 }}
@@ -62,7 +121,7 @@ const Event = () => {
       }}
     >
       <SafeAreaView style={{ flex: 0, backgroundColor: "#62ADEB" }} />
-      <Box bg="white" shadow={2} rounded="lg" maxWidth="100%">
+      <Box bg="white" shadow={2} rounded="lg" width="100%">
         <Image
           source={{
             uri: "https://www.sportbible.com/cdn-cgi/image/width=720,quality=70,format=webp,fit=pad,dpr=1/https%3A%2F%2Fs3-images.sportbible.com%2Fs3%2Fcontent%2F55d4395260d17d5c415895d1f1310b30.png",
@@ -101,162 +160,7 @@ const Event = () => {
           {hasParticipated ? "Participe" : "Participer"}
         </Button>
         <List mt={2} my={2}>
-          <List.Item>
-            <Box
-              bg="#FFFFFF"
-              p={4}
-              style={{
-                marginTop: 2,
-                alignSelf: "center",
-                width: 350,
-                borderBottomRightRadius: 20,
-                borderBottomLeftRadius: 10,
-                borderTopRightRadius: 20,
-                borderTopLeftRadius: 20,
-              }}
-            >
-              <HStack
-                style={{
-                  space: 3,
-                  alignItems: "center",
-                  marginBottom: 0,
-                }}
-              >
-                <Avatar
-                  mr={2}
-                  size="md"
-                  source={{
-                    uri: "https://manofmany.com/wp-content/uploads/2021/06/Hasbulla-Magomedov-2.jpg",
-                  }}
-                ></Avatar>
-                <Stack>
-                  <Text style={{ flexShrink: 1 }} color="#000000" bold={true}>
-                    Piras Axel
-                  </Text>
-                  <Text style={{ flexShrink: 1 }} my={2} color="#000000">
-                    Ambiance Scandale
-                  </Text>
-                </Stack>
-              </HStack>
-            </Box>
-          </List.Item>
-          <List.Item>
-            <Box
-              bg="#FFFFFF"
-              p={4}
-              style={{
-                marginTop: 2,
-                alignSelf: "center",
-                width: 350,
-                borderBottomRightRadius: 20,
-                borderBottomLeftRadius: 20,
-                borderTopRightRadius: 20,
-                borderTopLeftRadius: 20,
-              }}
-            >
-              <HStack
-                style={{
-                  space: 3,
-                  alignItems: "center",
-                  marginBottom: 0,
-                }}
-              >
-                <Avatar
-                  mr={2}
-                  size="md"
-                  source={{
-                    uri: "https://manofmany.com/wp-content/uploads/2021/06/Hasbulla-Magomedov-2.jpg",
-                  }}
-                ></Avatar>
-                <Stack>
-                  <Text style={{ flexShrink: 1 }} color="#000000" bold={true}>
-                    Piras Axel
-                  </Text>
-                  <Text style={{ flexShrink: 1 }} my={2} color="#000000">
-                    Ambiance Scandale
-                  </Text>
-                </Stack>
-              </HStack>
-            </Box>
-          </List.Item>
-          <List.Item>
-            <Box
-              bg="#FFFFFF"
-              p={4}
-              style={{
-                marginTop: 2,
-                alignSelf: "center",
-                width: 350,
-                borderBottomRightRadius: 20,
-                borderBottomLeftRadius: 20,
-                borderTopRightRadius: 20,
-                borderTopLeftRadius: 20,
-              }}
-            >
-              <HStack
-                style={{
-                  space: 3,
-                  alignItems: "center",
-                  marginBottom: 1,
-                }}
-              >
-                <Avatar
-                  mr={2}
-                  size="md"
-                  source={{
-                    uri: "https://manofmany.com/wp-content/uploads/2021/06/Hasbulla-Magomedov-2.jpg",
-                  }}
-                ></Avatar>
-                <Stack>
-                  <Text style={{ flexShrink: 1 }} color="#000000" bold={true}>
-                    Piras Axel
-                  </Text>
-                  <Text style={{ flexShrink: 1 }} my={2} color="#000000">
-                    Ambiance Scandale
-                  </Text>
-                </Stack>
-              </HStack>
-            </Box>
-          </List.Item>
-          <List.Item>
-            <Box
-              bg="#FFFFFF"
-              p={4}
-              style={{
-                marginTop: 2,
-                alignSelf: "center",
-                width: 350,
-                borderBottomRightRadius: 20,
-                borderBottomLeftRadius: 20,
-                borderTopRightRadius: 20,
-                borderTopLeftRadius: 20,
-              }}
-            >
-              <HStack
-                style={{
-                  space: 3,
-                  alignItems: "center",
-                  marginBottom: 0,
-                }}
-              >
-                <Avatar
-                  mr={2}
-                  size="md"
-                  source={{
-                    uri: "https://manofmany.com/wp-content/uploads/2021/06/Hasbulla-Magomedov-2.jpg",
-                  }}
-                ></Avatar>
-                <Stack>
-                  <Text style={{ flexShrink: 1 }} color="#000000" bold={true}>
-                    Piras Axel
-                  </Text>
-                  <Text style={{ flexShrink: 1 }} my={2} color="#000000">
-                    Ambiance Scandale
-                  </Text>
-                </Stack>
-              </HStack>
-            </Box>
-          </List.Item>
+          {comments}
         </List>
       </Box>
     </ScrollView>
