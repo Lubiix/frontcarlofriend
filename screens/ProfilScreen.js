@@ -30,6 +30,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { connect } from "react-redux";
 import { HOST } from "@env";
+import { useIsFocused } from "@react-navigation/native";
 
 const ProfilScreen = (props) => {
   const [userPost, setUserPost] = useState([]);
@@ -52,12 +53,11 @@ const ProfilScreen = (props) => {
       setUser(userPost.user);
     };
     fetchUserPost();
-  }, []);
-
+  }, [useIsFocused()]);
 
   const handleGoEdit = () => {
-    props.navigation.navigate("edit")
-  }
+    props.navigation.navigate("edit");
+  };
 
   let postList = userPost.map((post, index) => {
     // console.log("postList", postList);
@@ -86,7 +86,7 @@ const ProfilScreen = (props) => {
             <Avatar
               size="md"
               source={{
-                uri: "https://pbs.twimg.com/profile_images/1352844693151731713/HKO7cnlW_400x400.jpg",
+                uri: user.profilePicture,
               }}
             ></Avatar>
             <Text style={{ flexShrink: 1 }} color="#000000">
@@ -146,74 +146,81 @@ const ProfilScreen = (props) => {
 
   return (
     <ScrollView>
-    <Box>
-      <AspectRatio ratio={16 / 9}>
-        <Image
-          roundedTop="lg"
-          source={{
-            uri: "https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg",
-          }}
-          alt="image"
-        />
-      </AspectRatio>
-      <Box
-        marginTop="-60px"
-        position="relative"
-        style={{ alignItems: "center" }}
-      >
-        <Avatar
-          zIndex={2}
-          size="2xl"
-          source={{
-            uri: "https://pbs.twimg.com/profile_images/1352844693151731713/HKO7cnlW_400x400.jpg",
-          }}
-        ></Avatar>
+      <Box>
+        <AspectRatio ratio={16 / 9}>
+          <Image
+            roundedTop="lg"
+            source={{
+              uri: user.coverPicture
+                ? user.coverPicture
+                : "https://theamericangenius.com/wp-content/uploads/2013/04/facebook-cover-photo-white.jpg",
+            }}
+            alt="image"
+          />
+        </AspectRatio>
+        <Box
+          marginTop="-60px"
+          position="relative"
+          style={{ alignItems: "center" }}
+        >
+          <Avatar
+            zIndex={2}
+            size="2xl"
+            source={{
+              uri: user.profilePicture
+                ? user.profilePicture
+                : "https://www.e-xpertsolutions.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png",
+            }}
+          ></Avatar>
+        </Box>
+        <HStack marginTop="-100px" marginLeft="25px" width="50%">
+          <Button
+            position="relative"
+            bg="#62ADEB"
+            width="20%"
+            my={2}
+            height="100%"
+            width="40%"
+            size="xs"
+            _text={{ color: "white" }}
+          >
+            Quartier Favoris
+          </Button>
+        </HStack>
+        <HStack marginTop="-45px" marginLeft="290px" width="50%">
+          <Button
+            position="relative"
+            bg="#62ADEB"
+            width="20%"
+            my={2}
+            height="100%"
+            width="40%"
+            size="xs"
+            _text={{ color: "white" }}
+          >
+            Media
+          </Button>
+        </HStack>
+
+        <HStack
+          style={{ justifyContent: "center", marginBottom: 10, marginTop: 60 }}
+          marginTop="3"
+        >
+          <Button
+            onPress={() => handleGoEdit()}
+            bg="#62ADEB"
+            width="20%"
+            my={2}
+            height="100%"
+            width="40%"
+            size="xs"
+            _text={{ color: "white" }}
+          >
+            Edit
+          </Button>
+        </HStack>
+        {postList}
       </Box>
-      <HStack marginTop="-100px" marginLeft="25px" width="50%">
-        <Button
-          position="relative"
-          bg="#62ADEB"
-          width="20%"
-          my={2}
-          height="100%"
-          width="40%"
-          size="xs"
-          _text={{ color: "white" }}
-        >
-          Quartier Favoris
-        </Button>
-      </HStack>
-      <HStack marginTop="-45px" marginLeft="290px" width="50%">
-        <Button
-          position="relative"
-          bg="#62ADEB"
-          width="20%"
-          my={2}
-          height="100%"
-          width="40%"
-          size="xs"
-          _text={{ color: "white" }}
-        >
-          Media
-        </Button>
-      </HStack>
-      
-      <HStack style={{ justifyContent: "center", marginBottom:10, marginTop:60 }} marginTop="3">
-        <Button
-          onPress={()=>handleGoEdit()}
-          bg="#62ADEB"
-          width="20%"
-          my={2}
-          height="100%"
-          width="40%"
-          size="xs"
-          _text={{ color: "white" }}
-        >
-          Edit
-        </Button>
-      </HStack>
-      {postList}
-    </Box>
     </ScrollView>
   );
 };
@@ -221,7 +228,5 @@ const ProfilScreen = (props) => {
 function mapStateToProps(state) {
   return { token: state.token };
 }
-
-
 
 export default connect(mapStateToProps, null)(ProfilScreen);

@@ -16,6 +16,7 @@ import {
 import { connect } from "react-redux";
 import { HOST } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as ImagePicker from "expo-image-picker";
 
 const EditProfilScreen = (props) => {
   const activities = ["restauration", "chaussures"];
@@ -25,6 +26,50 @@ const EditProfilScreen = (props) => {
   const [dateNaissance, setDateNaissance] = useState("");
   const [email, setEmail] = useState("");
   const [dataUser, setDataUser] = useState({});
+  const [imageProfil, setImageProfil] = useState("");
+  const [imageCouverture, setImageCouverture] = useState("");
+
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== "web") {
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== "granted") {
+          alert("Sorry, we need camera roll permissions to make this work!");
+        }
+      }
+    })();
+  }, []);
+
+  const addPhotoProfil = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log("RESULT", result);
+
+    if (!result.cancelled) {
+      setImageProfil(result.uri);
+    }
+  };
+
+  const addPhotoCouverture = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [3, 7],
+      quality: 1,
+    });
+
+    console.log("RESULT", result);
+
+    if (!result.cancelled) {
+      setImageCouverture(result.uri);
+    }
+  };
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -42,6 +87,133 @@ const EditProfilScreen = (props) => {
   const handleValidateUpdate = async () => {
     // console.log("#1")
     // console.log("click detecté")
+    console.log("click validate detecté");
+    console.log("PHOTO URI", imageProfil);
+    if (imageProfil.length && imageCouverture.length) {
+      var dataProfile = new FormData();
+      await dataProfile.append("photo", {
+        uri: imageProfil,
+        type: "image/jpeg",
+        name: "photo.jpg",
+      });
+
+      const responseBackendPhotoProfile = await fetch(`${HOST}/upload`, {
+        method: "post",
+        body: dataProfile,
+      });
+      const responseParsedProfile = await responseBackendPhotoProfile.json();
+      console.log("RESPONSE PARSED", responseParsedProfile);
+      var dataCouverture = new FormData();
+      await dataCouverture.append("photo", {
+        uri: imageCouverture,
+        type: "image/jpeg",
+        name: "photo.jpg",
+      });
+
+      const responseBackendPhotoCouverture = await fetch(`${HOST}/upload`, {
+        method: "post",
+        body: dataCouverture,
+      });
+      const responseParsedCouverture =
+        await responseBackendPhotoCouverture.json();
+      console.log("RESPONSE PARSED", responseParsedCouverture);
+      const rawfetchUpdateProfileCouverturePhoto = await fetch(
+        `${HOST}/update-profil`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            nom: nom,
+            prenom: prenom,
+            token: props.token,
+            photoProfil: responseParsedProfile.secure_url,
+            photoCouverture: responseParsedCouverture.secure_url,
+            civilite: sexe,
+            dateDeNaissance: dateNaissance,
+            email: email,
+          }),
+        }
+      );
+      props.navigation.navigate("profil");
+      return;
+    }
+    if (imageProfil.length) {
+      var dataProfile = new FormData();
+      await dataProfile.append("photo", {
+        uri: imageProfil,
+        type: "image/jpeg",
+        name: "photo.jpg",
+      });
+
+      const responseBackendPhotoProfile = await fetch(`${HOST}/upload`, {
+        method: "post",
+        body: dataProfile,
+      });
+      const responseParsedProfile = await responseBackendPhotoProfile.json();
+      console.log("RESPONSE PARSED", responseParsedProfile);
+      const rawfetchUpdateProfileCouverturePhoto = await fetch(
+        `${HOST}/update-profil`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            nom: nom,
+            prenom: prenom,
+            token: props.token,
+            photoProfil: responseParsedProfile.secure_url,
+            civilite: sexe,
+            dateDeNaissance: dateNaissance,
+            email: email,
+          }),
+        }
+      );
+      props.navigation.navigate("profil");
+      return;
+    }
+    if (imageCouverture.length) {
+      var dataCouverture = new FormData();
+      await dataCouverture.append("photo", {
+        uri: imageCouverture,
+        type: "image/jpeg",
+        name: "photo.jpg",
+      });
+
+      const responseBackendPhotoCouverture = await fetch(`${HOST}/upload`, {
+        method: "post",
+        body: dataCouverture,
+      });
+      const responseParsedCouverture =
+        await responseBackendPhotoCouverture.json();
+      console.log("RESPONSE PARSED", responseParsedCouverture);
+      const rawfetchUpdateProfileCouverturePhoto = await fetch(
+        `${HOST}/update-profil`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            nom: nom,
+            prenom: prenom,
+            token: props.token,
+            photoCouverture: responseParsedCouverture.secure_url,
+            civilite: sexe,
+            dateDeNaissance: dateNaissance,
+            email: email,
+          }),
+        }
+      );
+      props.navigation.navigate("profil");
+      return;
+    }
+
     const rawfetchUpdateProfil = await fetch(`${HOST}/update-profil`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -154,7 +326,9 @@ const EditProfilScreen = (props) => {
           <Image
             roundedTop="lg"
             source={{
-              uri: "https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg",
+              uri: dataUser.coverPicture
+                ? dataUser.coverPicture
+                : "https://theamericangenius.com/wp-content/uploads/2013/04/facebook-cover-photo-white.jpg",
             }}
             alt="image"
           />
@@ -168,7 +342,9 @@ const EditProfilScreen = (props) => {
             zIndex={2}
             size="2xl"
             source={{
-              uri: "https://pbs.twimg.com/profile_images/1352844693151731713/HKO7cnlW_400x400.jpg",
+              uri: dataUser.profilePicture
+                ? dataUser.profilePicture
+                : "https://www.e-xpertsolutions.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png",
             }}
           ></Avatar>
         </Box>
@@ -188,7 +364,7 @@ const EditProfilScreen = (props) => {
         </HStack>
         <HStack marginTop="-45px" marginLeft="280px" width="50%">
           <Button
-          onPress={() => handleDeconnexion()}
+            onPress={() => handleDeconnexion()}
             position="relative"
             bg="#62ADEB"
             width="20%"
@@ -204,19 +380,32 @@ const EditProfilScreen = (props) => {
 
         <HStack style={{ justifyContent: "center" }} marginTop="60px">
           <Button
-            onPress={() => handleDeconnexion()}
             bg="#62ADEB"
             width="20%"
+            my={2}
+            mx={1}
+            height="100%"
+            width="40%"
+            size="xs"
+            _text={{ color: "white" }}
+            onPress={() => addPhotoProfil()}
+          >
+            Edit photo de profil
+          </Button>
+          <Button
+            bg="#62ADEB"
+            width="20%"
+            mx={1}
             my={2}
             height="100%"
             width="40%"
             size="xs"
             _text={{ color: "white" }}
+            onPress={() => addPhotoCouverture()}
           >
-            Edit photo de profil
+            Edit photo de couverture
           </Button>
         </HStack>
-
 
         {editProfil}
       </Box>
@@ -229,10 +418,10 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return {
-      onDeleteToken: function () {
-        dispatch({ type: "deleteToken" });
-      },
-    };
-  }
+  return {
+    onDeleteToken: function () {
+      dispatch({ type: "deleteToken" });
+    },
+  };
+}
 export default connect(mapStateToProps, mapDispatchToProps)(EditProfilScreen);
