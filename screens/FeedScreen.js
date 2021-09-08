@@ -79,14 +79,6 @@ function FeedScreen(props) {
 
   const [showModal, setShowModal] = useState(false);
 
-  function sortByDate(arr) {
-    arr.sort(function (a, b) {
-      return Number(new Date(b.date)) - Number(new Date(a.date));
-    });
-
-    return arr;
-  }
-
   //ENVOI COMMENTAIRE AU BACK VIA ROUTE /comment
   const sendComment = async () => {
     console.log(
@@ -103,6 +95,13 @@ function FeedScreen(props) {
     });
     setCommentValue("");
   };
+  function sortByDate(arr) {
+    arr.sort(function (a, b) {
+      return Number(new Date(b.date)) - Number(new Date(a.date));
+    });
+    console.log("tableau sorted maybe", arr);
+    return arr;
+  }
 
   //APPEL /feed POUR AFFICHER LES POSTS DANS LE FEED
   useEffect(() => {
@@ -116,8 +115,8 @@ function FeedScreen(props) {
       const allCommentData = userFeedParsed.comments;
       const allEventData = userFeedParsed.events;
       console.log("tous les évènements :", allEventData);
-      setFeedList(allPostData);
-      setEventList(allEventData);
+      setFeedList(sortByDate(allPostData));
+      setEventList(sortByDate(allEventData));
       setCommentList(allCommentData);
     };
     requestFeed();
@@ -413,8 +412,6 @@ function FeedScreen(props) {
     );
   });
 
-  const allFeedSorted = sortByDate(postList.concat(events));
-
   return (
     <View style={{ flex: 1 }}>
       <HStack
@@ -465,7 +462,10 @@ function FeedScreen(props) {
           onPress={() => handleMap()}
         />
       </HStack>
-      <ScrollView style={{ marginTop: 10 }}>{allFeedSorted}</ScrollView>
+      <ScrollView style={{ marginTop: 10 }}>
+        {postList}
+        {events}
+      </ScrollView>
     </View>
   );
 }
