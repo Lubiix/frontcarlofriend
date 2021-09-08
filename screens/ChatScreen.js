@@ -28,7 +28,7 @@ const ChatScreen = (props) => {
   // console.log(">>currentMessage", currentMessage);
   // console.log(">>listMessage", listMessage);
   console.log(">>listMessageChargement", listMessageChargement);
-  // console.log(">>route.params", props.route.params);
+  console.log(">>route.params", props.route.params);
 
   const { token } = props.route.params;
   console.log(">>token", token);

@@ -12,9 +12,11 @@ import {
   Modal,
   Stack,
   Input,
+  Text,
   useSafeArea,
+  Circle,
 } from "native-base";
-import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { AntDesign, Ionicons, Entypo } from "@expo/vector-icons";
 import { HOST } from "@env";
 import { connect } from "react-redux";
 
@@ -41,11 +43,10 @@ const MessageScreen = (props) => {
   }, []);
 
   const handleGoChat = (userToken) => {
-    // console.log(">>userToken", userToken);
-    props.navigation.navigate("chat"),
-      {
-        token: userToken,
-      };
+    console.log(">>userToken au click", userToken);
+    props.navigation.navigate("chat", {
+      token: userToken,
+    });
   };
 
   const handleSearch = async () => {
@@ -72,7 +73,7 @@ const MessageScreen = (props) => {
 
   const listConversationItem = listConversation.map((message, i) => {
     const userToken = message.token;
-    // console.log(">>userToken", userToken);
+    console.log(">>userToken", userToken);
 
     return (
       <Link key={i} onPress={() => handleGoChat(userToken)}>
@@ -109,75 +110,87 @@ const MessageScreen = (props) => {
   return (
     <View style={{ flex: 1 }}>
       <SafeAreaView style={{ backgroundColor: "#62ADEB" }} />
-      <Box
-        p={4}
-        _text={{
-          fontSize: "md",
-          fontWeight: "bold",
-          color: "white",
-        }}
-        alignItems="center"
-        mb={3}
-        bg="#62ADEB"
-      >
-        Messagerie
+      <Box mb={1} bg="#62ADEB">
+        <HStack justifyContent="center" alignItems="center">
+          <Text style={{ fontSize: "md", fontWeight: "bold", color: "white" }}>
+            Messagerie
+          </Text>
+          <HStack justifyContent="flex-end" alignItems="flex-end">
+            <Button
+              bg="#62ADEB"
+              width="15%"
+              onPress={() => setShowModal(true)}
+              // borderRadius={60}
+              startIcon={
+                <Icon
+                  color="white"
+                  as={<Entypo name="new-message" />}
+                  size="sm"
+                />
+              }
+            ></Button>
+          </HStack>
+        </HStack>
       </Box>
-      {listConversationItem}
-      <Stack justifyContent="flex-end" alignItems="flex-end">
+      {/* <Stack justifyContent="center" alignItems="center">
         <Button
           bg="#62ADEB"
           width="15%"
           onPress={() => setShowModal(true)}
+          borderRadius={60}
+          placement="bottom right"
           startIcon={
-            <Icon color="white" as={<AntDesign name="plus" />} size="sm" />
+            <Icon color="white" as={<Entypo name="new-message" />} size="sm" />
           }
         ></Button>
-        <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-          <Modal.Content maxWidth="100%">
-            <Modal.Header>
-              <View style={{ flexDirection: "row" }}>
-                <Input
-                  onChangeText={(value) => setSearch(value)}
-                  value={search}
-                  placeholder="Recherche utilisateur"
-                  variant="filled"
-                  width="100%"
-                  bg="gray.200"
-                  borderRadius={10}
-                  py={1}
-                  px={2}
-                  _web={{
-                    _focus: {
-                      borderColor: "muted.300",
-                      style: { boxShadow: "none" },
-                    },
-                  }}
-                  InputLeftElement={
-                    <Icon
-                      size="sm"
-                      ml={2}
-                      size={5}
-                      color="gray.400"
-                      as={<Ionicons name="ios-search" />}
-                    />
-                  }
-                  InputRightElement={
-                    <Icon
-                      size="sm"
-                      ml={2}
-                      size={10}
-                      color="black"
-                      as={<Ionicons name="ios-enter" />}
-                      onPress={() => handleSearch()}
-                    />
-                  }
-                />
-              </View>
-            </Modal.Header>
-            <Modal.Body>{affichageRecherche}</Modal.Body>
-          </Modal.Content>
-        </Modal>
-      </Stack>
+      </Stack> */}
+
+      {listConversationItem}
+      <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+        <Modal.Content maxWidth="100%">
+          <Modal.Header>
+            <View style={{ flexDirection: "row" }}>
+              <Input
+                onChangeText={(value) => setSearch(value)}
+                value={search}
+                placeholder="Recherche utilisateur"
+                variant="filled"
+                width="100%"
+                bg="gray.200"
+                borderRadius={10}
+                py={1}
+                px={2}
+                _web={{
+                  _focus: {
+                    borderColor: "muted.300",
+                    style: { boxShadow: "none" },
+                  },
+                }}
+                InputLeftElement={
+                  <Icon
+                    size="sm"
+                    ml={2}
+                    size={5}
+                    color="gray.400"
+                    as={<Ionicons name="ios-search" />}
+                  />
+                }
+                InputRightElement={
+                  <Icon
+                    size="sm"
+                    ml={2}
+                    size={10}
+                    color="black"
+                    as={<Ionicons name="ios-enter" />}
+                    onPress={() => handleSearch()}
+                  />
+                }
+              />
+            </View>
+          </Modal.Header>
+          <Modal.Body>{affichageRecherche}</Modal.Body>
+        </Modal.Content>
+      </Modal>
     </View>
   );
 };
