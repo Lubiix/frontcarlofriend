@@ -6,6 +6,9 @@ import {
   Button,
   Text,
   Image,
+  View, 
+  Box, 
+  HStack
 } from "native-base";
 import { SafeAreaView } from "react-native";
 import { Input, Stack, TextArea } from "native-base";
@@ -150,43 +153,50 @@ const AddEventScreen = (props) => {
     );
   }
   return (
-    <Fragment>
-      <SafeAreaView style={{ flex: 0, backgroundColor: "#62ADEB" }} />
-      <SafeAreaView style={{ flex: 1 }}>
+    <View style={{ flex: 1 }}>
+    <SafeAreaView style={{ backgroundColor: "#62ADEB" }} />
+    <Box mb={1} bg="#62ADEB">
+      <HStack justifyContent="center" alignItems="center">
+        <Text
+          style={{
+            fontSize: "ld",
+            fontWeight: "bold",
+            color: "white",
+            fontSize: 20,
+            padding: 12,
+          }}
+        >
+          Publication
+        </Text>
+      </HStack>
+    </Box>
         <ScrollView
           style={{ flex: 1, marginTop: 50 }}
           contentContainerStyle={{ alignItems: "center" }}
         >
-          <Button.Group
-            variant="solid"
-            isAttached
-            space={6}
-            mx={{
-              base: "auto",
-              md: 0,
-            }}
-          >
-            <Button
-              bg="#62ADEB"
-              style={{ color: "#62ADEB" }}
-              mr={0}
-              _text={{
-                color: "white",
-              }}
-              onPress={() => handleGoPost()}
-            >
-              Post
-            </Button>
-            <Button
-              bg="#62ADEB"
-              style={{ color: "#62ADEB" }}
-              _text={{
-                color: "white",
-              }}
-            >
-              Event
-            </Button>
-          </Button.Group>
+          <View style={{ flex: 1, flexDirection: "row", marginBottom:10 }}>
+        <Button
+          bg="#62ADEB"
+          style={{ color: "#62ADEB" }}
+          mr={0}
+          _text={{
+            color: "white",
+          }}
+          onPress={() => handleGoPost()}
+        >
+          Post
+        </Button>
+        <Button
+          marginLeft="10px"
+          bg="#62ADEB"
+          style={{ color: "#62ADEB" }}
+          _text={{
+            color: "white",
+          }}
+        >
+          Event
+        </Button>
+      </View>
           
           <Input
             w="80%"
@@ -307,8 +317,8 @@ const AddEventScreen = (props) => {
             Créer l'évenement
           </Button>
         </ScrollView>
-      </SafeAreaView>
-    </Fragment>
+    
+    </View>
   );
 };
 
