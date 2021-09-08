@@ -72,7 +72,9 @@ function Card({ item, handleComment, isEvent = false }) {
             <Avatar
               size="lg"
               source={{
-                uri: "https://pbs.twimg.com/profile_images/1352844693151731713/HKO7cnlW_400x400.jpg",
+                uri: item.createur.profilePicture
+                  ? item.createur.profilePicture
+                  : "https://www.e-xpertsolutions.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png",
               }}
             ></Avatar>
             <VStack>
@@ -91,9 +93,7 @@ function Card({ item, handleComment, isEvent = false }) {
         <Box alignItems="center">
           <Image
             source={{
-              uri: item.createur.profilePicture
-                ? item.createur.profilePicture
-                : "https://www.wallpapersun.com/wp-content/uploads/2021/05/Hasbulla-Wallpaper-13.jpg",
+              uri: item.image ? item.image : null,
             }}
             alt={"Alternate Text"}
             resizeMode="cover"
