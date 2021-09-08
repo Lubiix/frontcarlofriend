@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text } from "react-native";
-import { Button } from "native-base";
+import { Button, Center, NativeBaseProvider, Image } from "native-base";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { connect } from "react-redux";
 
@@ -35,7 +35,17 @@ const HomeScreen = (props) => {
     props.navigation.navigate("Login");
   };
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <View style={{ flex: 1, alignItems: "center", marginTop:150}}>
+          <Image
+      size={150}
+      my={10}
+      resizeMode={"contain"}
+      borderRadius={100}
+      source={
+        require("../assets/logo.png")
+      }
+      alt="Alternate Text"
+    />
       <Button
         bg="#62ADEB"
         w="80%"

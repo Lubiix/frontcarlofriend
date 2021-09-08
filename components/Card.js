@@ -91,8 +91,8 @@ function Card({ item, handleComment, isEvent = false }) {
         <Box alignItems="center">
           <Image
             source={{
-              uri: item.image
-                ? item.image
+              uri: item.createur.profilePicture
+                ? item.createur.profilePicture
                 : "https://www.wallpapersun.com/wp-content/uploads/2021/05/Hasbulla-Wallpaper-13.jpg",
             }}
             alt={"Alternate Text"}

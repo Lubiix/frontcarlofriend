@@ -28,6 +28,7 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import { HOST } from "@env";
+import { justifyContent } from "styled-system";
 
 const SearchScreen = (props) => {
   console.log("HOOOOOOST", HOST);
@@ -132,8 +133,26 @@ const SearchScreen = (props) => {
   });
 
   return (
-    <Fragment>
-      <SafeAreaView style={{ flex: 0, backgroundColor: "#62ADEB" }} />
+    <View style={{ flex: 1 }}>
+      <SafeAreaView style={{ backgroundColor: "#62ADEB" }} />
+      <Box mb={1} bg="#62ADEB">
+        <HStack justifyContent="center" alignItems="center">
+          <Text
+            style={{
+              fontSize: "ld",
+              fontWeight: "bold",
+              color: "white",
+              fontSize: 20,
+              padding: 12,
+            }}
+          >
+            Recherche
+          </Text>
+          <HStack justifyContent="flex-end" alignItems="flex-end">
+            <AntDesign name="search1" size={24} color="white" />
+          </HStack>
+        </HStack>
+      </Box>
       <View style={{ flexDirection: "row" }}>
         <Input
           onChangeText={(value) => setSearch(value)}
@@ -211,11 +230,13 @@ const SearchScreen = (props) => {
           <Select.Item label="Commerçant" value="Commercant" />
         </Select>
       </View>
-      <ScrollView>
-        <Text>{resultTableauVide}</Text>
-        {affichageRecherche}
-      </ScrollView>
-    </Fragment>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text style={{ fontWeight: "bold", fontSize: 30, color: "#B6B6B6" }}>
+          {resultTableauVide}
+        </Text>
+      </View>
+      <ScrollView>{affichageRecherche}</ScrollView>
+    </View>
   );
 };
 

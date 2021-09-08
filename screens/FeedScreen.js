@@ -16,7 +16,7 @@ function FeedScreen(props) {
   const [feedList, setFeedList] = useState([]);
 
   const [eventList, setEventList] = useState([]);
-  console.log("eventList:", eventList);
+  // console.log("eventList:", eventList);
 
   const [commentList, setCommentList] = useState([]);
   // console.log("commentList", commentList);
@@ -70,6 +70,13 @@ function FeedScreen(props) {
     });
     setCommentValue("");
   };
+  function sortByDate(arr) {
+    arr.sort(function (a, b) {
+      return Number(new Date(b.date)) - Number(new Date(a.date));
+    });
+    console.log("tableau sorted maybe", arr);
+    return arr;
+  }
 
   //APPEL /feed POUR AFFICHER LES POSTS DANS LE FEED
   useEffect(() => {
@@ -83,8 +90,8 @@ function FeedScreen(props) {
       const allCommentData = userFeedParsed.comments;
       const allEventData = userFeedParsed.events;
       console.log("tous les évènements :", allEventData);
-      setFeedList(allPostData);
-      setEventList(allEventData);
+      setFeedList(sortByDate(allPostData));
+      setEventList(sortByDate(allEventData));
       setCommentList(allCommentData);
     };
     requestFeed();
@@ -131,7 +138,9 @@ function FeedScreen(props) {
             mr={2}
             size="md"
             source={{
-              uri: "https://manofmany.com/wp-content/uploads/2021/06/Hasbulla-Magomedov-2.jpg",
+              uri: event.createur.profilePicture
+                ? event.createur.profilePicture
+                : "https://www.e-xpertsolutions.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png",
             }}
           ></Avatar>
           <Stack>
