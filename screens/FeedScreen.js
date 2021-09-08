@@ -79,6 +79,14 @@ function FeedScreen(props) {
 
   const [showModal, setShowModal] = useState(false);
 
+  function sortByDate(arr) {
+    arr.sort(function (a, b) {
+      return Number(new Date(b.date)) - Number(new Date(a.date));
+    });
+
+    return arr;
+  }
+
   //ENVOI COMMENTAIRE AU BACK VIA ROUTE /comment
   const sendComment = async () => {
     console.log(
@@ -156,7 +164,9 @@ function FeedScreen(props) {
             mr={2}
             size="md"
             source={{
-              uri: "https://manofmany.com/wp-content/uploads/2021/06/Hasbulla-Magomedov-2.jpg",
+              uri: event.createur.profilePicture
+                ? event.createur.profilePicture
+                : "https://www.e-xpertsolutions.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png",
             }}
           ></Avatar>
           <Stack>
@@ -191,7 +201,7 @@ function FeedScreen(props) {
       </VStack>
     );
     return (
-      <VStack key={index}>
+      <VStack key={event._id}>
         <Box
           bg="#FFFFFF"
           p={4}
@@ -211,7 +221,9 @@ function FeedScreen(props) {
             <Avatar
               size="lg"
               source={{
-                uri: "https://pbs.twimg.com/profile_images/1352844693151731713/HKO7cnlW_400x400.jpg",
+                uri: event.createur.profilePicture
+                  ? event.createur.profilePicture
+                  : "https://www.e-xpertsolutions.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png",
               }}
             ></Avatar>
             <VStack>
@@ -227,9 +239,7 @@ function FeedScreen(props) {
           <Box alignItems="center">
             <Image
               source={{
-                uri: event.image
-                  ? event.image
-                  : "https://www.wallpapersun.com/wp-content/uploads/2021/05/Hasbulla-Wallpaper-13.jpg",
+                uri: event.image ? event.image : null,
               }}
               alt="Alternate Text"
               size={"xl"}
@@ -306,7 +316,7 @@ function FeedScreen(props) {
       </VStack>
     );
     return (
-      <VStack key={index}>
+      <VStack key={post._id}>
         <Box
           bg="#FFFFFF"
           p={4}
@@ -336,7 +346,9 @@ function FeedScreen(props) {
               <Avatar
                 size="lg"
                 source={{
-                  uri: "https://pbs.twimg.com/profile_images/1352844693151731713/HKO7cnlW_400x400.jpg",
+                  uri: post.createur.profilePicture
+                    ? post.createur.profilePicture
+                    : "https://www.e-xpertsolutions.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png",
                 }}
               ></Avatar>
               <VStack>
@@ -355,9 +367,7 @@ function FeedScreen(props) {
           <Box alignItems="center">
             <Image
               source={{
-                uri: post.image
-                  ? post.image
-                  : "https://www.wallpapersun.com/wp-content/uploads/2021/05/Hasbulla-Wallpaper-13.jpg",
+                uri: post.image ? post.image : null,
               }}
               alt="Alternate Text"
               size={"xl"}
@@ -402,6 +412,8 @@ function FeedScreen(props) {
       </VStack>
     );
   });
+
+  const allFeedSorted = sortByDate(postList.concat(events));
 
   return (
     <View style={{ flex: 1 }}>
@@ -453,10 +465,7 @@ function FeedScreen(props) {
           onPress={() => handleMap()}
         />
       </HStack>
-      <ScrollView style={{ marginTop: 10 }}>
-        {postList}
-        {events}
-      </ScrollView>
+      <ScrollView style={{ marginTop: 10 }}>{allFeedSorted}</ScrollView>
     </View>
   );
 }
