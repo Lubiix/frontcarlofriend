@@ -28,6 +28,7 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import { HOST } from "@env";
+import { justifyContent } from "styled-system";
 
 const SearchScreen = (props) => {
   console.log("HOOOOOOST", HOST);
@@ -209,8 +210,11 @@ const SearchScreen = (props) => {
           <Select.Item label="Commerçant" value="Commercant" />
         </Select>
       </View>
+      <View style={{flex:1, justifyContent:"center", alignItems:"center"}}>
+      <Text  style={{fontWeight:"Bold", fontSize:30, color:"#B6B6B6"}}>{resultTableauVide}</Text>
+      
+      </View>
       <ScrollView>
-        <Text>{resultTableauVide}</Text>
         {affichageRecherche}
       </ScrollView>
     </Fragment>
