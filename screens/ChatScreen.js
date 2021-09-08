@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { SafeAreaView } from "react-native";
 import {
   View,
@@ -22,39 +22,48 @@ import socketIOClient from "socket.io-client";
 const socket = socketIOClient(`${HOST}`);
 
 const ChatScreen = (props) => {
+  const { token } = props.route.params;
+  // console.log(">>token", token);
+
   const [currentMessage, setCurrentMessage] = useState();
   const [listMessage, setListMessage] = useState([]);
   const [listMessageChargement, setListMessageChargement] = useState([]);
   // console.log(">>currentMessage", currentMessage);
   // console.log(">>listMessage", listMessage);
-  console.log(">>listMessageChargement", listMessageChargement);
-  console.log(">>route.params", props.route.params);
+  // console.log(">>listMessageChargement", listMessageChargement);
 
-  const { token } = props.route.params;
-  console.log(">>token", token);
+  const scrollViewRef = useRef(null);
 
   useEffect(() => {
     const requestMessages = async () => {
-      console.log(">>HOST", HOST);
+      // console.log(">>HOST", HOST);
       const rawMessages = await fetch(`${HOST}/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: `tokenemetteur=${props.token}&tokenrecepteur=${token}`,
       });
-      console.log("rawMessages", rawMessages);
       const messages = await rawMessages.json();
-      console.log("messages", messages);
+      // console.log("messages", messages);
       setListMessageChargement(messages.messages);
     };
     requestMessages();
   }, []);
 
+  const socketAddToListMessage = (dataMessage) => {
+    // console.log(">>dataMessage", dataMessage);
+    setListMessage([...listMessage, dataMessage]);
+  };
+
   useEffect(() => {
-    socket.on("sendMessageFromBack", (dataMessage) => {
-      // console.log(">>dataMessage", dataMessage);
-      setListMessage([...listMessage, dataMessage]);
-    });
+    socket.on("sendMessageFromBack", socketAddToListMessage);
   }, [listMessage]);
+
+  useEffect(() => {
+    return () => {
+      // console.log(">>destruction");
+      socket.removeAllListeners();
+    };
+  }, []);
 
   const handleSendMessage = () => {
     if (currentMessage.length > 0) {
@@ -64,6 +73,13 @@ const ChatScreen = (props) => {
         tokenRecepteur: token,
       });
       setCurrentMessage("");
+    }
+  };
+
+  const onScrollViewChange = () => {
+    // console.log(">>onScrollViewChange");
+    if (scrollViewRef) {
+      scrollViewRef.current.scrollToEnd();
     }
   };
 
@@ -101,7 +117,8 @@ const ChatScreen = (props) => {
       <Box
         p={4}
         _text={{
-          fontSize: "md",
+          fontSize: "ld",
+          fontSize: 12,
           fontWeight: "bold",
           color: "white",
         }}
@@ -112,7 +129,11 @@ const ChatScreen = (props) => {
         Conversation
       </Box>
 
-      <ScrollView style={{ flex: 1, marginTop: 10 }}>
+      <ScrollView
+        style={{ flex: 1, marginTop: 10 }}
+        ref={scrollViewRef}
+        onContentSizeChange={() => onScrollViewChange()}
+      >
         {listMessageChargementItem}
         {listMessageItem}
       </ScrollView>
