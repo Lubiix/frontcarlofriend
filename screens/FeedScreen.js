@@ -30,6 +30,7 @@ import { connect } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import IconBadge from "react-native-icon-badge";
 import { marginLeft } from "styled-system";
+import { useIsFocused } from "@react-navigation/native";
 
 function FeedScreen(props) {
   console.log("HOOOOOOST", HOST);
@@ -120,7 +121,7 @@ function FeedScreen(props) {
       setCommentList(allCommentData);
     };
     requestFeed();
-  }, []);
+  }, [useIsFocused()]);
 
   let commentInput = (
     <HStack
