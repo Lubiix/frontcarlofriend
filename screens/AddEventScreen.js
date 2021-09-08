@@ -187,20 +187,7 @@ const AddEventScreen = (props) => {
               Event
             </Button>
           </Button.Group>
-          <Button
-            bg="#62ADEB"
-            style={{
-              color: "#62ADEB",
-              margin: 10,
-            }}
-            mr={0}
-            _text={{
-              color: "white",
-            }}
-            onPress={() => handleValidateNewEvent()}
-          >
-            Créer l'évenement
-          </Button>
+          
           <Input
             w="80%"
             mx={3}
@@ -305,6 +292,20 @@ const AddEventScreen = (props) => {
             Date Fin
           </Button>
           <Text>Fin de l'évenement: {endDate}</Text>
+          <Button
+            bg="#62ADEB"
+            style={{
+              color: "#62ADEB",
+              margin: 10,
+            }}
+            mr={0}
+            _text={{
+              color: "white",
+            }}
+            onPress={() => handleValidateNewEvent()}
+          >
+            Créer l'évenement
+          </Button>
         </ScrollView>
       </SafeAreaView>
     </Fragment>
