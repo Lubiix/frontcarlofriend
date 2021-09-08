@@ -86,7 +86,9 @@ const ProfilSearchScreen = (props) => {
             <Avatar
               size="md"
               source={{
-                uri: "https://pbs.twimg.com/profile_images/1352844693151731713/HKO7cnlW_400x400.jpg",
+                uri: user.profilePicture
+                  ? user.profilePicture
+                  : "https://www.e-xpertsolutions.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png",
               }}
             ></Avatar>
             <Text style={{ flexShrink: 1 }} color="#000000">
@@ -99,9 +101,7 @@ const ProfilSearchScreen = (props) => {
           <Box alignItems="center">
             <Image
               source={{
-                uri: post.image
-                  ? post.image
-                  : "https://www.wallpapersun.com/wp-content/uploads/2021/05/Hasbulla-Wallpaper-13.jpg",
+                uri: post.image ? post.image : null,
               }}
               alt="Alternate Text"
               size={"xl"}
@@ -151,7 +151,9 @@ const ProfilSearchScreen = (props) => {
           <Image
             roundedTop="lg"
             source={{
-              uri: "https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg",
+              uri: user.coverPicture
+                ? user.coverPicture
+                : "https://theamericangenius.com/wp-content/uploads/2013/04/facebook-cover-photo-white.jpg",
             }}
             alt="image"
           />
@@ -165,7 +167,9 @@ const ProfilSearchScreen = (props) => {
             zIndex={2}
             size="2xl"
             source={{
-              uri: "https://pbs.twimg.com/profile_images/1352844693151731713/HKO7cnlW_400x400.jpg",
+              uri: user.profilePicture
+                ? user.profilePicture
+                : "https://www.e-xpertsolutions.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png",
             }}
           ></Avatar>
         </Box>

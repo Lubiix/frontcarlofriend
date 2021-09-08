@@ -12,6 +12,8 @@ const AddPostScreen = (props) => {
   const [content, setContent] = useState("");
   const [quartier, setQuartier] = useState("");
   const [image, setImage] = useState(null);
+  const [status, setStatus] = useState("");
+  console.log("state status :", status);
 
   useEffect(() => {
     (async () => {
@@ -22,6 +24,14 @@ const AddPostScreen = (props) => {
           alert("Sorry, we need camera roll permissions to make this work!");
         }
       }
+      const rawUserStatus = await fetch(`${HOST}/get-user`, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `token=${props.token}`,
+      });
+      const userStatus = await rawUserStatus.json();
+      // console.log("userStatus", userStatus)
+      setStatus(userStatus.searchUser.status);
     })();
   }, []);
 
@@ -33,7 +43,7 @@ const AddPostScreen = (props) => {
       quality: 1,
     });
 
-    console.log("RESULT", result);
+    // console.log("RESULT", result);
 
     if (!result.cancelled) {
       setImage(result.uri);
@@ -50,10 +60,10 @@ const AddPostScreen = (props) => {
   };
 
   const handleValidateNewPost = async () => {
-    console.log('click validate detecté')
+    console.log("click validate detecté");
     console.log("PHOTO URI", image);
     props.navigation.navigate("Actualités");
-    if (image.length ) {
+    if (image.length) {
       var data = new FormData();
       await data.append("photo", {
         uri: image,
@@ -98,6 +108,61 @@ const AddPostScreen = (props) => {
     setContent("");
   };
 
+  const buttonPublication =
+    status === "Commercant" ? (
+      <Button.Group
+        variant="solid"
+        isAttached
+        space={6}
+        mx={{
+          base: "auto",
+          md: 0,
+        }}
+      >
+        <Button
+          bg="#62ADEB"
+          style={{ color: "#62ADEB" }}
+          mr={0}
+          _text={{
+            color: "white",
+          }}
+        >
+          Post
+        </Button>
+        <Button
+          bg="#62ADEB"
+          style={{ color: "#62ADEB" }}
+          _text={{
+            color: "white",
+          }}
+          onPress={() => handleGoEvent()}
+        >
+          Event
+        </Button>
+      </Button.Group>
+    ) : (
+      <Button.Group
+        variant="solid"
+        isAttached
+        space={6}
+        mx={{
+          base: "auto",
+          md: 0,
+        }}
+      >
+        <Button
+          bg="#62ADEB"
+          style={{ color: "#62ADEB" }}
+          mr={0}
+          _text={{
+            color: "white",
+          }}
+        >
+          Post
+        </Button>
+      </Button.Group>
+    );
+
   return (
     <Fragment>
       <SafeAreaView style={{ flex: 0, backgroundColor: "#62ADEB" }} />
@@ -106,36 +171,7 @@ const AddPostScreen = (props) => {
           style={{ flex: 1, marginTop: 50 }}
           contentContainerStyle={{ alignItems: "center" }}
         >
-          <Button.Group
-            variant="solid"
-            isAttached
-            space={6}
-            mx={{
-              base: "auto",
-              md: 0,
-            }}
-          >
-            <Button
-              bg="#62ADEB"
-              style={{ color: "#62ADEB" }}
-              mr={0}
-              _text={{
-                color: "white",
-              }}
-            >
-              Post
-            </Button>
-            <Button
-              bg="#62ADEB"
-              style={{ color: "#62ADEB" }}
-              _text={{
-                color: "white",
-              }}
-              onPress={() => handleGoEvent()}
-            >
-              Event
-            </Button>
-          </Button.Group>
+          {buttonPublication}
           <Stack space={4} w="80%">
             <TextArea
               onChange={handleInputUser}

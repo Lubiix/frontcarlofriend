@@ -5,7 +5,7 @@ import { NativeBaseProvider } from "native-base";
 import { StyleSheet } from "react-native";
 
 import { HOST } from "@env";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useIsFocused } from "@react-navigation/native";
 
 import AuthentificatorFlow from "./screens/AuthentificatorFlow";
 import { Provider } from "react-redux";
