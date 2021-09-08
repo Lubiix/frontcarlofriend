@@ -10,13 +10,10 @@ import {
   Link,
   View,
   Modal,
-  Stack,
   Input,
   Text,
-  useSafeArea,
-  Circle,
 } from "native-base";
-import { AntDesign, Ionicons, Entypo } from "@expo/vector-icons";
+import { Ionicons, Entypo } from "@expo/vector-icons";
 import { HOST } from "@env";
 import { connect } from "react-redux";
 
@@ -36,14 +33,13 @@ const MessageScreen = (props) => {
         body: `token=${props.token}`,
       });
       const conversation = await rawConversation.json();
-      console.log(">>conversation", conversation);
+      // console.log(">>conversation", conversation);
       setListConversation(conversation.messages);
     };
     requestConversation();
   }, []);
 
   const handleGoChat = (userToken) => {
-    console.log(">>userToken au click", userToken);
     props.navigation.navigate("chat", {
       token: userToken,
     });
@@ -73,7 +69,7 @@ const MessageScreen = (props) => {
 
   const listConversationItem = listConversation.map((message, i) => {
     const userToken = message.token;
-    console.log(">>userToken", userToken);
+    // console.log(">>userToken", userToken);
 
     return (
       <Link key={i} onPress={() => handleGoChat(userToken)}>
@@ -82,7 +78,10 @@ const MessageScreen = (props) => {
             <Avatar color="white" bg={"secondary.700"}>
               GF
             </Avatar>
-            <Heading size="sm">{message.user}</Heading>
+            <Heading size="sm">
+              {message.user}
+              {message.userCommercant}
+            </Heading>
           </HStack>
         </HStack>
       </Link>
@@ -90,7 +89,6 @@ const MessageScreen = (props) => {
   });
 
   const affichageRecherche = usersSearch.map((user, i) => {
-    // console.log(">>user.token", user);
     const userToken = user.token;
     // console.log(">>userToken", userToken);
     return (
@@ -111,41 +109,26 @@ const MessageScreen = (props) => {
     <View style={{ flex: 1 }}>
       <SafeAreaView style={{ backgroundColor: "#62ADEB" }} />
       <Box mb={1} bg="#62ADEB">
-        <HStack justifyContent="center" alignItems="center">
-          <Text style={{ fontSize: "md", fontWeight: "bold", color: "white" }}>
-            Messagerie
-          </Text>
-          <HStack justifyContent="flex-end" alignItems="flex-end">
-            <Button
-              bg="#62ADEB"
-              width="15%"
-              onPress={() => setShowModal(true)}
-              // borderRadius={60}
-              startIcon={
-                <Icon
-                  color="white"
-                  as={<Entypo name="new-message" />}
-                  size="sm"
-                />
-              }
-            ></Button>
-          </HStack>
+        <HStack justifyContent="space-between" alignItems="center">
+          <Button bg="#62ADEB" />
+          <Text style={{ fontWeight: "bold", color: "white" }}>Messagerie</Text>
+          <Button
+            bg="#62ADEB"
+            width="15%"
+            onPress={() => setShowModal(true)}
+            startIcon={
+              <Icon
+                color="white"
+                as={<Entypo name="new-message" />}
+                size="sm"
+              />
+            }
+          ></Button>
         </HStack>
       </Box>
-      {/* <Stack justifyContent="center" alignItems="center">
-        <Button
-          bg="#62ADEB"
-          width="15%"
-          onPress={() => setShowModal(true)}
-          borderRadius={60}
-          placement="bottom right"
-          startIcon={
-            <Icon color="white" as={<Entypo name="new-message" />} size="sm" />
-          }
-        ></Button>
-      </Stack> */}
 
       {listConversationItem}
+
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
         <Modal.Content maxWidth="100%">
           <Modal.Header>
