@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, ScrollView } from "react-native";
 import {
   Entypo,
   MaterialIcons,
@@ -23,11 +23,13 @@ import {
   Modal,
   Input,
   Button,
+  Text,
 } from "native-base";
 import { HOST } from "@env";
 import { connect } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import IconBadge from "react-native-icon-badge";
+import { marginLeft } from "styled-system";
 
 function FeedScreen(props) {
   console.log("HOOOOOOST", HOST);
@@ -154,9 +156,7 @@ function FeedScreen(props) {
             mr={2}
             size="md"
             source={{
-              uri: comment.createur.profilePicture
-                ? comment.createur.profilePicture
-                : "https://www.e-xpertsolutions.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png",
+              uri: "https://manofmany.com/wp-content/uploads/2021/06/Hasbulla-Magomedov-2.jpg",
             }}
           ></Avatar>
           <Stack>
@@ -185,9 +185,8 @@ function FeedScreen(props) {
     const dateWeek = newDate.toLocaleDateString();
     const dateEvent = (
       <VStack>
-        <Text>{dateWeek}</Text>
         <Text>
-          {dateHours}:{dateMinutes}
+          {dateWeek} - {dateHours}:{dateMinutes}
         </Text>
       </VStack>
     );
@@ -199,17 +198,11 @@ function FeedScreen(props) {
           style={{
             marginTop: 10,
             alignSelf: "center",
-            width: 350,
-            borderBottomRightRadius: 20,
-            borderBottomLeftRadius: 20,
-            borderTopRightRadius: 20,
-            borderTopLeftRadius: 20,
           }}
         >
           <HStack
             style={{
               space: 3,
-              alignItems: "center",
               marginBottom: 3,
               justifyContent: "space-evenly",
               alignItems: "center",
@@ -218,16 +211,11 @@ function FeedScreen(props) {
             <Avatar
               size="lg"
               source={{
-                uri: event.createur.profilePicture
-                  ? event.createur.profilePicture
-                  : "https://www.e-xpertsolutions.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png",
+                uri: "https://pbs.twimg.com/profile_images/1352844693151731713/HKO7cnlW_400x400.jpg",
               }}
             ></Avatar>
             <VStack>
-              <Text
-                style={{ flexShrink: 1, justifyContent: "center" }}
-                color="#000000"
-              >
+              <Text style={{ fontWeight: "bold" }} color="#000000">
                 {event.createur.prenom} {event.createur.nom}
               </Text>
               <Text>@ </Text>
@@ -239,7 +227,9 @@ function FeedScreen(props) {
           <Box alignItems="center">
             <Image
               source={{
-                uri: event.image ? event.image : null,
+                uri: event.image
+                  ? event.image
+                  : "https://www.wallpapersun.com/wp-content/uploads/2021/05/Hasbulla-Wallpaper-13.jpg",
               }}
               alt="Alternate Text"
               size={"xl"}
@@ -309,10 +299,9 @@ function FeedScreen(props) {
     }
     const dateWeek = newDate.toLocaleDateString();
     const datePost = (
-      <VStack>
-        <Text>{dateWeek}</Text>
-        <Text>
-          {dateHours}:{dateMinutes}
+      <VStack alignItems="center">
+        <Text color="#B6B6B6" style={{ fontSize: 10 }}>
+          {dateWeek} - {dateHours}:{dateMinutes}
         </Text>
       </VStack>
     );
@@ -324,57 +313,63 @@ function FeedScreen(props) {
           style={{
             marginTop: 10,
             alignSelf: "center",
-            width: 350,
-            borderBottomRightRadius: 20,
-            borderBottomLeftRadius: 20,
-            borderTopRightRadius: 20,
-            borderTopLeftRadius: 20,
+            width: 410,
           }}
         >
           <HStack
             style={{
               space: 3,
-              alignItems: "center",
               marginBottom: 3,
-              justifyContent: "space-evenly",
+              justifyContent: "space-between",
               alignItems: "center",
+              borderBottomColor: "#B6B6B6",
+              borderBottomWidth: 1,
             }}
           >
-            <Avatar
-              size="lg"
-              source={{
-                uri: post.createur.profilePicture
-                  ? post.createur.profilePicture
-                  : "https://www.e-xpertsolutions.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png",
+            <HStack
+              style={{
+                space: 3,
+                marginBottom: 3,
+                alignItems: "center",
               }}
-            ></Avatar>
-            <VStack>
-              <Text
-                style={{ flexShrink: 1, justifyContent: "center" }}
-                color="#000000"
-              >
-                {post.createur.prenom} {post.createur.nom}
-              </Text>
-              <Text>@ </Text>
-              <Text>{post.quartier.name}</Text>
-            </VStack>
-            {datePost}
+            >
+              <Avatar
+                size="lg"
+                source={{
+                  uri: "https://pbs.twimg.com/profile_images/1352844693151731713/HKO7cnlW_400x400.jpg",
+                }}
+              ></Avatar>
+              <VStack>
+                <Text
+                  style={{ fontWeight: "bold", marginLeft: 5, fontSize: 18 }}
+                  color="#000000"
+                >
+                  {post.createur.prenom} {post.createur.nom}
+                </Text>
+                <Text style={{ marginLeft: 5 }}>{post.quartier.name}</Text>
+                {datePost}
+              </VStack>
+            </HStack>
           </HStack>
           <Text>{post.content}</Text>
           <Box alignItems="center">
             <Image
               source={{
-                uri: post.image ? post.image : null,
+                uri: post.image
+                  ? post.image
+                  : "https://www.wallpapersun.com/wp-content/uploads/2021/05/Hasbulla-Wallpaper-13.jpg",
               }}
               alt="Alternate Text"
               size={"xl"}
               marginTop={5}
+              marginBottom={5}
             />
           </Box>
           <HStack
             justifyContent="space-between"
+            alignItems="center"
             name="likecommentshare"
-            style={{ flex: 0, padding: 10, marginTop: 40 }}
+            style={{ padding: 10, marginTop: 0 }}
           >
             <Text>
               <AntDesign
@@ -385,26 +380,25 @@ function FeedScreen(props) {
               />
               {countLikePost}
             </Text>
-            <Button
-              title="Commentaires"
-              bg="#62ADEB"
+            <MaterialCommunityIcons
+              name="comment-multiple-outline"
+              size={24}
+              color="#62ADEB"
               onPress={() => handleComment(post._id)}
-            >
-              Commentaires
-            </Button>
-            <Modal isOpen={showModal} onClose={() => closeComment()}>
-              <Modal.Content width="100%">
-                <Modal.CloseButton />
-                <Modal.Header alignItems="center">Commentaires</Modal.Header>
-                <Modal.Body>
-                  <ScrollView>{comments}</ScrollView>
-                </Modal.Body>
-                <Modal.Footer>{commentInput}</Modal.Footer>
-              </Modal.Content>
-            </Modal>
-            <FontAwesome5 name="share-square" size={24} color="#B6B6B6" />
+            />
+            <Ionicons name="share-outline" size={28} color="#B6B6B6" />
           </HStack>
         </Box>
+        <Modal isOpen={showModal} onClose={() => closeComment()}>
+          <Modal.Content width="100%">
+            <Modal.CloseButton />
+            <Modal.Header alignItems="center">Commentaires</Modal.Header>
+            <Modal.Body>
+              <ScrollView>{comments}</ScrollView>
+            </Modal.Body>
+            <Modal.Footer>{commentInput}</Modal.Footer>
+          </Modal.Content>
+        </Modal>
       </VStack>
     );
   });
