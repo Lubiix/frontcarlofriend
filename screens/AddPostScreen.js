@@ -1,8 +1,18 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { ScrollView, Select, CheckIcon, Button } from "native-base";
+import {
+  ScrollView,
+  Select,
+  CheckIcon,
+  Button,
+  Box,
+  HStack,
+  Text,
+  Icon,
+} from "native-base";
 import { SafeAreaView } from "react-native";
-import { Stack, TextArea, Image } from "native-base";
+import { Stack, TextArea, Image, View } from "native-base";
 import * as ImagePicker from "expo-image-picker";
+import { AntDesign, Ionicons, Entypo } from "@expo/vector-icons";
 
 import { HOST } from "@env";
 import { connect } from "react-redux";
@@ -24,13 +34,13 @@ const AddPostScreen = (props) => {
           alert("Sorry, we need camera roll permissions to make this work!");
         }
       }
+      //Si commercant on display le bouton event
       const rawUserStatus = await fetch(`${HOST}/get-user`, {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: `token=${props.token}`,
       });
       const userStatus = await rawUserStatus.json();
-      // console.log("userStatus", userStatus)
       setStatus(userStatus.searchUser.status);
     })();
   }, []);
@@ -108,17 +118,10 @@ const AddPostScreen = (props) => {
     setContent("");
   };
 
+  // Constante d'affichage bouton post/event selon status
   const buttonPublication =
     status === "Commercant" ? (
-      <Button.Group
-        variant="solid"
-        isAttached
-        space={6}
-        mx={{
-          base: "auto",
-          md: 0,
-        }}
-      >
+      <View style={{ flex: 1, flexDirection: "row", marginBottom: 10 }}>
         <Button
           bg="#62ADEB"
           style={{ color: "#62ADEB" }}
@@ -130,6 +133,7 @@ const AddPostScreen = (props) => {
           Post
         </Button>
         <Button
+          marginLeft="10px"
           bg="#62ADEB"
           style={{ color: "#62ADEB" }}
           _text={{
@@ -139,17 +143,9 @@ const AddPostScreen = (props) => {
         >
           Event
         </Button>
-      </Button.Group>
+      </View>
     ) : (
-      <Button.Group
-        variant="solid"
-        isAttached
-        space={6}
-        mx={{
-          base: "auto",
-          md: 0,
-        }}
-      >
+      <View style={{ flex: 1, flexDirection: "row", marginBottom: 10 }}>
         <Button
           bg="#62ADEB"
           style={{ color: "#62ADEB" }}
@@ -160,86 +156,99 @@ const AddPostScreen = (props) => {
         >
           Post
         </Button>
-      </Button.Group>
+      </View>
     );
 
   return (
-    <Fragment>
-      <SafeAreaView style={{ flex: 0, backgroundColor: "#62ADEB" }} />
-      <SafeAreaView style={{ flex: 1 }}>
-        <ScrollView
-          style={{ flex: 1, marginTop: 50 }}
-          contentContainerStyle={{ alignItems: "center" }}
+    <View style={{ flex: 1 }}>
+      <SafeAreaView style={{ backgroundColor: "#62ADEB" }} />
+      <Box mb={1} bg="#62ADEB">
+        <HStack justifyContent="center" alignItems="center">
+          <Text
+            style={{
+              fontSize: "ld",
+              fontWeight: "bold",
+              color: "white",
+              fontSize: 20,
+              padding: 12,
+            }}
+          >
+            Publication
+          </Text>
+        </HStack>
+      </Box>
+      <ScrollView
+        style={{ flex: 1, marginTop: 50 }}
+        contentContainerStyle={{ alignItems: "center" }}
+      >
+        {buttonPublication}
+        <Stack space={4} w="80%">
+          <TextArea
+            onChange={handleInputUser}
+            value={content}
+            h={150}
+            placeholder="Quoi de neuf ? "
+          />
+        </Stack>
+        <Select
+          minWidth={315}
+          accessibilityLabel="Quartier"
+          placeholder="Quartier"
+          value={quartier}
+          onValueChange={(itemValue) => setQuartier(itemValue)}
+          _selectedItem={{
+            bg: "cyan.600",
+            endIcon: <CheckIcon size={4} />,
+          }}
         >
-          {buttonPublication}
-          <Stack space={4} w="80%">
-            <TextArea
-              onChange={handleInputUser}
-              value={content}
-              h={150}
-              placeholder="Text Area Placeholder"
-            />
-          </Stack>
-          <Select
-            minWidth={315}
-            accessibilityLabel="Quartier"
-            placeholder="Quartier"
-            value={quartier}
-            onValueChange={(itemValue) => setQuartier(itemValue)}
-            _selectedItem={{
-              bg: "cyan.600",
-              endIcon: <CheckIcon size={4} />,
+          <Select.Item label="Fontvieille" value="Fontvieille" />
+          <Select.Item label="Condamine" value="Condamine" />
+          <Select.Item label="Le Port" value="Le Port" />
+          <Select.Item label="Larvotto" value="Larvotto" />
+          <Select.Item label="Casino" value="Casino" />
+          <Select.Item label="Jardin Exotique" value="Jardin Exotique" />
+          <Select.Item label="Saint-Roman" value="Saint-Roman" />
+        </Select>
+        <Button
+          bg="#62ADEB"
+          style={{
+            color: "#62ADEB",
+            margin: 10,
+          }}
+          mr={0}
+          _text={{
+            color: "white",
+          }}
+          onPress={() => addPhoto()}
+        >
+          Ajouter une photo
+        </Button>
+        {image ? (
+          <Image
+            source={{
+              uri: image,
             }}
-          >
-            <Select.Item label="Fontvieille" value="Fontvieille" />
-            <Select.Item label="Condamine" value="Condamine" />
-            <Select.Item label="Le Port" value="Le Port" />
-            <Select.Item label="Larvotto" value="Larvotto" />
-            <Select.Item label="Casino" value="Casino" />
-            <Select.Item label="Jardin Exotique" value="Jardin Exotique" />
-            <Select.Item label="Saint-Roman" value="Saint-Roman" />
-          </Select>
-          <Button
-            bg="#62ADEB"
-            style={{
-              color: "#62ADEB",
-              margin: 10,
-            }}
-            mr={0}
-            _text={{
-              color: "white",
-            }}
-            onPress={() => addPhoto()}
-          >
-            Ajouter une photo
-          </Button>
-          {image ? (
-            <Image
-              source={{
-                uri: image,
-              }}
-              alt="Alternate Text"
-              size={"xs"}
-            />
-          ) : null}
+            alt="Alternate Text"
+            size={"xs"}
+          />
+        ) : null}
 
-          <Button
-            bg="#62ADEB"
-            style={{
-              color: "#62ADEB",
-              margin: 10,
-            }}
-            mr={0}
-            _text={{
-              color: "white",
-            }}
-            onPress={() => handleValidateNewPost()}
-          >
-            Poster
-          </Button>
-        </ScrollView>
-      </SafeAreaView>
-    </Fragment>
+        <Button
+          bg="#62ADEB"
+          style={{
+            color: "#62ADEB",
+            margin: 10,
+          }}
+          mr={0}
+          _text={{
+            color: "white",
+          }}
+          onPress={() => handleValidateNewPost()}
+        >
+          Poster
+        </Button>
+      </ScrollView>
+    </View>
   );
 };
 
