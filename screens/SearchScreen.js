@@ -213,7 +213,7 @@ const SearchScreen = (props) => {
         </Select>
       </View>
       <View style={{flex:1, justifyContent:"center", alignItems:"center"}}>
-      <Text  style={{fontWeight:"Bold", fontSize:30, color:"#B6B6B6"}}>{resultTableauVide}</Text>
+      <Text  style={{fontWeight:"bold", fontSize:30, color:"#B6B6B6"}}>{resultTableauVide}</Text>
       
       </View>
       <ScrollView>
