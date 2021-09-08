@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { View, Text } from "react-native";
-import { Button, Input, Select, CheckIcon, Checkbox } from "native-base";
+import {
+  Button,
+  Input,
+  Select,
+  CheckIcon,
+  Checkbox,
+  Spinner,
+  Modal,
+  HStack,
+} from "native-base";
 import { HOST } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { connect } from "react-redux";
@@ -17,9 +26,12 @@ const AccountCreationScreenCommercant = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
   const handleShowPassword = () => setShow(!show);
 
   const handleValidateSignup = async () => {
+    setShowModal(true);
     const envoiInfosBackendRaw = await fetch(`${HOST}/signup-commercant`, {
       method: "POST",
       headers: {
@@ -40,7 +52,9 @@ const AccountCreationScreenCommercant = (props) => {
     if (responseBackendParsed.result) {
       AsyncStorage.setItem("token", responseBackendParsed.token);
       props.onSetToken(responseBackendParsed.token);
+      setShowModal(false);
     }
+    setShowModal(false);
     console.log("RESPONSE BACKEND PARSED", responseBackendParsed);
   };
 
@@ -205,6 +219,16 @@ const AccountCreationScreenCommercant = (props) => {
       >
         Valider
       </Button>
+      <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+        <Modal.Content maxWidth="400px">
+          <Modal.Header alignItems="center">Chargement</Modal.Header>
+          <Modal.Body alignItems="center">
+            <HStack space={2}>
+              <Spinner color="#62ADEB" />
+            </HStack>
+          </Modal.Body>
+        </Modal.Content>
+      </Modal>
     </View>
   );
 };

@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { ScrollView, View, Text } from "react-native";
-import { Button, Input, Select, CheckIcon, Checkbox } from "native-base";
+import {
+  Button,
+  Input,
+  Select,
+  CheckIcon,
+  Checkbox,
+  Spinner,
+  Modal,
+  HStack,
+} from "native-base";
 import { HOST } from "@env";
 import { connect } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -21,9 +30,12 @@ const AccountCreationScreenParticulier = (props) => {
   const [password, setPassword] = useState("");
   const [quartierActivity, setQuartierActivity] = useState("");
   const [show, setShow] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
   const handleShowPassword = () => setShow(!show);
 
   const handleValidateSignup = async () => {
+    setShowModal(true);
     const envoiInfosBackendRaw = await fetch(`${HOST}/signup-particulier`, {
       method: "POST",
       headers: {
@@ -46,8 +58,10 @@ const AccountCreationScreenParticulier = (props) => {
     if (responseBackendParsed.result) {
       AsyncStorage.setItem("token", responseBackendParsed.token);
       props.onSetToken(responseBackendParsed.token);
+      setShowModal(false);
     }
     console.log("RESPONSE BACKEND PARSED", responseBackendParsed);
+    setShowModal(false);
   };
 
   return (
@@ -261,6 +275,16 @@ const AccountCreationScreenParticulier = (props) => {
       >
         Valider
       </Button>
+      <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+        <Modal.Content maxWidth="400px">
+          <Modal.Header alignItems="center">Chargement</Modal.Header>
+          <Modal.Body alignItems="center">
+            <HStack space={2}>
+              <Spinner color="#62ADEB" />
+            </HStack>
+          </Modal.Body>
+        </Modal.Content>
+      </Modal>
     </ScrollView>
   );
 };
