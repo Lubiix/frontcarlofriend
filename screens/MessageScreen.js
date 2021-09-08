@@ -112,7 +112,8 @@ const MessageScreen = (props) => {
       <SafeAreaView style={{ backgroundColor: "#62ADEB" }} />
       <Box mb={1} bg="#62ADEB">
         <HStack justifyContent="center" alignItems="center">
-          <Text style={{ fontSize: "md", fontWeight: "bold", color: "white" }}>
+          <Text style={{ fontSize: "ld", fontWeight: "bold", color: "white", fontSize: 20,
+              padding: 12 }}>
             Messagerie
           </Text>
           <HStack justifyContent="flex-end" alignItems="flex-end">

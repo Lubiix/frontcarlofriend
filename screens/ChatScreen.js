@@ -101,7 +101,8 @@ const ChatScreen = (props) => {
       <Box
         p={4}
         _text={{
-          fontSize: "md",
+          fontSize: "ld",
+          fontSize: 12,
           fontWeight: "bold",
           color: "white",
         }}

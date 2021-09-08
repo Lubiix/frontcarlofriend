@@ -121,12 +121,6 @@ const AddPostScreen = (props) => {
   // Constante d'affichage bouton post/event selon status
   const buttonPublication =
     status === "Commercant" ? (
-      // <Button.Group
-      //   variant="solid"
-      //   isAttached
-      //   space={6}
-      //   mx={10}
-      // >
       <View style={{ flex: 1, flexDirection: "row", marginBottom: 10 }}>
         <Button
           bg="#62ADEB"
@@ -151,16 +145,7 @@ const AddPostScreen = (props) => {
         </Button>
       </View>
     ) : (
-      // </Button.Group>
-      <Button.Group
-        variant="solid"
-        isAttached
-        space={6}
-        mx={{
-          base: "auto",
-          md: 0,
-        }}
-      >
+      <View style={{ flex: 1, flexDirection: "row", marginBottom: 10 }}>
         <Button
           bg="#62ADEB"
           style={{ color: "#62ADEB" }}
@@ -171,7 +156,7 @@ const AddPostScreen = (props) => {
         >
           Post
         </Button>
-      </Button.Group>
+      </View>
     );
 
   return (
@@ -202,7 +187,7 @@ const AddPostScreen = (props) => {
             onChange={handleInputUser}
             value={content}
             h={150}
-            placeholder="Text Area Placeholder"
+            placeholder="Quoi de neuf ? "
           />
         </Stack>
         <Select
