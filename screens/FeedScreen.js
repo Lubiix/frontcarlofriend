@@ -74,7 +74,6 @@ function FeedScreen(props) {
     arr.sort(function (a, b) {
       return Number(new Date(b.date)) - Number(new Date(a.date));
     });
-    console.log("tableau sorted maybe", arr);
     return arr;
   }
 
@@ -169,6 +168,29 @@ function FeedScreen(props) {
     return <Card key={post._id} item={post} handleComment={handleComment} />;
   });
 
+  const tableauEventsAndPosts = sortByDate(feedList.concat(eventList));
+
+  let feedListSorted = tableauEventsAndPosts.map((postOrEvent) => {
+    if (postOrEvent.dateFin === undefined) {
+      return (
+        <Card
+          key={postOrEvent._id}
+          item={postOrEvent}
+          handleComment={handleComment}
+        />
+      );
+    } else {
+      return (
+        <Card
+          key={postOrEvent._id}
+          item={postOrEvent}
+          handleComment={handleComment}
+          isEvent
+        />
+      );
+    }
+  });
+
   return (
     <View style={{ flex: 1 }}>
       <HStack
@@ -219,10 +241,7 @@ function FeedScreen(props) {
           onPress={() => handleMap()}
         />
       </HStack>
-      <ScrollView style={{ marginTop: 10 }}>
-        {postList}
-        {events}
-      </ScrollView>
+      <ScrollView style={{ marginTop: 10 }}>{feedListSorted}</ScrollView>
       <Modal isOpen={showModal} onClose={() => closeComment()}>
         <Modal.Content width="100%">
           <Modal.CloseButton />
