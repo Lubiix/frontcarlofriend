@@ -15,18 +15,14 @@ function FeedScreen(props) {
   // console.log("compteur like actif:", countLikePost);
 
   const [feedList, setFeedList] = useState([]);
+  const [postId, setPostId] = useState("");
 
   const [eventList, setEventList] = useState([]);
   // console.log("eventList:", eventList);
-
   const [commentList, setCommentList] = useState([]);
   // console.log("commentList", commentList);
-
   const [commentValue, setCommentValue] = useState("");
   console.log("commentaire récupéré:", commentValue);
-
-  const [postId, setPostId] = useState("");
-
   console.log("postId:", postId);
   // console.log("feedlist:", feedList);
 
@@ -40,7 +36,41 @@ function FeedScreen(props) {
     setShowModalNotif(false);
     props.navigation.navigate("Event");
   };
-
+  let comments = commentList.map((comment, index) => {
+    console.log("COMMENT", comment);
+    const item = comment.post || comment.event;
+    console.log("ids", postId, item._id);
+    if (postId === item._id) {
+      return (
+        <HStack
+          key={index}
+          style={{
+            space: 3,
+            alignItems: "center",
+            marginBottom: 2,
+          }}
+        >
+          <Avatar
+            mr={2}
+            size="md"
+            source={{
+              uri: item.createur.profilePicture
+                ? item.createur.profilePicture
+                : "https://www.e-xpertsolutions.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png",
+            }}
+          ></Avatar>
+          <Stack>
+            <Text style={{ flexShrink: 1 }} color="#000000" bold={true}>
+              {comment.createur.nom} {comment.createur.prenom}
+            </Text>
+            <Text style={{ flexShrink: 1 }} my={2} color="#000000">
+              {comment.content}
+            </Text>
+          </Stack>
+        </HStack>
+      );
+    }
+  });
   const handleMap = () => {
     props.navigation.navigate("map");
   };
@@ -48,7 +78,7 @@ function FeedScreen(props) {
     props.navigation.navigate("feed");
   };
   const handleComment = (idPost, isEvent = false) => {
-    console.log("click comment");
+    console.log("click comment", idPost);
     setShowModal(true);
     setPostId(idPost);
     setIsEvent(isEvent);
@@ -74,6 +104,18 @@ function FeedScreen(props) {
     });
     setCommentValue("");
   };
+  // const handleComment = (idPost) => {
+  //   console.log("click comment");
+  //   setShowModal(true);
+  //   setPostId(idPost);
+  // };
+
+  // const closeComment = () => {
+  //   setShowModal(false);
+  // };
+
+  //ENVOI COMMENTAIRE AU BACK VIA ROUTE /comment
+
   function sortByDate(arr) {
     arr.sort(function (a, b) {
       return Number(new Date(b.date)) - Number(new Date(a.date));
@@ -156,46 +198,9 @@ function FeedScreen(props) {
         <Card
           key={postOrEvent._id}
           item={postOrEvent}
-          handleComment={handleComment}
           isEvent
+          handleComment={handleComment}
         />
-      );
-    }
-  });
-
-  let comments = commentList.map((comment, index) => {
-    console.log("COMMENT" + index, comment);
-    const item = comment.post || comment.event;
-    console.log("comparaison ID " + index, item._id, " ", postId);
-    console.log("ITEM", item);
-    if (postId === item._id) {
-      return (
-        <HStack
-          key={index}
-          style={{
-            space: 3,
-            alignItems: "center",
-            marginBottom: 2,
-          }}
-        >
-          <Avatar
-            mr={2}
-            size="md"
-            source={{
-              uri: comment.createur.profilePicture
-                ? comment.createur.profilePicture
-                : "https://www.e-xpertsolutions.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png",
-            }}
-          ></Avatar>
-          <Stack>
-            <Text style={{ flexShrink: 1 }} color="#000000" bold={true}>
-              {comment.createur.nom} {comment.createur.prenom}
-            </Text>
-            <Text style={{ flexShrink: 1 }} my={2} color="#000000">
-              {comment.content}
-            </Text>
-          </Stack>
-        </HStack>
       );
     }
   });
@@ -250,7 +255,6 @@ function FeedScreen(props) {
           onPress={() => handleMap()}
         />
       </HStack>
-      <ScrollView style={{ marginTop: 10 }}>{feedListSorted}</ScrollView>
       <Modal isOpen={showModal} onClose={() => closeComment()}>
         <Modal.Content width="100%">
           <Modal.CloseButton />
@@ -261,6 +265,7 @@ function FeedScreen(props) {
           <Modal.Footer>{commentInput}</Modal.Footer>
         </Modal.Content>
       </Modal>
+      <ScrollView style={{ marginTop: 10 }}>{feedListSorted}</ScrollView>
     </View>
   );
 }

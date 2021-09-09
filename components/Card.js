@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { useNavigation } from "@react-navigation/native";
 
-import { Dimensions } from "react-native";
+import { Dimensions, ScrollView } from "react-native";
 
 import {
   Ionicons,
@@ -11,18 +11,35 @@ import {
   FontAwesome5,
 } from "@expo/vector-icons";
 
-import { Box, Avatar, HStack, VStack, Image, Text, Button } from "native-base";
+import {
+  Box,
+  Avatar,
+  HStack,
+  VStack,
+  Image,
+  Text,
+  Button,
+  Modal,
+  Input,
+} from "native-base";
 import { createParser } from "styled-system";
+import { HOST } from "@env";
 
-function Card({ item, handleComment, isEvent = false }) {
+function Card({ item, isEvent = false, props, handleComment }) {
   const [countLikePost, setCountLikePost] = useState(0);
+
+  console.log("HOOOOOOST", HOST);
+
+  const [postId, setPostId] = useState("");
+
+  const [commentList, setCommentList] = useState([]);
+  // console.log("commentList", commentList);
 
   const navigation = useNavigation();
 
   const handleLike = () => {
     setCountLikePost(countLikePost + 1);
   };
-
   const screenWidth = Dimensions.get("screen").width;
 
   const date = item.date;
