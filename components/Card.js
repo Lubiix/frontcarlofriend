@@ -99,7 +99,7 @@ function Card({ item, isEvent = false, props, handleComment }) {
                 style={{ fontWeight: "bold", marginLeft: 5, fontSize: 18 }}
                 color="#000000"
               >
-                {item.createur.prenom} {item.createur.nom}
+                {item.createur.nameSearch}
               </Text>
               <Text style={{ marginLeft: 5 }}>{item.quartier.name}</Text>
               {datePost}
