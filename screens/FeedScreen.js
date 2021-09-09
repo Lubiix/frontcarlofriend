@@ -117,12 +117,13 @@ function FeedScreen(props) {
       <Ionicons
         name="send"
         size={24}
-        color="#62ADEB"
+        color="#37b4aa"
         onPress={() => sendComment()}
       />
     </HStack>
   );
 
+<<<<<<< HEAD
   // let events = eventList.map((event, index) => {
   //   return (
   //     <Card
@@ -136,6 +137,53 @@ function FeedScreen(props) {
   // let postList = feedList.map((post) => {
   //   return <Card key={post._id} item={post} handleComment={handleComment} />;
   // });
+=======
+  // let comments = commentList.map((comment, index) => {
+  //   if (postId == comment.post._id) {
+  //     return (
+  //       <HStack
+  //         key={index}
+  //         style={{
+  //           space: 3,
+  //           alignItems: "center",
+  //           marginBottom: 2,
+  //         }}
+  //       >
+  //         <Avatar
+  //           mr={2}
+  //           size="md"
+  //           source={{
+  //             uri: event.createur.profilePicture
+  //               ? event.createur.profilePicture
+  //               : "https://www.e-xpertsolutions.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png",
+  //           }}
+  //         ></Avatar>
+  //         <Stack>
+  //           <Text style={{ flexShrink: 1 }} color="#000000" bold={true}>
+  //             {comment.createur.nom} {comment.createur.prenom}
+  //           </Text>
+  //           <Text style={{ flexShrink: 1 }} my={2} color="#000000">
+  //             {comment.content}
+  //           </Text>
+  //         </Stack>
+  //       </HStack>
+  //     );
+  //   }
+  // });
+  let events = eventList.map((event, index) => {
+    return (
+      <Card
+        key={event._id}
+        item={event}
+        handleComment={handleComment}
+        isEvent
+      />
+    );
+  });
+  let postList = feedList.map((post) => {
+    return <Card key={post._id} item={post} handleComment={handleComment} />;
+  });
+>>>>>>> colorScreens
 
   const tableauEventsAndPosts = sortByDate(feedList.concat(eventList));
 
@@ -159,6 +207,7 @@ function FeedScreen(props) {
       );
     }
   });
+<<<<<<< HEAD
 
   let comments = commentList.map((comment, index) => {
     if (postId === comment.post._id) {
@@ -192,6 +241,8 @@ function FeedScreen(props) {
       );
     }
   });
+=======
+>>>>>>> colorScreens
 
   return (
     <View style={{ flex: 1 }}>
@@ -231,7 +282,7 @@ function FeedScreen(props) {
           type="button"
           name="form-select"
           size={40}
-          color="#62ADEB"
+          color="#37b4aa"
           title="feed"
           onPress={() => handleFeed()}
         />
@@ -248,9 +299,7 @@ function FeedScreen(props) {
         <Modal.Content width="100%">
           <Modal.CloseButton />
           <Modal.Header alignItems="center">Commentaires</Modal.Header>
-          <Modal.Body>
-            <ScrollView>{comments}</ScrollView>
-          </Modal.Body>
+          <Modal.Body>{/* <ScrollView>{comments}</ScrollView> */}</Modal.Body>
           <Modal.Footer>{commentInput}</Modal.Footer>
         </Modal.Content>
       </Modal>

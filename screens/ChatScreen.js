@@ -113,7 +113,7 @@ const ChatScreen = (props) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <SafeAreaView style={{ backgroundColor: "#62ADEB" }} />
+      <SafeAreaView style={{ backgroundColor: "#37b4aa" }} />
       <Box
         p={4}
         _text={{
@@ -124,7 +124,7 @@ const ChatScreen = (props) => {
         }}
         alignItems="center"
         mb={3}
-        bg="#62ADEB"
+        bg="#37b4aa"
       >
         Conversation
       </Box>
@@ -149,7 +149,7 @@ const ChatScreen = (props) => {
               roundedLeft={0}
               roundedRight="md"
               onPress={() => handleSendMessage()}
-              bg="#62ADEB"
+              bg="#37b4aa"
               _text={{ color: "white" }}
             >
               Envoyer

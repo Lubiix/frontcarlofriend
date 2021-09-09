@@ -123,8 +123,8 @@ const AddPostScreen = (props) => {
     status === "Commercant" ? (
       <View style={{ flex: 1, flexDirection: "row", marginBottom: 10 }}>
         <Button
-          bg="#62ADEB"
-          style={{ color: "#62ADEB" }}
+          bg="#37b4aa"
+          style={{ color: "#37b4aa" }}
           mr={0}
           _text={{
             color: "white",
@@ -134,8 +134,8 @@ const AddPostScreen = (props) => {
         </Button>
         <Button
           marginLeft="10px"
-          bg="#62ADEB"
-          style={{ color: "#62ADEB" }}
+          bg="#37b4aa"
+          style={{ color: "#37b4aa" }}
           _text={{
             color: "white",
           }}
@@ -147,8 +147,8 @@ const AddPostScreen = (props) => {
     ) : (
       <View style={{ flex: 1, flexDirection: "row", marginBottom: 10 }}>
         <Button
-          bg="#62ADEB"
-          style={{ color: "#62ADEB" }}
+          bg="#37b4aa"
+          style={{ color: "#37b4aa" }}
           mr={0}
           _text={{
             color: "white",
@@ -161,8 +161,8 @@ const AddPostScreen = (props) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <SafeAreaView style={{ backgroundColor: "#62ADEB" }} />
-      <Box mb={1} bg="#62ADEB">
+      <SafeAreaView style={{ backgroundColor: "#37b4aa" }} />
+      <Box mb={1} bg="#37b4aa">
         <HStack justifyContent="center" alignItems="center">
           <Text
             style={{
@@ -210,9 +210,9 @@ const AddPostScreen = (props) => {
           <Select.Item label="Saint-Roman" value="Saint-Roman" />
         </Select>
         <Button
-          bg="#62ADEB"
+          bg="#37b4aa"
           style={{
-            color: "#62ADEB",
+            color: "#37b4aa",
             margin: 10,
           }}
           mr={0}
@@ -234,9 +234,9 @@ const AddPostScreen = (props) => {
         ) : null}
 
         <Button
-          bg="#62ADEB"
+          bg="#37b4aa"
           style={{
-            color: "#62ADEB",
+            color: "#37b4aa",
             margin: 10,
           }}
           mr={0}

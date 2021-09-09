@@ -134,8 +134,8 @@ const SearchScreen = (props) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <SafeAreaView style={{ backgroundColor: "#62ADEB" }} />
-      <Box mb={1} bg="#62ADEB">
+      <SafeAreaView style={{ backgroundColor: "#37b4aa" }} />
+      <Box mb={1} bg="#37b4aa">
         <HStack justifyContent="center" alignItems="center">
           <Text
             style={{
@@ -169,7 +169,7 @@ const SearchScreen = (props) => {
           px={2}
           _web={{
             _focus: {
-              borderColor: "#62ADEB",
+              borderColor: "#37b4aa",
               style: { boxShadow: "none" },
             },
           }}
@@ -185,7 +185,7 @@ const SearchScreen = (props) => {
         />
         <Button
           onPress={() => handleSearch()}
-          bg="#62ADEB"
+          bg="#37b4aa"
           width="20%"
           my={2}
           height="57%"

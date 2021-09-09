@@ -124,7 +124,7 @@ const ProfilSearchScreen = (props) => {
             </Text>
             <Button
               title="Commentaires"
-              color="#62ADEB"
+              color="#37b4aa"
               onPress={() => handleComment()}
             >
               Commentaires
@@ -176,7 +176,7 @@ const ProfilSearchScreen = (props) => {
         <HStack marginTop="-100px" marginLeft="25px" width="50%">
           <Button
             position="relative"
-            bg="#62ADEB"
+            bg="#37b4aa"
             width="20%"
             my={2}
             height="100%"
@@ -190,7 +190,7 @@ const ProfilSearchScreen = (props) => {
         <HStack marginTop="-45px" marginLeft="290px" width="50%">
           <Button
             position="relative"
-            bg="#62ADEB"
+            bg="#37b4aa"
             width="20%"
             my={2}
             height="100%"
@@ -205,7 +205,7 @@ const ProfilSearchScreen = (props) => {
         <HStack style={{ justifyContent: "center" }} marginTop="3">
           <Button
             onPress={() => handleGoEdit()}
-            bg="#62ADEB"
+            bg="#37b4aa"
             width="20%"
             my={2}
             height="100%"

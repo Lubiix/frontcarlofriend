@@ -21,8 +21,8 @@ const MenuNav = () => {
       <Tab.Navigator
         screenOptions={({ route }) => ({
           headerShown: false,
-          tabBarActiveTintColor: "#62ADEB",
-          tabBarinactiveTintColor: "#62ADEB",
+          tabBarActiveTintColor: "#37b4aa",
+          tabBarinactiveTintColor: "#37b4aa",
           tabBarActiveBackgroundColor: "#FBFAFA",
           tabBarInactiveBackgroundColor: "#FBFAFA",
           tabBarIcon: ({ color }) => {

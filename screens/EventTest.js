@@ -120,7 +120,7 @@ const Event = (props) => {
         alignItems: "center",
       }}
     >
-      <SafeAreaView style={{ flex: 0, backgroundColor: "#62ADEB" }} />
+      <SafeAreaView style={{ flex: 0, backgroundColor: "#37b4aa" }} />
       <Box bg="white" shadow={2} rounded="lg" width="100%">
         <Image
           source={{
@@ -147,7 +147,7 @@ const Event = (props) => {
         </Stack>
         <Button
           onPress={() => handleParticipate()}
-          bg="#62ADEB"
+          bg="#37b4aa"
           width="20%"
           mx={4}
           my={0}

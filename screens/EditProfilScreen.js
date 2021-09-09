@@ -305,7 +305,7 @@ const EditProfilScreen = (props) => {
       <HStack style={{ justifyContent: "center" }} marginTop="3">
         <Button
           onPress={() => handleValidateUpdate()}
-          bg="#62ADEB"
+          bg="#37b4aa"
           width="20%"
           my={2}
           height="100%"
@@ -351,7 +351,7 @@ const EditProfilScreen = (props) => {
         <HStack marginTop="-100px" marginLeft="25px" width="50%">
           <Button
             position="relative"
-            bg="#62ADEB"
+            bg="#37b4aa"
             width="20%"
             my={2}
             height="100%"
@@ -366,7 +366,7 @@ const EditProfilScreen = (props) => {
           <Button
             onPress={() => handleDeconnexion()}
             position="relative"
-            bg="#62ADEB"
+            bg="#37b4aa"
             width="20%"
             my={2}
             height="100%"
@@ -380,7 +380,7 @@ const EditProfilScreen = (props) => {
 
         <HStack style={{ justifyContent: "center" }} marginTop="60px">
           <Button
-            bg="#62ADEB"
+            bg="#37b4aa"
             width="20%"
             my={2}
             mx={1}
@@ -393,7 +393,7 @@ const EditProfilScreen = (props) => {
             Edit photo de profil
           </Button>
           <Button
-            bg="#62ADEB"
+            bg="#37b4aa"
             width="20%"
             mx={1}
             my={2}

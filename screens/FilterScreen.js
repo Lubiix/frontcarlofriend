@@ -21,7 +21,7 @@ const FilterScreen = (props) => {
 
   return (
     <Fragment>
-      <SafeAreaView style={{ flex: 0, backgroundColor: "#62ADEB" }} />
+      <SafeAreaView style={{ flex: 0, backgroundColor: "#37b4aa" }} />
       <View
         style={{ flex: 0.7, justifyContent: "center", alignItems: "center" }}
       >
@@ -98,9 +98,9 @@ const FilterScreen = (props) => {
           </Checkbox>
         </Checkbox.Group>
         <Button
-          bg="#62ADEB"
+          bg="#37b4aa"
           style={{
-            color: "#62ADEB",
+            color: "#37b4aa",
             margin: 10,
           }}
           mr={0}

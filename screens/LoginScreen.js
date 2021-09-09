@@ -100,7 +100,7 @@ const LoginScreen = (props) => {
 
   return (
     <Fragment>
-      <SafeAreaView style={{ flex: 0, backgroundColor: "#62ADEB" }} />
+      <SafeAreaView style={{ flex: 0, backgroundColor: "#37b4aa" }} />
       <SafeAreaView style={{ flex: 1 }}>
         <Box
           p={4}
@@ -111,7 +111,7 @@ const LoginScreen = (props) => {
           }}
           alignItems="center"
           mb={3}
-          bg="#62ADEB"
+          bg="#37b4aa"
         >
           Connexion
         </Box>
@@ -135,7 +135,7 @@ const LoginScreen = (props) => {
               roundedRight="md"
               onPress={handleShowPassword}
               _text={{ color: "white" }}
-              bg="#62ADEB"
+              bg="#37b4aa"
             >
               {show ? "Hide" : "Show"}
             </Button>
@@ -148,7 +148,7 @@ const LoginScreen = (props) => {
 
         <Button
           mx={5}
-          bg="#62ADEB"
+          bg="#37b4aa"
           _text={{ color: "white" }}
           onPress={() => handleLogin()}
         >
@@ -159,7 +159,7 @@ const LoginScreen = (props) => {
             <Modal.Header alignItems="center">Chargement</Modal.Header>
             <Modal.Body alignItems="center">
               <HStack space={2}>
-                <Spinner color="#62ADEB" />
+                <Spinner color="#37b4aa" />
               </HStack>
             </Modal.Body>
           </Modal.Content>

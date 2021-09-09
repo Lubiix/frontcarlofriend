@@ -124,14 +124,14 @@ function Card({ item, handleComment, isEvent = false }) {
           <MaterialCommunityIcons
             name="comment-multiple-outline"
             size={24}
-            color="#62ADEB"
+            color="#37b4aa"
             onPress={() => handleComment(item._id)}
           />
           {isEvent && (
             <FontAwesome5
               name="location-arrow"
               size={24}
-              color="#62ADEB"
+              color="#37b4aa"
               onPress={() =>
                 navigation.navigate("Event", { idEvent: item._id })
               }
