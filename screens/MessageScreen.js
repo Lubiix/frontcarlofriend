@@ -75,9 +75,14 @@ const MessageScreen = (props) => {
       <Link key={i} onPress={() => handleGoChat(userToken)}>
         <HStack width="100%" px={4} my={4}>
           <HStack space={2} alignItems="center">
-            <Avatar color="white" bg={"secondary.700"}>
-              {message.avatar}
-            </Avatar>
+            <Avatar
+              Index={2}
+              source={{
+                uri: message.avatar
+                  ? message.avatar
+                  : "https://www.e-xpertsolutions.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png",
+              }}
+            ></Avatar>
             <Heading size="sm">
               {message.user}
               {message.userCommercant}
@@ -95,9 +100,14 @@ const MessageScreen = (props) => {
       <Link key={i} onPress={() => handleModal(userToken)}>
         <HStack width="100%" px={4} my={4}>
           <HStack space={2} alignItems="center">
-            <Avatar color="white" bg={"secondary.700"}>
-              {user.avatar}
-            </Avatar>
+            <Avatar
+              Index={2}
+              source={{
+                uri: user.avatar
+                  ? user.avatar
+                  : "https://www.e-xpertsolutions.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png",
+              }}
+            ></Avatar>
             <Heading size="sm">{user.nom}</Heading>
           </HStack>
         </HStack>
