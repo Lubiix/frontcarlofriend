@@ -30,6 +30,8 @@ function FeedScreen(props) {
   console.log("postId:", postId);
   // console.log("feedlist:", feedList);
 
+  const [isEvent, setIsEvent] = useState(false);
+
   const [showModal, setShowModal] = useState(false);
   console.log("HOOOOOOST", HOST);
 
@@ -45,10 +47,11 @@ function FeedScreen(props) {
   const handleFeed = () => {
     props.navigation.navigate("feed");
   };
-  const handleComment = (idPost) => {
+  const handleComment = (idPost, isEvent = false) => {
     console.log("click comment");
     setShowModal(true);
     setPostId(idPost);
+    setIsEvent(isEvent);
   };
 
   const closeComment = () => {
@@ -67,7 +70,7 @@ function FeedScreen(props) {
     const userComment = await fetch(`${HOST}/comment`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `comment=${commentValue}&token=${props.token}&postId=${postId}`,
+      body: `comment=${commentValue}&token=${props.token}&postId=${postId}&isEvent=${isEvent}`,
     });
     setCommentValue("");
   };
@@ -161,7 +164,8 @@ function FeedScreen(props) {
   });
 
   let comments = commentList.map((comment, index) => {
-    if (postId === comment.post._id) {
+    const item = comment.post || comment.event;
+    if (postId === item._id) {
       return (
         <HStack
           key={index}
