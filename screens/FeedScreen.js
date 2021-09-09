@@ -36,41 +36,6 @@ function FeedScreen(props) {
     setShowModalNotif(false);
     props.navigation.navigate("Event");
   };
-  let comments = commentList.map((comment, index) => {
-    console.log("COMMENT", comment);
-    const item = comment.post || comment.event;
-    console.log("ids", postId, item._id);
-    if (postId === item._id) {
-      return (
-        <HStack
-          key={index}
-          style={{
-            space: 3,
-            alignItems: "center",
-            marginBottom: 2,
-          }}
-        >
-          <Avatar
-            mr={2}
-            size="md"
-            source={{
-              uri: item.createur.profilePicture
-                ? item.createur.profilePicture
-                : "https://www.e-xpertsolutions.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png",
-            }}
-          ></Avatar>
-          <Stack>
-            <Text style={{ flexShrink: 1 }} color="#000000" bold={true}>
-              {comment.createur.nom} {comment.createur.prenom}
-            </Text>
-            <Text style={{ flexShrink: 1 }} my={2} color="#000000">
-              {comment.content}
-            </Text>
-          </Stack>
-        </HStack>
-      );
-    }
-  });
   const handleMap = () => {
     props.navigation.navigate("map");
   };
@@ -181,6 +146,12 @@ function FeedScreen(props) {
   // let postList = feedList.map((post) => {
   //   return <Card key={post._id} item={post} handleComment={handleComment} />;
   // });
+  let events = eventList.map((event, index) => {
+    return <Card key={event._id} item={event} isEvent />;
+  });
+  let postList = feedList.map((post) => {
+    return <Card key={post._id} item={post} />;
+  });
 
   const tableauEventsAndPosts = sortByDate(feedList.concat(eventList));
 
@@ -201,6 +172,43 @@ function FeedScreen(props) {
           isEvent
           handleComment={handleComment}
         />
+      );
+    }
+  });
+
+  let comments = commentList.map((comment, index) => {
+    console.log("COMMENT" + index, comment);
+    const item = comment.post || comment.event;
+    console.log("comparaison ID " + index, item._id, " ", postId);
+    console.log("ITEM", item);
+    if (postId === item._id) {
+      return (
+        <HStack
+          key={index}
+          style={{
+            space: 3,
+            alignItems: "center",
+            marginBottom: 2,
+          }}
+        >
+          <Avatar
+            mr={2}
+            size="md"
+            source={{
+              uri: comment.createur.profilePicture
+                ? comment.createur.profilePicture
+                : "https://www.e-xpertsolutions.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png",
+            }}
+          ></Avatar>
+          <Stack>
+            <Text style={{ flexShrink: 1 }} color="#000000" bold={true}>
+              {comment.createur.nom} {comment.createur.prenom}
+            </Text>
+            <Text style={{ flexShrink: 1 }} my={2} color="#000000">
+              {comment.content}
+            </Text>
+          </Stack>
+        </HStack>
       );
     }
   });
