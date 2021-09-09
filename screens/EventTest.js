@@ -151,8 +151,8 @@ const Event = (props) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <SafeAreaView style={{ backgroundColor: "#62ADEB" }} />
-      <Box mb={1} bg="#62ADEB">
+      <SafeAreaView style={{ backgroundColor: "#37b4aa" }} />
+      <Box mb={1} bg="#37b4aa">
         <HStack justifyContent="center" alignItems="center">
           <Text
             style={{

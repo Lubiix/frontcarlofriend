@@ -160,38 +160,38 @@ function FeedScreen(props) {
     }
   });
 
-  let comments = commentList.map((comment, index) => {
-    if (postId === comment.post._id) {
-      return (
-        <HStack
-          key={index}
-          style={{
-            space: 3,
-            alignItems: "center",
-            marginBottom: 2,
-          }}
-        >
-          <Avatar
-            mr={2}
-            size="md"
-            source={{
-              uri: comment.createur.profilePicture
-                ? comment.createur.profilePicture
-                : "https://www.e-xpertsolutions.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png",
-            }}
-          ></Avatar>
-          <Stack>
-            <Text style={{ flexShrink: 1 }} color="#000000" bold={true}>
-              {comment.createur.nom} {comment.createur.prenom}
-            </Text>
-            <Text style={{ flexShrink: 1 }} my={2} color="#000000">
-              {comment.content}
-            </Text>
-          </Stack>
-        </HStack>
-      );
-    }
-  });
+  // let comments = commentList.map((comment, index) => {
+  //   if (postId === comment.post._id) {
+  //     return (
+  //       <HStack
+  //         key={index}
+  //         style={{
+  //           space: 3,
+  //           alignItems: "center",
+  //           marginBottom: 2,
+  //         }}
+  //       >
+  //         <Avatar
+  //           mr={2}
+  //           size="md"
+  //           source={{
+  //             uri: comment.createur.profilePicture
+  //               ? comment.createur.profilePicture
+  //               : "https://www.e-xpertsolutions.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png",
+  //           }}
+  //         ></Avatar>
+  //         <Stack>
+  //           <Text style={{ flexShrink: 1 }} color="#000000" bold={true}>
+  //             {comment.createur.nom} {comment.createur.prenom}
+  //           </Text>
+  //           <Text style={{ flexShrink: 1 }} my={2} color="#000000">
+  //             {comment.content}
+  //           </Text>
+  //         </Stack>
+  //       </HStack>
+  //     );
+  //   }
+  // });
 
   return (
     <View style={{ flex: 1 }}>
