@@ -13,6 +13,7 @@ import {
   Stack,
   Heading,
   List,
+  View
 } from "native-base";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { connect } from "react-redux";
@@ -26,6 +27,7 @@ const Event = (props) => {
     content: "",
     particants: [],
   });
+  console.log('>>>>sate event image', informationEvent.image)
   const [commentairesEvent, setCommentairesEvent] = useState([]);
 
   console.log("route.params", props.route.params);
@@ -37,6 +39,7 @@ const Event = (props) => {
         body: `idEvent=${idEvent}`,
       });
       const eventParsed = await rawEvent.json();
+      console.log('image event', eventParsed)
       setInformationEvent(eventParsed.event);
       const rawCommentairesEvent = await fetch(`${HOST}/commentaires-event`, {
         method: "POST",
@@ -63,6 +66,38 @@ const Event = (props) => {
     console.log("close comment");
     setShowModal(false);
   };
+
+  //Formatage Date
+
+  const date = informationEvent.dateDebut;
+  const newDate = new Date(date);
+  let dateHours = newDate.getHours();
+  if (dateHours < 10) {
+    dateHours = `0${dateHours}`;
+  }
+  let dateMinutes = newDate.getMinutes();
+  if (dateMinutes < 10) {
+    dateMinutes = `0${dateMinutes}`;
+  }
+  const dateWeek = newDate.toLocaleDateString();
+
+  const dateEventDebut = `${dateWeek} à ${dateHours}:${dateMinutes}`
+
+    //Formatage Date
+
+  const dateDeFin = informationEvent.dateFin;
+  const newDateFin = new Date(dateDeFin);
+  let dateHoursFin = newDateFin.getHours();
+  if (dateHoursFin < 10) {
+    dateHoursFin = `0${dateHoursFin}`;
+  }
+  let dateMinutesFin = newDateFin.getMinutes();
+  if (dateMinutesFin < 10) {
+    dateMinutesFin = `0${dateMinutesFin}`;
+  }
+  const dateWeekFin = newDateFin.toLocaleDateString();
+
+  const dateEventFin = `${dateWeekFin} à ${dateHoursFin}:${dateMinutesFin}`
 
   const icon = <Icon as={Ionicons} name="checkmark" size={4} />;
 
@@ -94,7 +129,9 @@ const Event = (props) => {
                 mr={2}
                 size="md"
                 source={{
-                  uri: "https://manofmany.com/wp-content/uploads/2021/06/Hasbulla-Magomedov-2.jpg",
+                  uri: informationEvent.image
+                  ? informationEvent.image
+                  : "https://manofmany.com/wp-content/uploads/2021/06/Hasbulla-Magomedov-2.jpg",
                 }}
               ></Avatar>
               <Stack>
@@ -113,6 +150,23 @@ const Event = (props) => {
   });
 
   return (
+    <View style={{ flex: 1 }}>
+      <SafeAreaView style={{ backgroundColor: "#62ADEB" }} />
+      <Box mb={1} bg="#62ADEB">
+        <HStack justifyContent="center" alignItems="center">
+          <Text
+            style={{
+              fontSize: "ld",
+              fontWeight: "bold",
+              color: "white",
+              fontSize: 20,
+              padding: 12,
+            }}
+          >
+            Evenement
+          </Text>
+        </HStack>
+      </Box>
     <ScrollView
       style={{ flex: 1 }}
       contentContainerStyle={{
@@ -124,7 +178,9 @@ const Event = (props) => {
       <Box bg="white" shadow={2} rounded="lg" width="100%">
         <Image
           source={{
-            uri: "https://www.sportbible.com/cdn-cgi/image/width=720,quality=70,format=webp,fit=pad,dpr=1/https%3A%2F%2Fs3-images.sportbible.com%2Fs3%2Fcontent%2F55d4395260d17d5c415895d1f1310b30.png",
+            uri: informationEvent.image
+                  ? informationEvent.image
+                  : "https://manofmany.com/wp-content/uploads/2021/06/Hasbulla-Magomedov-2.jpg",
           }}
           alt="image base"
           resizeMode="cover"
@@ -133,7 +189,7 @@ const Event = (props) => {
         />
         <Stack space={4} p={[4, 4, 8]}>
           <Text color="gray.400">
-            de {informationEvent.dateDebut} à {informationEvent.dateFin}
+            du {dateEventDebut} au {dateEventFin}
           </Text>
           <Text color="gray.400">
             {informationEvent.particants.length} participent
@@ -164,6 +220,7 @@ const Event = (props) => {
         </List>
       </Box>
     </ScrollView>
+    </View>
   );
 };
 
