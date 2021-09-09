@@ -76,7 +76,7 @@ const MessageScreen = (props) => {
         <HStack width="100%" px={4} my={4}>
           <HStack space={2} alignItems="center">
             <Avatar color="white" bg={"secondary.700"}>
-              GF
+              {message.avatar}
             </Avatar>
             <Heading size="sm">
               {message.user}
@@ -96,7 +96,7 @@ const MessageScreen = (props) => {
         <HStack width="100%" px={4} my={4}>
           <HStack space={2} alignItems="center">
             <Avatar color="white" bg={"secondary.700"}>
-              GF
+              {user.avatar}
             </Avatar>
             <Heading size="sm">{user.nom}</Heading>
           </HStack>
