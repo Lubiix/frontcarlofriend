@@ -120,7 +120,7 @@ function FeedScreen(props) {
       <Ionicons
         name="send"
         size={24}
-        color="#62ADEB"
+        color="#37b4aa"
         onPress={() => sendComment()}
       />
     </HStack>
@@ -235,7 +235,7 @@ function FeedScreen(props) {
           type="button"
           name="form-select"
           size={40}
-          color="#62ADEB"
+          color="#37b4aa"
           title="feed"
           onPress={() => handleFeed()}
         />
@@ -252,9 +252,7 @@ function FeedScreen(props) {
         <Modal.Content width="100%">
           <Modal.CloseButton />
           <Modal.Header alignItems="center">Commentaires</Modal.Header>
-          <Modal.Body>
-            <ScrollView>{comments}</ScrollView>
-          </Modal.Body>
+          <Modal.Body>{/* <ScrollView>{comments}</ScrollView> */}</Modal.Body>
           <Modal.Footer>{commentInput}</Modal.Footer>
         </Modal.Content>
       </Modal>

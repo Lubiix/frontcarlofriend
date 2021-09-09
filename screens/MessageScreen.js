@@ -107,13 +107,13 @@ const MessageScreen = (props) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <SafeAreaView style={{ backgroundColor: "#62ADEB" }} />
-      <Box mb={1} bg="#62ADEB">
+      <SafeAreaView style={{ backgroundColor: "#37b4aa" }} />
+      <Box mb={1} bg="#37b4aa">
         <HStack justifyContent="space-between" alignItems="center">
-          <Button bg="#62ADEB" />
+          <Button bg="#37b4aa" />
           <Text style={{ fontWeight: "bold", color: "white" }}>Messagerie</Text>
           <Button
-            bg="#62ADEB"
+            bg="#37b4aa"
             width="15%"
             onPress={() => setShowModal(true)}
             startIcon={

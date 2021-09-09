@@ -68,7 +68,7 @@ function MapScreen(props) {
         <MaterialCommunityIcons
           name="map-search-outline"
           size={40}
-          color="#62ADEB"
+          color="#37b4aa"
           title="map"
           onPress={() => handleMap()}
         />

@@ -35,19 +35,17 @@ const HomeScreen = (props) => {
     props.navigation.navigate("Login");
   };
   return (
-    <View style={{ flex: 1, alignItems: "center", marginTop:150}}>
-          <Image
-      size={150}
-      my={10}
-      resizeMode={"contain"}
-      borderRadius={100}
-      source={
-        require("../assets/logo.png")
-      }
-      alt="Alternate Text"
-    />
+    <View style={{ flex: 1, alignItems: "center", marginTop: 150 }}>
+      <Image
+        size={150}
+        my={10}
+        resizeMode={"contain"}
+        borderRadius={100}
+        source={require("../assets/logo.png")}
+        alt="Alternate Text"
+      />
       <Button
-        bg="#62ADEB"
+        bg="#37b4aa"
         w="80%"
         my={1}
         onPress={() => handleCreerUnCompte()}
@@ -58,7 +56,7 @@ const HomeScreen = (props) => {
         Créer un compte
       </Button>
       <Button
-        bg="#62ADEB"
+        bg="#37b4aa"
         w="80%"
         my={4}
         onPress={() => handleSeConnecter()}

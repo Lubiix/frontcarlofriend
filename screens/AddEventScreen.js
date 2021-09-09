@@ -6,9 +6,9 @@ import {
   Button,
   Text,
   Image,
-  View, 
-  Box, 
-  HStack
+  View,
+  Box,
+  HStack,
 } from "native-base";
 import { SafeAreaView } from "react-native";
 import { Input, Stack, TextArea } from "native-base";
@@ -114,10 +114,10 @@ const AddEventScreen = (props) => {
         onSelectedChange={(dateStart) => handleStartDate(dateStart)}
         options={{
           backgroundColor: "#FBFAFA",
-          textHeaderColor: "#62ADEB",
+          textHeaderColor: "#37b4aa",
           textDefaultColor: "#B6B6B6",
           selectedTextColor: "#fff",
-          mainColor: "#62ADEB",
+          mainColor: "#37b4aa",
           textSecondaryColor: "#B6B6B6",
           borderColor: "rgba(122, 146, 165, 0.1)",
         }}
@@ -142,10 +142,10 @@ const AddEventScreen = (props) => {
         onSelectedChange={(dateEnd) => handleEndDate(dateEnd)}
         options={{
           backgroundColor: "#FBFAFA",
-          textHeaderColor: "#62ADEB",
+          textHeaderColor: "#37b4aa",
           textDefaultColor: "#B6B6B6",
           selectedTextColor: "#fff",
-          mainColor: "#62ADEB",
+          mainColor: "#37b4aa",
           textSecondaryColor: "#B6B6B6",
           borderColor: "rgba(122, 146, 165, 0.1)",
         }}
@@ -154,170 +154,169 @@ const AddEventScreen = (props) => {
   }
   return (
     <View style={{ flex: 1 }}>
-    <SafeAreaView style={{ backgroundColor: "#62ADEB" }} />
-    <Box mb={1} bg="#62ADEB">
-      <HStack justifyContent="center" alignItems="center">
-        <Text
+      <SafeAreaView style={{ backgroundColor: "#37b4aa" }} />
+      <Box mb={1} bg="#37b4aa">
+        <HStack justifyContent="center" alignItems="center">
+          <Text
+            style={{
+              fontSize: "ld",
+              fontWeight: "bold",
+              color: "white",
+              fontSize: 20,
+              padding: 12,
+            }}
+          >
+            Publication
+          </Text>
+        </HStack>
+      </Box>
+      <ScrollView
+        style={{ flex: 1, marginTop: 50 }}
+        contentContainerStyle={{ alignItems: "center" }}
+      >
+        <View style={{ flex: 1, flexDirection: "row", marginBottom: 10 }}>
+          <Button
+            bg="#37b4aa"
+            style={{ color: "#37b4aa" }}
+            mr={0}
+            _text={{
+              color: "white",
+            }}
+            onPress={() => handleGoPost()}
+          >
+            Post
+          </Button>
+          <Button
+            marginLeft="10px"
+            bg="#37b4aa"
+            style={{ color: "#37b4aa" }}
+            _text={{
+              color: "white",
+            }}
+          >
+            Event
+          </Button>
+        </View>
+
+        <Input
+          w="80%"
+          mx={3}
+          placeholder="Nom de l'évenement"
+          onChangeText={(value) => onChangeNameEvent(value)}
           style={{
-            fontSize: "ld",
-            fontWeight: "bold",
-            color: "white",
-            fontSize: 20,
-            padding: 12,
+            marginBottom: 10,
+            marginTop: 10,
+          }}
+        />
+        <Stack space={4} w="80%">
+          <TextArea
+            onChange={handleInputUser}
+            value={content}
+            h={150}
+            placeholder="Description Event"
+          />
+        </Stack>
+        <Select
+          minWidth={315}
+          accessibilityLabel="Quartier"
+          placeholder="Quartier"
+          value={quartier}
+          onValueChange={(itemValue) => setQuartier(itemValue)}
+          _selectedItem={{
+            bg: "cyan.600",
+            endIcon: <CheckIcon size={4} />,
           }}
         >
-          Publication
-        </Text>
-      </HStack>
-    </Box>
-        <ScrollView
-          style={{ flex: 1, marginTop: 50 }}
-          contentContainerStyle={{ alignItems: "center" }}
+          <Select.Item label="Fontvieille" value="Fontvieille" />
+          <Select.Item label="Condamine" value="Condamine" />
+          <Select.Item label="Le Port" value="Le Port" />
+          <Select.Item label="Larvotto" value="Larvotto" />
+          <Select.Item label="Casino" value="Casino" />
+          <Select.Item label="Jardin Exotique" value="Jardin Exotique" />
+          <Select.Item label="Saint-Roman" value="Saint-Roman" />
+        </Select>
+        <Select
+          minWidth={315}
+          accessibilityLabel="Commerce"
+          placeholder="Commerce"
+          // value={quartierActivity}
+          // onValueChange={(itemValue) => setQuartierActivity(itemValue)}
+          _selectedItem={{
+            bg: "cyan.600",
+            endIcon: <CheckIcon size={4} />,
+          }}
         >
-          <View style={{ flex: 1, flexDirection: "row", marginBottom:10 }}>
+          <Select.Item label="L'enK" value="Fontvieille" />
+          <Select.Item label="Carrefour" value="Condamine" />
+        </Select>
         <Button
-          bg="#62ADEB"
-          style={{ color: "#62ADEB" }}
+          bg="#37b4aa"
+          style={{
+            color: "#37b4aa",
+            margin: 10,
+          }}
           mr={0}
           _text={{
             color: "white",
           }}
-          onPress={() => handleGoPost()}
+          onPress={() => addPhoto()}
         >
-          Post
+          Ajouter une photo
         </Button>
+        {image ? (
+          <Image
+            source={{
+              uri: image,
+            }}
+            alt="Alternate Text"
+            size={"xs"}
+          />
+        ) : null}
         <Button
-          marginLeft="10px"
-          bg="#62ADEB"
-          style={{ color: "#62ADEB" }}
+          bg="#37b4aa"
+          style={{
+            color: "#37b4aa",
+            marginBottom: 10,
+          }}
           _text={{
             color: "white",
           }}
+          onPress={() => handleDisplayStartDate()}
         >
-          Event
+          Date Début
         </Button>
-      </View>
-          
-          <Input
-            w="80%"
-            mx={3}
-            placeholder="Nom de l'évenement"
-            onChangeText={(value) => onChangeNameEvent(value)}
-            style={{
-              marginBottom: 10,
-              marginTop: 10,
-            }}
-          />
-          <Stack space={4} w="80%">
-            <TextArea
-              onChange={handleInputUser}
-              value={content}
-              h={150}
-              placeholder="Description Event"
-            />
-          </Stack>
-          <Select
-            minWidth={315}
-            accessibilityLabel="Quartier"
-            placeholder="Quartier"
-            value={quartier}
-            onValueChange={(itemValue) => setQuartier(itemValue)}
-            _selectedItem={{
-              bg: "cyan.600",
-              endIcon: <CheckIcon size={4} />,
-            }}
-          >
-            <Select.Item label="Fontvieille" value="Fontvieille" />
-            <Select.Item label="Condamine" value="Condamine" />
-            <Select.Item label="Le Port" value="Le Port" />
-            <Select.Item label="Larvotto" value="Larvotto" />
-            <Select.Item label="Casino" value="Casino" />
-            <Select.Item label="Jardin Exotique" value="Jardin Exotique" />
-            <Select.Item label="Saint-Roman" value="Saint-Roman" />
-          </Select>
-          <Select
-            minWidth={315}
-            accessibilityLabel="Commerce"
-            placeholder="Commerce"
-            // value={quartierActivity}
-            // onValueChange={(itemValue) => setQuartierActivity(itemValue)}
-            _selectedItem={{
-              bg: "cyan.600",
-              endIcon: <CheckIcon size={4} />,
-            }}
-          >
-            <Select.Item label="L'enK" value="Fontvieille" />
-            <Select.Item label="Carrefour" value="Condamine" />
-          </Select>
-          <Button
-            bg="#62ADEB"
-            style={{
-              color: "#62ADEB",
-              margin: 10,
-            }}
-            mr={0}
-            _text={{
-              color: "white",
-            }}
-            onPress={() => addPhoto()}
-          >
-            Ajouter une photo
-          </Button>
-          {image ? (
-            <Image
-              source={{
-                uri: image,
-              }}
-              alt="Alternate Text"
-              size={"xs"}
-            />
-          ) : null}
-          <Button
-            bg="#62ADEB"
-            style={{
-              color: "#62ADEB",
-              marginBottom: 10,
-            }}
-            _text={{
-              color: "white",
-            }}
-            onPress={() => handleDisplayStartDate()}
-          >
-            Date Début
-          </Button>
-          <Text style={{ marginBottom: 10 }}>
-            Début de l'évenement: {startDate}
-          </Text>
-          <Button
-            bg="#62ADEB"
-            style={{
-              color: "#62ADEB",
-              marginBottom: 10,
-            }}
-            _text={{
-              color: "white",
-            }}
-            onPress={() => handleDisplayEndDate()}
-          >
-            Date Fin
-          </Button>
-          <Text>Fin de l'évenement: {endDate}</Text>
-          <Button
-            bg="#62ADEB"
-            style={{
-              color: "#62ADEB",
-              margin: 10,
-            }}
-            mr={0}
-            _text={{
-              color: "white",
-            }}
-            onPress={() => handleValidateNewEvent()}
-          >
-            Créer l'évenement
-          </Button>
-        </ScrollView>
-    
+        <Text style={{ marginBottom: 10 }}>
+          Début de l'évenement: {startDate}
+        </Text>
+        <Button
+          bg="#37b4aa"
+          style={{
+            color: "#37b4aa",
+            marginBottom: 10,
+          }}
+          _text={{
+            color: "white",
+          }}
+          onPress={() => handleDisplayEndDate()}
+        >
+          Date Fin
+        </Button>
+        <Text>Fin de l'évenement: {endDate}</Text>
+        <Button
+          bg="#37b4aa"
+          style={{
+            color: "#37b4aa",
+            margin: 10,
+          }}
+          mr={0}
+          _text={{
+            color: "white",
+          }}
+          onPress={() => handleValidateNewEvent()}
+        >
+          Créer l'évenement
+        </Button>
+      </ScrollView>
     </View>
   );
 };

@@ -70,8 +70,8 @@ const AccountCreationScreenCommercant = (props) => {
         }}
       >
         <Button
-          bg="#62ADEB"
-          style={{ color: "#62ADEB" }}
+          bg="#37b4aa"
+          style={{ color: "#37b4aa" }}
           mr={0}
           _text={{
             color: "white",
@@ -81,8 +81,8 @@ const AccountCreationScreenCommercant = (props) => {
           Particulier
         </Button>
         <Button
-          bg="#62ADEB"
-          style={{ color: "#62ADEB" }}
+          bg="#37b4aa"
+          style={{ color: "#37b4aa" }}
           _text={{
             color: "white",
           }}
@@ -138,7 +138,7 @@ const AccountCreationScreenCommercant = (props) => {
             roundedRight="md"
             onPress={handleShowPassword}
             _text={{ color: "white" }}
-            bg="#62ADEB"
+            bg="#37b4aa"
           >
             {show ? "Hide" : "Show"}
           </Button>
@@ -210,8 +210,8 @@ const AccountCreationScreenCommercant = (props) => {
         <Select.Item label="Saint-Roman" value="Saint-Roman" />
       </Select>
       <Button
-        bg="#62ADEB"
-        style={{ color: "#62ADEB", marginTop: 15 }}
+        bg="#37b4aa"
+        style={{ color: "#37b4aa", marginTop: 15 }}
         _text={{
           color: "white",
         }}
@@ -224,7 +224,7 @@ const AccountCreationScreenCommercant = (props) => {
           <Modal.Header alignItems="center">Chargement</Modal.Header>
           <Modal.Body alignItems="center">
             <HStack space={2}>
-              <Spinner color="#62ADEB" />
+              <Spinner color="#37b4aa" />
             </HStack>
           </Modal.Body>
         </Modal.Content>
