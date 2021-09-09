@@ -13,7 +13,7 @@ import {
   Stack,
   Heading,
   List,
-  View
+  View,
 } from "native-base";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { connect } from "react-redux";
@@ -27,7 +27,8 @@ const Event = (props) => {
     content: "",
     particants: [],
   });
-  console.log('>>>>sate event image', informationEvent.image)
+  const [nombreParticipants, setNombreParticipants] = useState(0);
+  console.log(">>>>sate event image", informationEvent.image);
   const [commentairesEvent, setCommentairesEvent] = useState([]);
 
   console.log("route.params", props.route.params);
@@ -39,8 +40,9 @@ const Event = (props) => {
         body: `idEvent=${idEvent}`,
       });
       const eventParsed = await rawEvent.json();
-      console.log('image event', eventParsed)
+      console.log("image event", eventParsed);
       setInformationEvent(eventParsed.event);
+      setNombreParticipants(eventParsed.event.particants.length);
       const rawCommentairesEvent = await fetch(`${HOST}/commentaires-event`, {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -60,6 +62,7 @@ const Event = (props) => {
     });
     const userPost = await rawUserPost.json();
     setHasParticipated(true);
+    setNombreParticipants(nombreParticipants + 1);
   };
 
   const closeComment = () => {
@@ -81,9 +84,9 @@ const Event = (props) => {
   }
   const dateWeek = newDate.toLocaleDateString();
 
-  const dateEventDebut = `${dateWeek} à ${dateHours}:${dateMinutes}`
+  const dateEventDebut = `${dateWeek} à ${dateHours}:${dateMinutes}`;
 
-    //Formatage Date
+  //Formatage Date
 
   const dateDeFin = informationEvent.dateFin;
   const newDateFin = new Date(dateDeFin);
@@ -97,12 +100,12 @@ const Event = (props) => {
   }
   const dateWeekFin = newDateFin.toLocaleDateString();
 
-  const dateEventFin = `${dateWeekFin} à ${dateHoursFin}:${dateMinutesFin}`
+  const dateEventFin = `${dateWeekFin} à ${dateHoursFin}:${dateMinutesFin}`;
 
   const icon = <Icon as={Ionicons} name="checkmark" size={4} />;
 
   let comments = commentairesEvent.map((comment, index) => {
-    if (postId == comment.post._id) {
+    if (props.idEvent === comment.event._id) {
       return (
         <List.Item>
           <Box
@@ -129,17 +132,17 @@ const Event = (props) => {
                 mr={2}
                 size="md"
                 source={{
-                  uri: informationEvent.image
-                  ? informationEvent.image
-                  : "https://manofmany.com/wp-content/uploads/2021/06/Hasbulla-Magomedov-2.jpg",
+                  uri: comment.createur.profilePicture
+                    ? comment.createur.profilePicture
+                    : "https://www.e-xpertsolutions.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png",
                 }}
               ></Avatar>
               <Stack>
                 <Text style={{ flexShrink: 1 }} color="#000000" bold={true}>
-                  Piras Axel
+                  {comment.createur.prenom} {comment.createur.nom}
                 </Text>
                 <Text style={{ flexShrink: 1 }} my={2} color="#000000">
-                  Ambiance Scandale
+                  {comment.content}
                 </Text>
               </Stack>
             </HStack>
@@ -151,8 +154,8 @@ const Event = (props) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <SafeAreaView style={{ backgroundColor: "#62ADEB" }} />
-      <Box mb={1} bg="#62ADEB">
+      <SafeAreaView style={{ backgroundColor: "#37b4aa" }} />
+      <Box mb={1} bg="#37b4aa">
         <HStack justifyContent="center" alignItems="center">
           <Text
             style={{
@@ -167,59 +170,57 @@ const Event = (props) => {
           </Text>
         </HStack>
       </Box>
-    <ScrollView
-      style={{ flex: 1 }}
-      contentContainerStyle={{
-        justifyContent: "flex-start",
-        alignItems: "center",
-      }}
-    >
-      <SafeAreaView style={{ flex: 0, backgroundColor: "#37b4aa" }} />
-      <Box bg="white" shadow={2} rounded="lg" width="100%">
-        <Image
-          source={{
-            uri: informationEvent.image
-                  ? informationEvent.image
-                  : "https://manofmany.com/wp-content/uploads/2021/06/Hasbulla-Magomedov-2.jpg",
-          }}
-          alt="image base"
-          resizeMode="cover"
-          height={150}
-          roundedTop="md"
-        />
-        <Stack space={4} p={[4, 4, 8]}>
-          <Text color="gray.400">
-            du {dateEventDebut} au {dateEventFin}
-          </Text>
-          <Text color="gray.400">
-            {informationEvent.particants.length} participent
-          </Text>
-          <Heading size={["md", "lg", "md"]} noOfLines={2}>
-            {informationEvent.nomEvenement}
-          </Heading>
-          <Text lineHeight={[5, 5, 7]} noOfLines={[4, 4, 2]} color="gray.700">
-            {informationEvent.content}
-          </Text>
-        </Stack>
-        <Button
-          onPress={() => handleParticipate()}
-          bg="#37b4aa"
-          width="20%"
-          mx={4}
-          my={0}
-          height="5%"
-          size="xs"
-          _text={{ color: "white" }}
-          variant={hasParticipated ? "outline" : "solid"}
-          endIcon={hasParticipated ? icon : null}
-        >
-          {hasParticipated ? "Participe" : "Participer"}
-        </Button>
-        <List mt={2} my={2}>
-          {comments}
-        </List>
-      </Box>
-    </ScrollView>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{
+          justifyContent: "flex-start",
+          alignItems: "center",
+        }}
+      >
+        <SafeAreaView style={{ flex: 0, backgroundColor: "#37b4aa" }} />
+        <Box bg="white" shadow={2} rounded="lg" width="100%">
+          <Image
+            source={{
+              uri: informationEvent.image
+                ? informationEvent.image
+                : "https://manofmany.com/wp-content/uploads/2021/06/Hasbulla-Magomedov-2.jpg",
+            }}
+            alt="image base"
+            resizeMode="cover"
+            height={150}
+            roundedTop="md"
+          />
+          <Stack space={4} p={[4, 4, 8]}>
+            <Text color="gray.400">
+              du {dateEventDebut} au {dateEventFin}
+            </Text>
+            <Text color="gray.400">{nombreParticipants} participent</Text>
+            <Heading size={["md", "lg", "md"]} noOfLines={2}>
+              {informationEvent.nomEvenement}
+            </Heading>
+            <Text lineHeight={[5, 5, 7]} noOfLines={[4, 4, 2]} color="gray.700">
+              {informationEvent.content}
+            </Text>
+          </Stack>
+          <Button
+            onPress={() => handleParticipate()}
+            bg="#37b4aa"
+            width="20%"
+            mx={4}
+            my={0}
+            height="5%"
+            size="xs"
+            _text={{ color: "white" }}
+            variant={hasParticipated ? "outline" : "solid"}
+            endIcon={hasParticipated ? icon : null}
+          >
+            {hasParticipated ? "Participe" : "Participer"}
+          </Button>
+          <List mt={2} my={2}>
+            {comments}
+          </List>
+        </Box>
+      </ScrollView>
     </View>
   );
 };
