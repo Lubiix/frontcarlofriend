@@ -164,7 +164,10 @@ function FeedScreen(props) {
   });
 
   let comments = commentList.map((comment, index) => {
+    console.log("COMMENT" + index, comment);
     const item = comment.post || comment.event;
+    console.log("comparaison ID " + index, item._id, " ", postId);
+    console.log("ITEM", item);
     if (postId === item._id) {
       return (
         <HStack
@@ -252,7 +255,9 @@ function FeedScreen(props) {
         <Modal.Content width="100%">
           <Modal.CloseButton />
           <Modal.Header alignItems="center">Commentaires</Modal.Header>
-          <Modal.Body>{/* <ScrollView>{comments}</ScrollView> */}</Modal.Body>
+          <Modal.Body>
+            <ScrollView>{comments}</ScrollView>
+          </Modal.Body>
           <Modal.Footer>{commentInput}</Modal.Footer>
         </Modal.Content>
       </Modal>

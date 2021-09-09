@@ -125,7 +125,7 @@ function Card({ item, handleComment, isEvent = false }) {
             name="comment-multiple-outline"
             size={24}
             color="#37b4aa"
-            onPress={() => handleComment(item._id)}
+            onPress={() => handleComment(item._id, isEvent)}
           />
           {isEvent && (
             <FontAwesome5
