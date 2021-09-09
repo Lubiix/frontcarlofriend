@@ -18,14 +18,8 @@ function FeedScreen(props) {
 
   const [eventList, setEventList] = useState([]);
   // console.log("eventList:", eventList);
-
   const [commentList, setCommentList] = useState([]);
   // console.log("commentList", commentList);
-
-  const [commentValue, setCommentValue] = useState("");
-  console.log("commentaire récupéré:", commentValue);
-
-  const [postId, setPostId] = useState("");
 
   console.log("postId:", postId);
   // console.log("feedlist:", feedList);
@@ -74,12 +68,25 @@ function FeedScreen(props) {
     });
     setCommentValue("");
   };
+  // const handleComment = (idPost) => {
+  //   console.log("click comment");
+  //   setShowModal(true);
+  //   setPostId(idPost);
+  // };
+
+  // const closeComment = () => {
+  //   setShowModal(false);
+  // };
+
+  //ENVOI COMMENTAIRE AU BACK VIA ROUTE /comment
+
   function sortByDate(arr) {
     arr.sort(function (a, b) {
       return Number(new Date(b.date)) - Number(new Date(a.date));
     });
     return arr;
   }
+  const [postId, setPostId] = useState("");
 
   //APPEL /feed POUR AFFICHER LES POSTS DANS LE FEED
   useEffect(() => {
@@ -139,6 +146,12 @@ function FeedScreen(props) {
   // let postList = feedList.map((post) => {
   //   return <Card key={post._id} item={post} handleComment={handleComment} />;
   // });
+  let events = eventList.map((event, index) => {
+    return <Card key={event._id} item={event} isEvent />;
+  });
+  let postList = feedList.map((post) => {
+    return <Card key={post._id} item={post} />;
+  });
 
   const tableauEventsAndPosts = sortByDate(feedList.concat(eventList));
 
@@ -251,16 +264,6 @@ function FeedScreen(props) {
         />
       </HStack>
       <ScrollView style={{ marginTop: 10 }}>{feedListSorted}</ScrollView>
-      <Modal isOpen={showModal} onClose={() => closeComment()}>
-        <Modal.Content width="100%">
-          <Modal.CloseButton />
-          <Modal.Header alignItems="center">Commentaires</Modal.Header>
-          <Modal.Body>
-            <ScrollView>{comments}</ScrollView>
-          </Modal.Body>
-          <Modal.Footer>{commentInput}</Modal.Footer>
-        </Modal.Content>
-      </Modal>
     </View>
   );
 }

@@ -1,23 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, ScrollView } from "react-native";
+
+import Card from "../components/Card";
 import {
   Box,
-  Center,
   Avatar,
-  NativeBaseProvider,
-  Badge,
-  Flex,
-  Spacer,
   HStack,
   VStack,
   Image,
-  Stack,
   Modal,
-  Input,
   Button,
   AspectRatio,
-  Heading,
-  Icon,
 } from "native-base";
 import {
   Entypo,
@@ -34,10 +27,11 @@ import { useIsFocused } from "@react-navigation/native";
 
 const ProfilScreen = (props) => {
   const [userPost, setUserPost] = useState([]);
-  console.log("State userPost", userPost);
+  // console.log("State userPost", userPost);
+  const [userEvent, setUserEvent] = useState([]);
+  console.log("State userEvent", userEvent);
   const [user, setUser] = useState({});
-  console.log("user", user);
-  const [countLikePost, setCountLikePost] = useState(0);
+  // console.log("user", user);
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
@@ -48,9 +42,11 @@ const ProfilScreen = (props) => {
         body: `token=${props.token}`,
       });
       const userPost = await rawUserPost.json();
-      // console.log('userPost',userPost)
+      // console.log("userPost", userPost);
       setUserPost(userPost.userPosts);
+      // console.log("userPost.userPost", userPost.userPosts);
       setUser(userPost.user);
+      setUserEvent(userPost.userEvents);
     };
     fetchUserPost();
   }, [useIsFocused()]);
@@ -58,9 +54,17 @@ const ProfilScreen = (props) => {
   const handleGoEdit = () => {
     props.navigation.navigate("edit");
   };
+  const handleComment = (idPost) => {
+    console.log("click comment");
+    setShowModal(true);
+    setPostId(idPost);
+  };
 
-  let postList = userPost.map((post, index) => {
-    // console.log("postList", postList);
+  let postList = userPost.map((post) => {
+    return <Card key={post.id} item={post} handleComment={handleComment} />;
+  });
+
+  let events = userEvent.map((event) => {
     return (
       <VStack key={index}>
         <Box
@@ -143,7 +147,34 @@ const ProfilScreen = (props) => {
       </VStack>
     );
   });
+  function sortByDate(arr) {
+    arr.sort(function (a, b) {
+      return Number(new Date(b.date)) - Number(new Date(a.date));
+    });
+    return arr;
+  }
+  const tableauEventsAndPosts = sortByDate(userPost.concat(userEvent));
 
+  let feedListSorted = tableauEventsAndPosts.map((postOrEvent) => {
+    if (postOrEvent.dateFin === undefined) {
+      return (
+        <Card
+          key={postOrEvent._id}
+          item={postOrEvent}
+          handleComment={handleComment}
+        />
+      );
+    } else {
+      return (
+        <Card
+          key={postOrEvent._id}
+          item={postOrEvent}
+          handleComment={handleComment}
+          isEvent
+        />
+      );
+    }
+  });
   return (
     <ScrollView>
       <Box>
@@ -164,7 +195,7 @@ const ProfilScreen = (props) => {
           style={{ alignItems: "center" }}
         >
           <Avatar
-            zIndex={2}
+            Index={2}
             size="2xl"
             source={{
               uri: user.profilePicture
@@ -201,7 +232,6 @@ const ProfilScreen = (props) => {
             Media
           </Button>
         </HStack>
-
         <HStack
           style={{ justifyContent: "center", marginBottom: 10, marginTop: 60 }}
           marginTop="3"
@@ -219,7 +249,7 @@ const ProfilScreen = (props) => {
             Edit
           </Button>
         </HStack>
-        {postList}
+        {feedListSorted}
       </Box>
     </ScrollView>
   );

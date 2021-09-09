@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { useNavigation } from "@react-navigation/native";
 
-import { Dimensions } from "react-native";
+import { Dimensions, ScrollView } from "react-native";
 
 import {
   Ionicons,
@@ -11,18 +11,123 @@ import {
   FontAwesome5,
 } from "@expo/vector-icons";
 
-import { Box, Avatar, HStack, VStack, Image, Text, Button } from "native-base";
+import {
+  Box,
+  Avatar,
+  HStack,
+  VStack,
+  Image,
+  Text,
+  Button,
+  Modal,
+  Input,
+} from "native-base";
 import { createParser } from "styled-system";
+import { HOST } from "@env";
 
-function Card({ item, handleComment, isEvent = false }) {
+function Card({ item, isEvent = false, props }) {
   const [countLikePost, setCountLikePost] = useState(0);
+
+  const [showModal, setShowModal] = useState(false);
+  console.log("HOOOOOOST", HOST);
+
+  const [postId, setPostId] = useState("");
+
+  const [commentList, setCommentList] = useState([]);
+  // console.log("commentList", commentList);
 
   const navigation = useNavigation();
 
   const handleLike = () => {
     setCountLikePost(countLikePost + 1);
   };
+  const [commentValue, setCommentValue] = useState("");
+  console.log("commentaire récupéré:", commentValue);
 
+  const handleComment = (idPost) => {
+    console.log("click comment");
+    setShowModal(true);
+    setPostId(idPost);
+  };
+
+  const closeComment = () => {
+    setShowModal(false);
+  };
+
+  const sendComment = async () => {
+    console.log(
+      "commentaire envoyé à /comment",
+      HOST,
+      commentValue,
+      props.token,
+      postId
+    );
+    const userComment = await fetch(`${HOST}/comment`, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `comment=${commentValue}&token=${props.token}&postId=${postId}`,
+    });
+    setCommentValue("");
+  };
+
+  let commentInput = (
+    <HStack
+      style={{ width: "100%", justifyContent: "center", alignItems: "center" }}
+    >
+      <Input
+        w="80%"
+        mx={3}
+        placeholder="Ecrire un commentaire ..."
+        _light={{
+          placeholderTextColor: "blueGray.400",
+        }}
+        _dark={{
+          placeholderTextColor: "blueGray.50",
+        }}
+        value={commentValue}
+        onChangeText={(value) => setCommentValue(value)}
+      />
+      <Ionicons
+        name="send"
+        size={24}
+        color="#62ADEB"
+        onPress={() => sendComment()}
+      />
+    </HStack>
+  );
+
+  let comments = commentList.map((comment, index) => {
+    if (postId == comment.item._id) {
+      return (
+        <HStack
+          key={index}
+          style={{
+            space: 3,
+            alignItems: "center",
+            marginBottom: 2,
+          }}
+        >
+          <Avatar
+            mr={2}
+            size="md"
+            source={{
+              uri: item.createur.profilePicture
+                ? item.createur.profilePicture
+                : "https://www.e-xpertsolutions.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png",
+            }}
+          ></Avatar>
+          <Stack>
+            <Text style={{ flexShrink: 1 }} color="#000000" bold={true}>
+              {comment.createur.nom} {comment.createur.prenom}
+            </Text>
+            <Text style={{ flexShrink: 1 }} my={2} color="#000000">
+              {comment.content}
+            </Text>
+          </Stack>
+        </HStack>
+      );
+    }
+  });
   const screenWidth = Dimensions.get("screen").width;
 
   const date = item.date;
@@ -140,6 +245,16 @@ function Card({ item, handleComment, isEvent = false }) {
           <Ionicons name="share-outline" size={28} color="#B6B6B6" />
         </HStack>
       </Box>
+      <Modal isOpen={showModal} onClose={() => closeComment()}>
+        <Modal.Content width="100%">
+          <Modal.CloseButton />
+          <Modal.Header alignItems="center">Commentaires</Modal.Header>
+          <Modal.Body>
+            <ScrollView>{comments}</ScrollView>
+          </Modal.Body>
+          <Modal.Footer>{commentInput}</Modal.Footer>
+        </Modal.Content>
+      </Modal>
     </VStack>
   );
 }
