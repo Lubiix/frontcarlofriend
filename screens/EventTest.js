@@ -192,7 +192,7 @@ const Event = (props) => {
           />
           <Stack space={4} p={[4, 4, 8]}>
             <Text color="gray.400">
-              du {dateEventDebut} au {dateEventFin}
+              Du {dateEventDebut} au {dateEventFin}
             </Text>
             <Text color="gray.400">{nombreParticipants} participent</Text>
             <Heading size={["md", "lg", "md"]} noOfLines={2}>
