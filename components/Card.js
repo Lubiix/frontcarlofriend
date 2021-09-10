@@ -24,6 +24,7 @@ import {
 } from "native-base";
 import { createParser } from "styled-system";
 import { HOST } from "@env";
+import { connect } from "react-redux";
 
 function Card({ item, isEvent = false, props, handleComment }) {
   const [countLikePost, setCountLikePost] = useState(0);
@@ -99,10 +100,12 @@ function Card({ item, isEvent = false, props, handleComment }) {
                 style={{ fontWeight: "bold", marginLeft: 5, fontSize: 18 }}
                 color="#000000"
               >
-                {item.createur.prenom} {item.createur.nom}
+                {item.createur.nameSearch}
               </Text>
               <Text style={{ marginLeft: 5 }}>{item.quartier.name}</Text>
+              <HStack>
               {datePost}
+              </HStack>
             </VStack>
           </HStack>
         </HStack>
@@ -134,9 +137,9 @@ function Card({ item, isEvent = false, props, handleComment }) {
               name="like2"
               size={24}
               color="#B6B6B6"
-              onPress={() => handleLike()}
+              onPress={() => handleLike(item._id)}
             />
-            {countLikePost}
+            {Math.floor(Math.random() * 87)}
           </Text>
           <MaterialCommunityIcons
             name="comment-multiple-outline"

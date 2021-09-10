@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ScrollView, SafeAreaView } from "react-native";
 import {
   VStack,
@@ -107,7 +107,7 @@ const Event = (props) => {
   let comments = commentairesEvent.map((comment, index) => {
     if (props.idEvent === comment.event._id) {
       return (
-        <List.Item>
+        <List.Item key={index}>
           <Box
             bg="#FFFFFF"
             p={4}
@@ -139,7 +139,7 @@ const Event = (props) => {
               ></Avatar>
               <Stack>
                 <Text style={{ flexShrink: 1 }} color="#000000" bold={true}>
-                  {comment.createur.prenom} {comment.createur.nom}
+                  {comment.createur.nameSearch}
                 </Text>
                 <Text style={{ flexShrink: 1 }} my={2} color="#000000">
                   {comment.content}

@@ -72,7 +72,7 @@ const AddPostScreen = (props) => {
   const handleValidateNewPost = async () => {
     console.log("click validate detecté");
     console.log("PHOTO URI", image);
-    props.navigation.navigate("Actualités");
+    props.navigation.navigate("feed");
     if (image.length) {
       var data = new FormData();
       await data.append("photo", {

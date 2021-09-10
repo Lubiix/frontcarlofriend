@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useRef } from "react";
 import Card from "../components/Card";
 import { View, ScrollView } from "react-native";
 import {
@@ -6,7 +6,15 @@ import {
   Ionicons,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
-import { Avatar, HStack, Stack, Modal, Input, Text } from "native-base";
+import {
+  Avatar,
+  HStack,
+  Stack,
+  Modal,
+  Input,
+  Text,
+  KeyboardAvoidingView,
+} from "native-base";
 import { HOST } from "@env";
 import { connect } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
@@ -22,14 +30,23 @@ function FeedScreen(props) {
   const [commentList, setCommentList] = useState([]);
   // console.log("commentList", commentList);
   const [commentValue, setCommentValue] = useState("");
-  console.log("commentaire récupéré:", commentValue);
-  console.log("postId:", postId);
+  // console.log("commentaire récupéré:", commentValue);
+  // console.log("postId:", postId);
   // console.log("feedlist:", feedList);
 
   const [isEvent, setIsEvent] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
   console.log("HOOOOOOST", HOST);
+
+  const scrollViewRef = useRef(null);
+
+  const onScrollViewChange = () => {
+    // console.log(">>onScrollViewChange");
+    if (scrollViewRef) {
+      scrollViewRef.current.scrollToEnd();
+    }
+  };
 
   const handleNavigEvent = function () {
     console.log("click");
@@ -43,7 +60,7 @@ function FeedScreen(props) {
     props.navigation.navigate("feed");
   };
   const handleComment = (idPost, isEvent = false) => {
-    console.log("click comment", idPost);
+    // console.log("click comment", idPost);
     setShowModal(true);
     setPostId(idPost);
     setIsEvent(isEvent);
@@ -53,21 +70,23 @@ function FeedScreen(props) {
     setShowModal(false);
   };
 
+  const [commentSent, setCommentSent] = useState(false);
   //ENVOI COMMENTAIRE AU BACK VIA ROUTE /comment
   const sendComment = async () => {
-    console.log(
-      "commentaire envoyé à /comment",
-      HOST,
-      commentValue,
-      props.token,
-      postId
-    );
+    // console.log(
+    //   "commentaire envoyé à /comment",
+    //   HOST,
+    //   commentValue,
+    //   props.token,
+    //   postId
+    // );
     const userComment = await fetch(`${HOST}/comment`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `comment=${commentValue}&token=${props.token}&postId=${postId}&isEvent=${isEvent}`,
     });
     setCommentValue("");
+    setCommentSent(true);
   };
   // const handleComment = (idPost) => {
   //   console.log("click comment");
@@ -87,7 +106,8 @@ function FeedScreen(props) {
     });
     return arr;
   }
-
+  const isFocused = useIsFocused();
+  console.log("isFocused", isFocused);
   //APPEL /feed POUR AFFICHER LES POSTS DANS LE FEED
   useEffect(() => {
     console.log("enter useeffect feed");
@@ -99,17 +119,22 @@ function FeedScreen(props) {
       const allPostData = userFeedParsed.posts;
       const allCommentData = userFeedParsed.comments;
       const allEventData = userFeedParsed.events;
-      console.log("tous les évènements :", allEventData);
+      // console.log("tous les évènements :", allEventData);
+      setCommentSent(false);
       setFeedList(sortByDate(allPostData));
       setEventList(sortByDate(allEventData));
       setCommentList(allCommentData);
     };
     requestFeed();
-  }, [useIsFocused()]);
+  }, [isFocused, commentSent]);
 
   let commentInput = (
     <HStack
-      style={{ width: "100%", justifyContent: "center", alignItems: "center" }}
+      style={{
+        width: "100%",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
     >
       <Input
         w="80%"
@@ -124,6 +149,7 @@ function FeedScreen(props) {
         value={commentValue}
         onChangeText={(value) => setCommentValue(value)}
       />
+
       <Ionicons
         name="send"
         size={24}
@@ -177,10 +203,10 @@ function FeedScreen(props) {
   });
 
   let comments = commentList.map((comment, index) => {
-    console.log("COMMENT" + index, comment);
+    // console.log("COMMENT" + index, comment);
     const item = comment.post || comment.event;
-    console.log("comparaison ID " + index, item._id, " ", postId);
-    console.log("ITEM", item);
+    // console.log("comparaison ID " + index, item._id, " ", postId);
+    // console.log("ITEM", item);
     if (postId === item._id) {
       return (
         <HStack
@@ -202,7 +228,7 @@ function FeedScreen(props) {
           ></Avatar>
           <Stack>
             <Text style={{ flexShrink: 1 }} color="#000000" bold={true}>
-              {comment.createur.nom} {comment.createur.prenom}
+              {comment.createur.nameSearch}
             </Text>
             <Text style={{ flexShrink: 1 }} my={2} color="#000000">
               {comment.content}
@@ -263,12 +289,22 @@ function FeedScreen(props) {
           onPress={() => handleMap()}
         />
       </HStack>
-      <Modal isOpen={showModal} onClose={() => closeComment()}>
+      <Modal
+        isOpen={showModal}
+        onClose={() => closeComment()}
+        height="48%"
+        style={{ marginTop: 55 }}
+      >
         <Modal.Content width="100%">
           <Modal.CloseButton />
           <Modal.Header alignItems="center">Commentaires</Modal.Header>
           <Modal.Body>
-            <ScrollView>{comments}</ScrollView>
+            <ScrollView
+              ref={scrollViewRef}
+              onContentSizeChange={() => onScrollViewChange()}
+            >
+              {comments}
+            </ScrollView>
           </Modal.Body>
           <Modal.Footer>{commentInput}</Modal.Footer>
         </Modal.Content>
@@ -279,7 +315,7 @@ function FeedScreen(props) {
 }
 
 function mapStateToProps(state) {
-  console.log("récup state dans reducer token", state);
+  // console.log("récup state dans reducer token", state);
   return { token: state.token, filter: state.filter };
 }
 
