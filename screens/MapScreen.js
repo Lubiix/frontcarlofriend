@@ -82,15 +82,6 @@ function MapScreen(props) {
           longitudeDelta: 0.009,
         }}
       >
-        <Marker
-          pinColor="red"
-          title="La Capsule"
-          description="On code !"
-          coordinate={{
-            latitude: 43.7278585,
-            longitude: 7.4115085,
-          }}
-        />
         {tableauLocalisations.map((commercant, index) => {
           return (
             <Marker
