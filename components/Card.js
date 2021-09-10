@@ -102,7 +102,9 @@ function Card({ item, isEvent = false, props, handleComment }) {
                 {item.createur.nameSearch}
               </Text>
               <Text style={{ marginLeft: 5 }}>{item.quartier.name}</Text>
+              <HStack>
               {datePost}
+              </HStack>
             </VStack>
           </HStack>
         </HStack>
