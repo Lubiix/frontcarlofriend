@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useNavigation } from "@react-navigation/native";
 
@@ -103,9 +103,7 @@ function Card({ item, isEvent = false, props, handleComment }) {
                 {item.createur.nameSearch}
               </Text>
               <Text style={{ marginLeft: 5 }}>{item.quartier.name}</Text>
-              <HStack>
-              {datePost}
-              </HStack>
+              <HStack>{datePost}</HStack>
             </VStack>
           </HStack>
         </HStack>

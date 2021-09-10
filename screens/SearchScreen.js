@@ -118,7 +118,7 @@ const SearchScreen = (props) => {
               style={{ flexShrink: 1, marginLeft: 5, fontWeight: "bold" }}
               color="#000000"
             >
-              {user.prenom} {user.nom}
+              {user.nom} {user.prenom} {user.nomEnseigne}
             </Text>
           </HStack>
           <Text

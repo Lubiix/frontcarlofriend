@@ -62,7 +62,7 @@ const ProfilSearchScreen = (props) => {
 
   let postList = userPost.map((post, index) => {
     console.log("postList", postList);
-    return <Card key={post.id} item={post}  />;
+    return <Card key={post._id} item={post} />;
   });
 
   return (
@@ -122,7 +122,7 @@ const ProfilSearchScreen = (props) => {
             Media
           </Button>
         </HStack>
-        <View style={{marginTop:50}}>{postList}</View>
+        <View style={{ marginTop: 50 }}>{postList}</View>
       </Box>
     </ScrollView>
   );
